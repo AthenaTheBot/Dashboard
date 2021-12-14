@@ -1,18 +1,12 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const router = express.Router();
 const encryptor = require("simple-encryptor")(
   "aaüv.?ğğdlvmpqewmfnıpasd124863133u"
 );
-const { Permissions } = require("discord.js");
-const fetch = require("node-fetch");
-const Athena = require("../../../Athena");
 
-const router = express.Router();
-
-// Cache
-const commandsCache = new Array();
-const guildsCache = new Map();
+let commandsCache = [];
 
 // Helper Functions
 const wait = (ms) => {
@@ -23,64 +17,57 @@ const wait = (ms) => {
   });
 };
 
-const getUserGuilds = async (sesKey) => {
-  if (!sesKey) return;
-
-  if (guildsCache.get(sesKey)) return guildsCache.get(sesKey);
-
-  let userCurrentGuilds = await fetch(
-    "https://discord.com/api/users/@me/guilds",
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${sesKey}`,
-      },
-    }
-  )
-    .then((res) => res.json())
-    .catch((err) => {});
-
-  if (userCurrentGuilds?.retry_after) {
-    await wait(userCurrentGuilds.retry_after);
-    return getUserGuilds(sesKey);
-  }
-
-  for (var i = 0; i < userCurrentGuilds.length; i++) {
-    userCurrentGuilds[i].permissions = new Permissions(
-      userCurrentGuilds[i].permissions_new
-    ).toArray();
-    const guild = Athena.guilds.resolve(userCurrentGuilds[i].id);
-    if (!guild) userCurrentGuilds[i].available = false;
-    else userCurrentGuilds[i].available = true;
-
-    if (userCurrentGuilds[i].available) {
-      userCurrentGuilds[i].memberCount = guild.memberCount;
-      userCurrentGuilds[i].channelCount = guild.channels.cache.size;
-    }
-
-    if (userCurrentGuilds[i].icon)
-      userCurrentGuilds[
-        i
-      ].icon = `https://cdn.discordapp.com/icons/${userCurrentGuilds[i].id}/${userCurrentGuilds[i].icon}`;
-  }
-
-  guildsCache.set(sesKey, userCurrentGuilds);
-
-  setTimeout(() => {
-    guildsCache.delete(sesKey);
-  }, 5 * 1000);
-
-  return userCurrentGuilds;
+const capitalizeText = (text) => {
+  const firstLetter = text.slice(0, 1).toUpperCase();
+  const restText = text.slice(1, text.length);
+  return firstLetter + restText;
 };
 
 // General routers
-router.get("/getStats", (req, res) => {
-  res.json({
-    serverCount: Athena.guilds.cache.size,
-    cachedUserCount: Athena.users.cache.size,
-  });
+router.get("/commands", async (req, res) => {
+  if (!commandsCache || commandsCache.length == 0) {
+    try {
+      const commands = JSON.parse(
+        await fs.readFileSync(
+          path.join(__dirname, "..", "data", "commands.json"),
+          "utf-8"
+        )
+      );
+
+      const categories = [];
+
+      for (var i = 0; i < commands.length; i++) {
+        const categorySeen =
+          categories.filter(
+            (x) => x.category == capitalizeText(commands[i].category)
+          ).length == 0
+            ? false
+            : true;
+
+        if (categorySeen) {
+          categories
+            .find((x) => x.category == capitalizeText(commands[i].category))
+            ?.commands?.push(commands[i]);
+        } else {
+          categories.push({
+            category: capitalizeText(commands[i].category),
+            commands: [commands[i]],
+          });
+        }
+      }
+
+      commandsCache = categories;
+    } catch (err) {
+      res.status(500).json({ status: 500, message: "Server Error" }).end();
+      console.log(err);
+      return;
+    }
+  }
+
+  res.status(200).json({ status: 200, data: commandsCache }).end();
 });
 
+// General routers
 router.get("/commands", (req, res) => {
   if (!commandsCache || commandsCache.length == 0) {
     const categories = fs.readdirSync(
@@ -149,121 +136,6 @@ router.get("/users/:id", (req, res) => {
     .status(503)
     .json({ status: 503, message: "Service Unavailable" })
     .end();
-});
-
-router.get("/users/@me/guilds", async (req, res) => {
-  if (!req.cookies?.session)
-    return res.status(400).json({ status: 400, message: "Bad Request" }).end();
-
-  const session = await encryptor.decrypt(req.cookies.session);
-
-  if (!session?.key)
-    return res.status(400).json({ status: 400, message: "Bad Request" }).end();
-
-  const currentGuilds = await getUserGuilds(session.key);
-
-  if (req?.query?.selectManageable?.toLowerCase() == "true") {
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        data: currentGuilds.filter(
-          (x) => x.owner == true || x.permissions.includes("ADMINISTRATOR")
-        ),
-      })
-      .end();
-  }
-
-  return res.status(200).json({ status: 200, data: currentGuilds }).end();
-});
-
-// Guilds routers
-router.all("/guilds/:id", async (req, res) => {
-  if (!req.params?.id || req.params?.id.length != 18 || isNaN(req.params.id))
-    return res.status(400).json({ status: 400, message: "Bad Request" }).end();
-
-  if (!req.cookies?.session)
-    return res.status(401).json({ status: 401, message: "Unauthorized" }).end();
-
-  const session = encryptor.decrypt(req.cookies.session);
-
-  if (!session.key)
-    return res.status(401).json({ status: 401, message: "Unauthorized" }).end();
-
-  if (req.method == "GET") {
-    const userGuilds = (await getUserGuilds(session.key)).filter(
-      (x) => x.owner == true || x.permissions.includes("ADMINISTRATOR")
-    );
-
-    let canAccess = false;
-    userGuilds.forEach((guild) => {
-      if (guild.id == req.params.id) canAccess = true;
-    });
-
-    if (!canAccess)
-      return res
-        .status(401)
-        .json({ status: 401, message: "Unauthorized" })
-        .end();
-
-    try {
-      const guildData =
-        (await Athena.dbManager.getGuild(req.params.id, true)).data || null;
-
-      res
-        .status(200)
-        .json({ status: 200, data: guildData || null })
-        .end();
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ status: 500, message: "Server Error" }).end();
-    }
-  } else if (req.method == "POST") {
-    if (
-      !req.body ||
-      !req.body.guild ||
-      !req.body?.prefix ||
-      !req.body?.language
-    )
-      return res
-        .status(400)
-        .json({ status: 400, message: "Bad Request" })
-        .end();
-
-    switch (req.body.language) {
-      case "English":
-        req.body.language = "en-US";
-        break;
-
-      case "Türkçe":
-        req.body.language = "tr-TR";
-        break;
-
-      default:
-        req.body.language = undefined;
-    }
-
-    if (!req.body.language)
-      return res
-        .status(400)
-        .json({ status: 400, message: "Bad Request" })
-        .end();
-
-    try {
-      Athena.dbManager.updateDocument("guild", req.body.guild, {
-        $set: { "data.preferences.prefix": req.body.prefix.trim() },
-      });
-      Athena.dbManager.updateDocument("guild", req.body.guild, {
-        $set: { "data.preferences.language": req.body.language },
-      });
-    } catch (err) {
-      Athena.log(2, err);
-      res.status(500).json({ status: 500, message: "Server Error" }).end();
-      return;
-    }
-
-    res.status(200).json({ status: 200, message: "Successful" }).end();
-  }
 });
 
 module.exports = router;

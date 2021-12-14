@@ -13,11 +13,10 @@ import "./index.css";
 import userContext from "./context/user/userContext";
 
 const App = () => {
-  const { getUser, getUserServers } = useContext(userContext);
+  const { getUser } = useContext(userContext);
 
   useEffect(() => {
     getUser();
-    getUserServers();
   }, []);
 
   return (
@@ -26,12 +25,12 @@ const App = () => {
         <Route exact path="/">
           <Main />
         </Route>
-        <Route exact path="/dashboard">
+        {/* <Route exact path="/dashboard">
           <Servers />
         </Route>
         <Route path="/dashboard/:id/:category?">
           <Dashboard />
-        </Route>
+        </Route> */}
         <Route exact path="/commands">
           <Commands />
         </Route>

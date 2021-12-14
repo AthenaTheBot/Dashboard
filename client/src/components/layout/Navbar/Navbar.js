@@ -54,14 +54,14 @@ const NavbarComp = ({ activeElement }) => {
               >
                 Home
               </Link>
-              <Link
+              {/* <Link
                 className={
                   activeElement === "dashboard" ? "active nav-link" : "nav-link"
                 }
                 to="/dashboard"
               >
                 Dashboard
-              </Link>
+              </Link> */}
               <Link
                 className={
                   activeElement === "commands" ? "active nav-link" : "nav-link"

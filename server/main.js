@@ -5,10 +5,10 @@ const fs = require("fs");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const Athena = require("../../Athena");
+require("dotenv").config();
 
-const httpPort = Athena.config.DEBUG ? Athena.config.DEBUG_PORT : 80;
-const httpsPort = Athena.config.DEBUG ? null : 443;
+const httpPort = process.env.DEBUG === "true" ? process.env.DEBUG_PORT : 80;
+const httpsPort = process.env.DEBUG === "true" ? null : 443;
 
 const httpsOptions = {
   cert: fs.readFileSync(path.join(__dirname, "certs", "cert.pem")),
@@ -18,7 +18,7 @@ const httpsOptions = {
 
 const app = express();
 const httpServer = http.createServer(
-  Athena.config.DEBUG
+  process.env.DEBUG === "true"
     ? app
     : (req, res) => {
         res.writeHead(301, {
@@ -40,10 +40,10 @@ app.get("/support", (req, res) => {
 
 app.get("/invite", (req, res) => {
   res.redirect(
-    Athena.config.DASHBOARD.INVITE_LINK.replace(
+    process.env.INVITE_LINK.replace(
       "$REDIRECTURI",
-      Athena.config.DASHBOARD.REDIRECT_URI
-    ).replace("$CLIENTID", Athena.user.id)
+      process.env.REDIRECT_URI
+    ).replace("$CLIENTID", process.env.CLIENT_ID)
   );
 });
 
@@ -63,13 +63,12 @@ app.get("/*", (req, res) => {
 
 try {
   httpServer.listen(httpPort);
-  if (!Athena.config.DEBUG) httpsServer.listen(httpsPort);
+  if (process.env.DEBUG !== "true") httpsServer.listen(httpsPort);
 } catch (err) {
-  return Athena.log(2, err);
+  return console.log(err);
 }
 
-Athena.log(
-  1,
+console.log(
   `Web server has been started successfully! HTTP Port: \x1b[32m${httpPort}\x1b[0m | HTTPS Port: \x1b[32m${
     httpsPort ? httpsPort : "None"
   }\x1b[0m`

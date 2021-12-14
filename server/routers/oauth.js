@@ -4,7 +4,6 @@ const encryptor = require("simple-encryptor")(
   "aaüv.?ğğdlvmpqewmfnıpasd124863133u"
 );
 const DiscordOauth2 = require("discord-oauth2");
-const Athena = require("../../../Athena");
 
 router.get("/login", (req, res) => {
   let redirect;
@@ -27,10 +26,10 @@ router.get("/login", (req, res) => {
   }
 
   res.redirect(
-    Athena.config.DASHBOARD.LOGIN_LINK.replace(
+    process.env.LOGIN_LINK.replace(
       "$REDIRECTURI",
-      Athena.config.DASHBOARD.REDIRECT_URI.concat("?redirect=" + redirect)
-    ).replace("$CLIENTID", Athena.user.id)
+      process.env.REDIRECT_URI.concat("?redirect=" + redirect)
+    ).replace("$CLIENTID", process.env.CLIENT_ID)
   );
 });
 
@@ -62,11 +61,9 @@ router.get("/callback", async (req, res) => {
   }
 
   const oauth = new DiscordOauth2({
-    clientId: Athena.user.id,
-    clientSecret: Athena.config.DASHBOARD.CLIENT_SECRET,
-    redirectUri: Athena.config.DASHBOARD.REDIRECT_URI.concat(
-      "?redirect=" + redirect
-    ),
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI.concat("?redirect=" + redirect),
   });
 
   const tokenData = await oauth
