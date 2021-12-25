@@ -15,18 +15,14 @@ const UserState = (props) => {
 
   const getUser = async () => {
     if (!cookies?.session) return;
-    const user = await $.get("/api/users/@me")
-      .then((res) => res.data)
-      .catch((err) => {});
+    const user = await $.get("/api/users/@me").catch((err) => {});
     if (!user) return;
     dispatch({ type: "GET_USER", payload: user });
   };
 
   const getUserServers = async () => {
     if (!cookies?.session) return;
-    const servers = await $.get("/api/users/@me/guilds?selectManageable=true")
-      .then((res) => res.data)
-      .catch((err) => {});
+    const servers = await $.get("/api/users/@me/guilds").catch((err) => {});
     if (!servers) return;
     dispatch({ type: "GET_USER_SERVERS", payload: servers });
   };

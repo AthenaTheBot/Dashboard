@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
@@ -54,14 +54,6 @@ const NavbarComp = ({ activeElement }) => {
               >
                 Home
               </Link>
-              {/* <Link
-                className={
-                  activeElement === "dashboard" ? "active nav-link" : "nav-link"
-                }
-                to="/dashboard"
-              >
-                Dashboard
-              </Link> */}
               <Link
                 className={
                   activeElement === "commands" ? "active nav-link" : "nav-link"
