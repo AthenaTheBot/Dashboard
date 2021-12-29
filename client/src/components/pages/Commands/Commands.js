@@ -1,7 +1,10 @@
 // Modules
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet";
 import $ from "jquery";
+
+// Context
+import dashContext from "../../../context/dash/dashContext";
 
 // Other Comp
 import Navbar from "../../layout/Navbar/Navbar";
@@ -17,25 +20,30 @@ const Commands = () => {
   let commandKeyCount = 0;
   let categoryKeyCount = 0;
 
+  const { getCommands, commands } = useContext(dashContext);
+  const [show, setShow] = useState(false);
   const [categories, setCategories] = useState([]);
-
   const [newCategories, setNewCategories] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const categoryLocations = {};
 
   useEffect(() => {
-    fetch("/api/commands")
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) return;
-        setNewCategories(res.data);
-        setCategories(res.data);
-        setLoading(false);
-      });
+    getCommands();
   }, []);
 
-  const loadCategory = (e) => {
-    const selectedCategory = e.currentTarget.dataset.category;
+  useEffect(() => {
+    if (commands) {
+      setCategories(commands);
+      setNewCategories(commands);
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+    //eslint-disable-next-line
+  }, [commands]);
+
+  const loadCategory = (selectedCategory, event) => {
+    if (!selectedCategory) return;
     let newData;
     if (selectedCategory === "All") newData = categories;
     else {
@@ -57,7 +65,7 @@ const Commands = () => {
     }
 
     setNewCategories(newData);
-    e.currentTarget.classList.add("activeCategory");
+    event.currentTarget.classList.add("activeCategory");
 
     $(".command .command-active").removeClass("command-active");
   };
@@ -74,48 +82,56 @@ const Commands = () => {
       </div>
       <main>
         <div className="commands-container">
-          <div className="categories">
-            <h5
-              onClick={loadCategory}
-              className="category activeCategory"
-              data-category="All"
-            >
-              All
-            </h5>
-            {categories.map((d) => {
-              categoryKeyCount++;
-              return (
+          {show ? (
+            <Fragment>
+              <div className="categories">
                 <h5
-                  onClick={loadCategory}
-                  key={categoryKeyCount}
-                  className="category"
-                  data-category={d.category}
+                  className="category activeCategory"
+                  onClick={(event) => {
+                    loadCategory("All", event);
+                  }}
                 >
-                  {d.category}
+                  All
                 </h5>
-              );
-            })}
-          </div>
-          <div className="commands">
-            <Loader active={loading} coverAllPage={false} />
-            {newCategories.map((d) => {
-              const commands = d.commands.map((command) => {
-                commandKeyCount++;
-                return (
-                  <Command
-                    name={command.name}
-                    usage={command.usage}
-                    description={command.description}
-                    reqPerms={command.required_perms}
-                    reqBotPerms={command.required_bot_perms}
-                    key={commandKeyCount}
-                  />
-                );
-              });
+                {categories.map((d) => {
+                  categoryKeyCount++;
+                  categoryLocations[categoryKeyCount] = d.category;
+                  return (
+                    <h5
+                      onClick={(event) => {
+                        loadCategory(d.category, event);
+                      }}
+                      key={categoryKeyCount}
+                      className="category"
+                    >
+                      {d.category}
+                    </h5>
+                  );
+                })}
+              </div>
+              <div className="commands">
+                {newCategories.map((d) => {
+                  const commands = d.commands.map((command) => {
+                    commandKeyCount++;
+                    return (
+                      <Command
+                        name={command.name}
+                        usage={command.usage}
+                        description={command.description}
+                        reqPerms={command.required_perms}
+                        reqBotPerms={command.required_bot_perms}
+                        key={commandKeyCount}
+                      />
+                    );
+                  });
 
-              return commands;
-            })}
-          </div>
+                  return commands;
+                })}
+              </div>
+            </Fragment>
+          ) : (
+            <Loader active={true} />
+          )}
         </div>
       </main>
       <Footer />

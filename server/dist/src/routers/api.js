@@ -91,7 +91,7 @@ router.get("/commands", (req, res) => __awaiter(void 0, void 0, void 0, function
             return;
         }
     }
-    res.status(200).json({ status: 200, data: commandsCache }).end();
+    res.status(200).json(commandsCache).end();
 }));
 router.get("/users/@me", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;

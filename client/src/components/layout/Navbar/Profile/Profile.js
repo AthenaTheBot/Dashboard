@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useContext } from "react";
-import userContext from "../../../../context/user/userContext";
+import dashContext from "../../../../context/dash/dashContext";
 import { Link } from "react-router-dom";
 import { BiCaretDown } from "react-icons/bi";
 import $ from "jquery";
@@ -8,16 +8,8 @@ import $ from "jquery";
 import "./Profile.css";
 
 const Profile = ({ drodpownOptions }) => {
-  const { getUser, user } = useContext(userContext);
+  const { user } = useContext(dashContext);
   let count = 0;
-
-  useEffect(
-    async () => {
-      await getUser();
-    },
-    // eslint-disable-next-line
-    []
-  );
 
   const toggleDropdown = () => {
     if ($(".dropdown").hasClass("disabled")) {

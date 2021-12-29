@@ -5,7 +5,7 @@ import axios from "axios";
 import config from "../../config.json";
 import { Guild, User, Command } from "../constants";
 import { botClient } from "../index";
-import { BitField, Permissions } from "discord.js";
+import { Permissions } from "discord.js";
 
 // Router instance
 const router = express.Router();
@@ -107,7 +107,7 @@ router.get("/commands", async (req, res) => {
     }
   }
 
-  res.status(200).json({ status: 200, data: commandsCache }).end();
+  res.status(200).json(commandsCache).end();
 });
 
 // Get current user

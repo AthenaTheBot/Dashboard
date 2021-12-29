@@ -4,9 +4,6 @@ import { Helmet } from "react-helmet";
 import Navbar from "../../layout/Navbar/Navbar";
 import Footer from "../../layout/Footer/Footer";
 
-// Context
-import dashCtx from "../../../context/user/userContext";
-
 // Styling
 import "./Main.css";
 

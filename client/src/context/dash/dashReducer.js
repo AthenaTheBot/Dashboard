@@ -1,17 +1,15 @@
-import types from "../types";
-
 export default (state, action) => {
   switch (action.type) {
-    case types.GET_USER:
+    case "SET_USER":
       return {
         ...state,
         user: action.payload,
       };
 
-    case types.GET_USER_SERVERS:
+    case "SET_COMMANDS":
       return {
         ...state,
-        userServers: action.payload,
+        commands: action.payload,
       };
 
     default:

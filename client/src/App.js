@@ -5,13 +5,13 @@ import Commands from "./components/pages/Commands/Commands";
 import PageNotFound from "./components/pages/PageNotFound/PageNotFound";
 import Legal from "./components/pages/Legal/Legal";
 import Error from "./components/pages/Error/Error";
-import userContext from "./context/user/userContext";
+import dashContext from "./context/dash/dashContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 const App = () => {
-  const { getUser } = useContext(userContext);
+  const { getUser } = useContext(dashContext);
 
   useEffect(() => {
     getUser();

@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import UserState from "./context/user/userState";
+import DashState from "./context/dash/dashState";
 
 ReactDOM.render(
-  <UserState>
+  <DashState>
     <App />
-  </UserState>,
+  </DashState>,
   document.getElementById("root")
 );
