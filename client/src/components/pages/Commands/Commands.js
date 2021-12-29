@@ -25,8 +25,6 @@ const Commands = () => {
   const [categories, setCategories] = useState([]);
   const [newCategories, setNewCategories] = useState([]);
 
-  const categoryLocations = {};
-
   useEffect(() => {
     getCommands();
   }, []);
@@ -95,7 +93,6 @@ const Commands = () => {
                 </h5>
                 {categories.map((d) => {
                   categoryKeyCount++;
-                  categoryLocations[categoryKeyCount] = d.category;
                   return (
                     <h5
                       onClick={(event) => {
