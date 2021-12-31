@@ -18,6 +18,9 @@ import apiRouter from "./routers/api";
 import oauthRouter from "./routers/oauth";
 import linksRouter from "./routers/links";
 
+// Logger middleware
+import logger from "./logger";
+
 // Enabling colors
 colors.enable();
 
@@ -40,7 +43,6 @@ const httpserver = http.createServer(
   config.debug
     ? app
     : (req, res) => {
-        console.log(req.url);
         res.writeHead(200, { Location: `https://${req.url}` });
       }
 );
@@ -96,6 +98,9 @@ try {
 app.disable("x-powered-by");
 app.use(bodyParser.json());
 app.use(cookieParser(config.keys.cookieSign));
+
+// Attaching logger middleware
+app.use(logger);
 
 // Attaching routers
 app.use("/api", apiRouter);

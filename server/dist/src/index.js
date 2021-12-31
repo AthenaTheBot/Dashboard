@@ -27,6 +27,7 @@ const config_json_1 = __importDefault(require("../config.json"));
 const api_1 = __importDefault(require("./routers/api"));
 const oauth_1 = __importDefault(require("./routers/oauth"));
 const links_1 = __importDefault(require("./routers/links"));
+const logger_1 = __importDefault(require("./logger"));
 colors_1.default.enable();
 const app = (0, express_1.default)();
 exports.app = app;
@@ -39,7 +40,6 @@ botClient.on("ready", () => {
 const httpserver = http_1.default.createServer(config_json_1.default.debug
     ? app
     : (req, res) => {
-        console.log(req.url);
         res.writeHead(200, { Location: `https://${req.url}` });
     });
 const httpsserver = https_1.default.createServer({
@@ -71,6 +71,7 @@ catch (err) {
 app.disable("x-powered-by");
 app.use(body_parser_1.default.json());
 app.use((0, cookie_parser_1.default)(config_json_1.default.keys.cookieSign));
+app.use(logger_1.default);
 app.use("/api", api_1.default);
 app.use("/oauth", oauth_1.default);
 app.use("/", links_1.default);
