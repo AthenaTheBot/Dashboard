@@ -20,11 +20,20 @@ const config_json_1 = __importDefault(require("../config.json"));
 dayjs_1.default.extend(localizedFormat_1.default);
 const logger = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    if (config_json_1.default.debug)
+    if (config_json_1.default.debug) {
+        next();
         return;
-    const logFilePath = path_1.default.join(__dirname, "..", "..", "logs", "requests.log");
+    }
+    const logFolderPath = path_1.default.join(__dirname, "..", "..", "logs");
+    const logFilePath = path_1.default.join(logFolderPath, "requests.log");
     let logData = `[${(0, dayjs_1.default)().format("L LTS")}]:  Client IP: ${req.ip}, Path IP: ${(_a = req.path) === null || _a === void 0 ? void 0 : _a.toString()}`;
     try {
+        try {
+            yield fs_1.default.accessSync(logFolderPath);
+        }
+        catch (err) {
+            yield fs_1.default.mkdirSync(logFolderPath);
+        }
         if (fs_1.default.existsSync(logFilePath)) {
             const logFile = yield fs_1.default.readFileSync(logFilePath, "utf-8");
             if (logFile) {
