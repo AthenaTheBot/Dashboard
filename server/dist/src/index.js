@@ -40,7 +40,11 @@ botClient.on("ready", () => {
 const httpserver = http_1.default.createServer(config_json_1.default.debug
     ? app
     : (req, res) => {
-        res.writeHead(200, { Location: `https://${req.url}` });
+        res
+            .writeHead(302, {
+            Location: "https://" + req.headers["host"] + req.url,
+        })
+            .end();
     });
 const httpsserver = https_1.default.createServer({
     cert: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "certs", "cert.pem")),

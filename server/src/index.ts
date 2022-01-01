@@ -43,7 +43,11 @@ const httpserver = http.createServer(
   config.debug
     ? app
     : (req, res) => {
-        res.writeHead(200, { Location: `https://${req.url}` });
+        res
+          .writeHead(302, {
+            Location: "https://" + req.headers["host"] + req.url,
+          })
+          .end();
       }
 );
 const httpsserver = https.createServer(
