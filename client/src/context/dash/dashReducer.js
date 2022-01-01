@@ -9,7 +9,7 @@ const DashReducer = (state, action) => {
     case "SET_SERVERS":
       return {
         ...state,
-        servers: action.servers,
+        servers: action.payload,
       };
 
     case "SET_COMMANDS":

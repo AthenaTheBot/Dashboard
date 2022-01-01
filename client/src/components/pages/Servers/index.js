@@ -1,5 +1,7 @@
 import { useContext, useEffect } from "react";
 
+import Cookie from "js-cookie";
+
 import dashContext from "../../../context/dash/dashContext";
 
 import Navbar from "../../layout/Navbar";
@@ -14,13 +16,15 @@ function Servers() {
 
   useEffect(
     () => {
-      getUserServers();
+      const isValidSession = Cookie.get("session");
+
+      if (!isValidSession) return window.location.replace("/oauth/login");
+
+      if (!servers) getUserServers();
     },
     // eslint-disable-next-line
     []
   );
-
-  useEffect(() => {}, [servers]);
 
   return (
     <div className="athena-servers-container">
@@ -33,10 +37,22 @@ function Servers() {
         <div className="athena-servers-body">
           {servers ? (
             servers?.map((server) => {
-              return <Server />;
+              let name =
+                server.name.length >= 13
+                  ? server.name.slice(0, 11) + ".."
+                  : server.name;
+              return (
+                <Server
+                  id={server.id}
+                  name={name}
+                  icon={
+                    server.icon ? server.icon : "/assets/images/default.png"
+                  }
+                />
+              );
             })
           ) : (
-            <Loader active={false} />
+            <Loader active={true} />
           )}
         </div>
       </div>
