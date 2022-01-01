@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 // Styling
-import "./Error.css";
+import "./style.css";
 
 const Error = () => {
   return (

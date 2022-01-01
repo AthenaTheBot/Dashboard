@@ -5,10 +5,10 @@ import { FiMenu } from "react-icons/fi";
 import $ from "jquery";
 
 // Other Comps
-import Profile from "./Profile/Profile";
+import Profile from "./Profile/";
 
 // Styling
-import "./Navbar.css";
+import "./style.css";
 
 const NavbarComp = ({ activeElement }) => {
   const toggleNavbar = () => {

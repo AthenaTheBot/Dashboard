@@ -1,6 +1,5 @@
 import { useReducer } from "react";
 import { useCookies } from "react-cookie";
-import $ from "jquery";
 import DashContext from "./dashContext";
 import DashReducer from "./dashReducer";
 
@@ -18,7 +17,9 @@ const DashState = (props) => {
 
     if (!force && state.user) return;
 
-    const user = await $.get("/api/users/@me").catch((err) => {});
+    const user = await fetch("/api/users/@me")
+      .then((res) => res.json())
+      .catch((err) => null);
 
     if (!user) return;
 
@@ -28,7 +29,11 @@ const DashState = (props) => {
   const getCommands = async (force) => {
     if (!force && state.commands) return;
 
-    const commands = await $.get("/api/commands").catch((err) => {});
+    const commands = await fetch("/api/commands")
+      .then((res) => res.json())
+      .catch((err) => null);
+
+    console.log(commands);
 
     if (!commands) return;
 

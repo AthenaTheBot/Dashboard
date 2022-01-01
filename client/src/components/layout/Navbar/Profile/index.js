@@ -1,11 +1,11 @@
-import { Fragment, useEffect, useContext } from "react";
+import { Fragment, useContext } from "react";
 import dashContext from "../../../../context/dash/dashContext";
 import { Link } from "react-router-dom";
 import { BiCaretDown } from "react-icons/bi";
 import $ from "jquery";
 
 // Styling
-import "./Profile.css";
+import "./style.css";
 
 const Profile = ({ drodpownOptions }) => {
   const { user } = useContext(dashContext);

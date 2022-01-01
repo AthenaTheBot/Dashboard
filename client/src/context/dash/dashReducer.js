@@ -1,4 +1,4 @@
-export default (state, action) => {
+const DashReducer = (state, action) => {
   switch (action.type) {
     case "SET_USER":
       return {
@@ -16,3 +16,5 @@ export default (state, action) => {
       return state;
   }
 };
+
+export default DashReducer;

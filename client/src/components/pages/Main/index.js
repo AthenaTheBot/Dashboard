@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet";
 
 // Other Comp
-import Navbar from "../../layout/Navbar/Navbar";
-import Footer from "../../layout/Footer/Footer";
+import Navbar from "../../layout/Navbar/";
+import Footer from "../../layout/Footer/";
 
 // Styling
-import "./Main.css";
+import "./style.css";
 
 const Main = () => {
   return (

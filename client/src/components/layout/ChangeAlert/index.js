@@ -3,10 +3,17 @@ import { Button } from "react-bootstrap";
 import $ from "jquery";
 
 // Styling
-import "./ChangeAlert.css";
+import "./style.css";
 
-const ChangeAlert = ({ active, elementsToSave, guildID, guild, guildData, updateAlert, updateGuildData }) => {
-
+const ChangeAlert = ({
+  active,
+  elementsToSave,
+  guildID,
+  guild,
+  guildData,
+  updateAlert,
+  updateGuildData,
+}) => {
   let loading = false;
   let payload = {
     guild: guildID,
@@ -24,7 +31,7 @@ const ChangeAlert = ({ active, elementsToSave, guildID, guild, guildData, update
       $(".change-alert").removeClass("change-alert-closing-anim");
       updateAlert(false);
     }, 700);
-  }
+  };
 
   const saveChanges = async function () {
     if (loading) return;
@@ -58,8 +65,8 @@ const ChangeAlert = ({ active, elementsToSave, guildID, guild, guildData, update
           $(".change-alert-btn-loader").addClass("disabled");
           disableAlert();
         } else {
-          $("#change-alert-save").addClass('change-alert-error-background');
-          $(".change-alert").addClass('change-alert-error-border');
+          $("#change-alert-save").addClass("change-alert-error-background");
+          $(".change-alert").addClass("change-alert-error-border");
 
           setTimeout(() => {
             resetChanges();
@@ -67,11 +74,13 @@ const ChangeAlert = ({ active, elementsToSave, guildID, guild, guildData, update
               $("#change-alert-reset").removeClass("disabled");
               $(".change-alert-btn-sign").removeClass("disabled");
               $(".change-alert-btn-loader").addClass("disabled");
-              
-              $("#change-alert-save").removeClass('change-alert-error-background');
-              $(".change-alert").removeClass('change-alert-error-border');
-            }, 700)
-          }, 1100)
+
+              $("#change-alert-save").removeClass(
+                "change-alert-error-background"
+              );
+              $(".change-alert").removeClass("change-alert-error-border");
+            }, 700);
+          }, 1100);
         }
       })
       .catch((err) => {});
@@ -80,28 +89,25 @@ const ChangeAlert = ({ active, elementsToSave, guildID, guild, guildData, update
   const languages = [
     { active: true, content: "English", id: "en-US" },
     { active: false, content: "Türkçe", id: "tr-TR" },
-  ]
+  ];
 
   const resetChanges = () => {
-    elementsToSave.forEach(e => {
-      if (e.name == 'language') {
-        const lang = languages.find(x => x.id == guildData.easyAccess.language);
+    elementsToSave.forEach((e) => {
+      if (e.name == "language") {
+        const lang = languages.find(
+          (x) => x.id == guildData.easyAccess.language
+        );
         $(e.element).text(lang.content);
         $(e.element).val(lang.content);
-      }
-      else {
-
+      } else {
         if (e.setFunc) {
-
           e.setFunc(guildData.easyAccess[e.name]);
-        }
-        else {
-
+        } else {
           $(e.element).text(guildData.easyAccess[e.name]);
           $(e.element).val(guildData.easyAccess[e.name]);
         }
       }
-    })
+    });
 
     disableAlert();
   };
@@ -110,8 +116,13 @@ const ChangeAlert = ({ active, elementsToSave, guildID, guild, guildData, update
     <div className="change-alert">
       <p>Be careful! You have unsaved changes.</p>
       <div className="change-alert-buttons">
-        <Button id="change-alert-reset" className="change-alert-btn btn-transparent">
-          <p className="change-alert-btn-sign" onClick={resetChanges}>Reset Changes</p>
+        <Button
+          id="change-alert-reset"
+          className="change-alert-btn btn-transparent"
+        >
+          <p className="change-alert-btn-sign" onClick={resetChanges}>
+            Reset Changes
+          </p>
         </Button>
         <Button id="change-alert-save" className="change-alert-btn">
           <p className="change-alert-btn-sign" onClick={saveChanges}>

@@ -2,7 +2,7 @@
 import $ from "jquery";
 
 // Styling
-import "./Command.css";
+import "./style.css";
 
 const Command = ({ name, usage, description, reqPerms, reqBotPerms }) => {
   const expandCommand = (e) => {

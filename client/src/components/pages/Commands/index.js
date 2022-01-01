@@ -7,13 +7,13 @@ import $ from "jquery";
 import dashContext from "../../../context/dash/dashContext";
 
 // Other Comp
-import Navbar from "../../layout/Navbar/Navbar";
-import Footer from "../../layout/Footer/Footer";
-import Loader from "../../layout/Loader/Loader";
-import Command from "./Command/Command";
+import Navbar from "../../layout/Navbar/";
+import Footer from "../../layout/Footer/";
+import Loader from "../../layout/Loader/";
+import Command from "./Command";
 
 // Styling
-import "./Commands.css";
+import "./style.css";
 
 const Commands = () => {
   // General Variables
@@ -27,6 +27,7 @@ const Commands = () => {
 
   useEffect(() => {
     getCommands();
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -35,13 +36,14 @@ const Commands = () => {
       setNewCategories(commands);
       setShow(true);
     } else {
+      setCategories([]);
+      setNewCategories([]);
       setShow(false);
     }
-    //eslint-disable-next-line
   }, [commands]);
 
   const loadCategory = (selectedCategory, event) => {
-    if (!selectedCategory) return;
+    if (!selectedCategory || !categories || !commands) return;
     let newData;
     if (selectedCategory === "All") newData = categories;
     else {
@@ -91,7 +93,7 @@ const Commands = () => {
                 >
                   All
                 </h5>
-                {categories.map((d) => {
+                {categories?.map((d) => {
                   categoryKeyCount++;
                   return (
                     <h5

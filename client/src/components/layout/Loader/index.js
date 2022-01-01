@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 // Styling
-import "./Loader.css";
+import "./style.css";
 
 const Loader = ({ active, coverAllPage, loaderMsg }) => {
   useEffect(() => {

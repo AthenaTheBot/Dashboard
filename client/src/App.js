@@ -1,10 +1,10 @@
 import { useEffect, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./components/pages/Main/Main";
-import Commands from "./components/pages/Commands/Commands";
-import PageNotFound from "./components/pages/PageNotFound/PageNotFound";
-import Legal from "./components/pages/Legal/Legal";
-import Error from "./components/pages/Error/Error";
+import Main from "./components/pages/Main/";
+import Commands from "./components/pages/Commands/";
+import PageNotFound from "./components/pages/PageNotFound/";
+import Legal from "./components/pages/Legal/";
+import Error from "./components/pages/Error/";
 import dashContext from "./context/dash/dashContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [getUser]);
 
   return (
     <BrowserRouter>
