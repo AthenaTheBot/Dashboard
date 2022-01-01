@@ -73,7 +73,21 @@ const NavbarComp = ({ activeElement }) => {
                 Support
               </a>
             </Nav>
-            <Profile />
+            <Profile
+              drodpownOptions={[
+                {
+                  label: "Servers",
+                  link: "/servers",
+                  passive: true,
+                },
+                {
+                  label: "Logout",
+                  link: "/oauth/logout",
+                  passive: false,
+                  color: "var( --primary-error)",
+                },
+              ]}
+            />
           </Navbar.Collapse>
         </Navbar>
       </div>

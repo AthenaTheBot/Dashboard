@@ -1,3 +1,26 @@
-.athena-servers-container {
+.athena-servers {
+  min-height: 400px;
+  margin: 100px 0px;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.athena-servers-head {
+  text-align: center;
+}
+
+.athena-servers-head h1 {
+  color: var(--primary-theme);
+}
+
+.athena-servers-body {
+  margin: 30px;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }

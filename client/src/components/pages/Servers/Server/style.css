@@ -1,0 +1,80 @@
+@keyframes serverInit {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.athena-server {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 300px;
+  cursor: pointer;
+  background-color: var(--primary-background);
+  padding: 15px;
+  border-radius: 10px;
+  margin: 30px;
+  border: 1px solid var(--primary-background);
+  transition: all 450ms ease;
+  animation: serverInit 400ms forwards;
+}
+
+.athena-server img {
+  height: 64px;
+  width: 64px;
+  border-radius: 10px;
+}
+
+.athena-server h1 {
+  font-size: 23px;
+  margin: 0px;
+}
+
+.athena-server:hover {
+  border-color: var(--primary-theme);
+}
+
+@media only screen and (max-width: 330px) {
+  .athena-server {
+    width: 100%;
+    margin: 15px 0px;
+  }
+
+  .athena-server img {
+    height: 48px;
+    width: 48px;
+  }
+
+  .athena-server h1 {
+    font-size: 17px;
+  }
+}
+
+@media only screen and (max-width: 290px) {
+  .athena-server img {
+    height: 48px;
+    width: 48px;
+  }
+
+  .athena-server h1 {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 265px) {
+  .athena-server img {
+    height: 32px;
+    width: 32px;
+  }
+
+  .athena-server h1 {
+    font-size: 13px;
+  }
+}

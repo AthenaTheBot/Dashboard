@@ -1,23 +1,23 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import dashContext from "../../../../context/dash/dashContext";
-import { Link } from "react-router-dom";
 import { BiCaretDown } from "react-icons/bi";
 import $ from "jquery";
+import Dropdown from "./Dropdown";
 
 // Styling
 import "./style.css";
 
 const Profile = ({ drodpownOptions }) => {
   const { user } = useContext(dashContext);
-  let count = 0;
+  const [dropdownState, setDropdownState] = useState(true);
 
   const toggleDropdown = () => {
-    if ($(".dropdown").hasClass("disabled")) {
+    if (dropdownState) {
+      setDropdownState(false);
       $(".dropdown-icon").addClass("profile-dropdown-icon-collapsed");
-      $(".dropdown").removeClass("disabled");
     } else {
+      setDropdownState(true);
       $(".dropdown-icon").removeClass("profile-dropdown-icon-collapsed");
-      $(".dropdown").addClass("disabled");
     }
   };
 
@@ -44,28 +44,7 @@ const Profile = ({ drodpownOptions }) => {
           </a>
         )}
       </div>
-      <div className="dropdown disabled">
-        <ul>
-          {drodpownOptions?.map((option) => {
-            if (option.reload) {
-              return (
-                <a key={count++} href={option.url}>
-                  <li>{option.content}</li>
-                </a>
-              );
-            } else {
-              return (
-                <Link key={count++} to={option.url}>
-                  <li>{option.content}</li>
-                </Link>
-              );
-            }
-          })}
-          <a href="/oauth/logout">
-            <li>Logout</li>
-          </a>
-        </ul>
-      </div>
+      <Dropdown options={drodpownOptions} disabled={dropdownState} />
     </Fragment>
   );
 };

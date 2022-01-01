@@ -6,6 +6,7 @@ import PageNotFound from "./components/pages/PageNotFound/";
 import Legal from "./components/pages/Legal/";
 import Error from "./components/pages/Error/";
 import dashContext from "./context/dash/dashContext";
+import Servers from "./components/pages/Servers";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
@@ -23,6 +24,8 @@ const App = () => {
         <Route path="/" element={<Main />} />
 
         <Route path="/commands" element={<Commands />} />
+
+        <Route path="/servers" element={<Servers />} />
 
         <Route path="/privacy" element={<Legal page="privacy" />} />
 

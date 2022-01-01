@@ -5,6 +5,7 @@ import DashReducer from "./dashReducer";
 
 const initialState = {
   user: null,
+  servers: null,
   commands: null,
 };
 
@@ -26,6 +27,20 @@ const DashState = (props) => {
     dispatch({ type: "SET_USER", payload: user });
   };
 
+  const getUserServers = async (force) => {
+    if (!cookies?.session) return;
+
+    if (!force && state.servers) return;
+
+    const servers = await fetch("/api/users/@me/guilds")
+      .then((res) => res.json())
+      .catch((err) => null);
+
+    if (!servers) return;
+
+    dispatch({ type: "SET_SERVERS", payload: servers });
+  };
+
   const getCommands = async (force) => {
     if (!force && state.commands) return;
 
@@ -45,6 +60,7 @@ const DashState = (props) => {
       value={{
         ...state,
         getUser,
+        getUserServers,
         getCommands,
       }}
     >

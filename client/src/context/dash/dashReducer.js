@@ -6,6 +6,12 @@ const DashReducer = (state, action) => {
         user: action.payload,
       };
 
+    case "SET_SERVERS":
+      return {
+        ...state,
+        servers: action.servers,
+      };
+
     case "SET_COMMANDS":
       return {
         ...state,
