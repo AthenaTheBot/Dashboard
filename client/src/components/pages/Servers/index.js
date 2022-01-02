@@ -12,7 +12,7 @@ import Loader from "../../layout/Loader";
 import "./style.css";
 
 function Servers() {
-  const { getUserServers, servers } = useContext(dashContext);
+  const { getUserGuilds, servers } = useContext(dashContext);
 
   useEffect(
     () => {
@@ -20,7 +20,7 @@ function Servers() {
 
       if (!isValidSession) return window.location.replace("/oauth/login");
 
-      if (!servers) getUserServers();
+      if (!servers) getUserGuilds();
     },
     // eslint-disable-next-line
     []

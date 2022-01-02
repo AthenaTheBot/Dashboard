@@ -2,6 +2,7 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import axios from "axios";
+import mongoose from "mongoose";
 import config from "../../config.json";
 import { Guild, User, Command } from "../constants";
 import { botClient } from "../index";
@@ -10,12 +11,20 @@ import { Permissions } from "discord.js";
 // Router instance
 const router = express.Router();
 
-// Commands cache
+// Cache
 let commandsCache: any[] = [];
 let users: Map<string, User> = new Map();
+let userGuilds: Map<string, Guild[]> = new Map();
 
 // Helper functions
-const getCurrentUser = async (accessToken: string): Promise<User | null> => {
+const getCurrentUser = async (
+  accessToken: string,
+  force?: boolean
+): Promise<User | null> => {
+  const cachedUser = users.get(accessToken);
+
+  if (!force && cachedUser) return cachedUser;
+
   try {
     const serverRes = await axios.get(config.oauthEndpoints.getCurrentUser, {
       headers: {
@@ -23,16 +32,40 @@ const getCurrentUser = async (accessToken: string): Promise<User | null> => {
       },
     });
 
+    users.set(accessToken, serverRes.data);
+
+    setTimeout(() => {
+      users.delete(accessToken);
+    }, config.cacheTimeouts.users * 60 * 1000);
+
     return serverRes.data;
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
+    if (!err?.data?.retry_after) {
+      console.log(err);
+    }
     return null;
   }
 };
 
 const getCurrentUserGuilds = async (
-  accessToken: string
+  accessToken: string,
+  returnManageable?: boolean,
+  force?: boolean
 ): Promise<Guild[] | null> => {
+  const cachedUserGuilds = userGuilds.get(accessToken);
+
+  if (!force && cachedUserGuilds) {
+    if (returnManageable)
+      return cachedUserGuilds.filter(
+        (x) =>
+          (x.permissions as string[]).includes("ADMINISTRATOR") ||
+          (x.permissions as string[]).includes("MANAGE_GUILD")
+      );
+    else {
+      return cachedUserGuilds;
+    }
+  }
+
   try {
     const serverRes = await axios.get(
       config.oauthEndpoints.getCurrentUserGuilds,
@@ -43,9 +76,39 @@ const getCurrentUserGuilds = async (
       }
     );
 
-    return serverRes.data;
-  } catch (err) {
-    console.log(err);
+    const guilds = serverRes.data as Guild[];
+
+    for (var i = 0; i < (guilds as Guild[]).length; i++) {
+      (guilds as Guild[])[i].permissions = convertGuildPermissions(guilds[i]);
+
+      Object.assign((guilds as Guild[])[i], {
+        available: checkGuildAvailability(guilds[i].id),
+      });
+
+      if (guilds[i].icon) {
+        (guilds as Guild[])[
+          i
+        ].icon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}`;
+      }
+    }
+
+    userGuilds.set(accessToken, guilds);
+
+    setTimeout(() => {
+      userGuilds.delete(accessToken);
+    }, config.cacheTimeouts.userGuilds * 60 * 1000);
+
+    if (returnManageable)
+      return guilds.filter(
+        (x) =>
+          (x.permissions as string[]).includes("ADMINISTRATOR") ||
+          (x.permissions as string[]).includes("MANAGE_GUILD")
+      );
+    else return guilds;
+  } catch (err: any) {
+    if (!err?.data?.retry_after) {
+      console.log(err);
+    }
     return null;
   }
 };
@@ -116,21 +179,11 @@ router.get("/users/@me", async (req, res) => {
 
   if (!session) return res.status(400).json({ message: "Bad Request" }).end();
 
-  const cache = users.get(session);
-
-  if (cache) return res.status(200).json(cache).end();
-
-  const user = await getCurrentUser(session);
+  const user = await getCurrentUser(session, false);
 
   if (!user) return res.status(500).json({ message: "Server Error" }).end();
 
   res.status(200).json(user).end();
-
-  users.set(session, user);
-
-  setTimeout(() => {
-    users.delete(session);
-  }, 1000 * 60 * config.cacheTimeouts.users);
 });
 
 router.get("/users/@me/guilds", async (req, res) => {
@@ -138,32 +191,41 @@ router.get("/users/@me/guilds", async (req, res) => {
 
   if (!session) return res.status(400).json({ message: "Bad Request" }).end();
 
-  const guilds = await getCurrentUserGuilds(session);
+  const guilds = await getCurrentUserGuilds(session, true, false);
 
   if (!guilds || !Array.isArray(guilds))
     return res.status(500).json({ message: "Server Error" }).end();
 
-  for (var i = 0; i < (guilds as Guild[]).length; i++) {
-    (guilds as Guild[])[i].permissions = convertGuildPermissions(guilds[i]);
+  return res.status(200).json(guilds).end();
+});
 
-    Object.assign((guilds as Guild[])[i], {
-      available: checkGuildAvailability(guilds[i].id),
-    });
+router.get("/guilds/:id", async (req, res) => {
+  const session = req.signedCookies?.session;
 
-    if (guilds[i].icon) {
-      (guilds as Guild[])[
-        i
-      ].icon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}`;
-    }
-  }
+  if (!session) return res.status(400).json({ message: "Bad Request" }).end();
 
-  const manageableGuilds = guilds.filter(
-    (x) =>
-      (x.permissions as string[]).includes("ADMINISTRATOR") ||
-      (x.permissions as string[]).includes("MANAGE_GUILD")
-  );
+  const guilds = await getCurrentUserGuilds(session, true, false);
 
-  return res.status(200).json(manageableGuilds).end();
+  const guild = guilds?.find((x) => x.id === req.params.id);
+
+  if (!guild) return res.status(400).json({ message: "Unauthorized" }).end();
+
+  if (!mongoose.connection)
+    return res.status(500).json({ message: "Server Error" }).end();
+
+  const guildData = (await mongoose.connection
+    .collection("guilds")
+    .findOne({ _id: guild.id as any })
+    .catch((err) => null)) as any;
+
+  if (!guildData)
+    return res.status(500).json({ message: "Server Error" }).end();
+
+  // Delete unncessary meta info
+  delete guildData._id;
+  delete guildData.lastUpdated;
+
+  return res.status(200).json({ ...guild, ...guildData });
 });
 
 router.get("/*", (req, res) => {

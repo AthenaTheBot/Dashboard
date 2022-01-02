@@ -19,7 +19,10 @@ const DashState = (props) => {
     if (!force && state.user) return;
 
     const user = await fetch("/api/users/@me")
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return await res.json();
+      })
       .catch((err) => null);
 
     if (!user) return;
@@ -27,13 +30,16 @@ const DashState = (props) => {
     dispatch({ type: "SET_USER", payload: user });
   };
 
-  const getUserServers = async (force) => {
+  const getUserGuilds = async (force) => {
     if (!cookies?.session) return;
 
     if (!force && state.servers) return;
 
     const servers = await fetch("/api/users/@me/guilds")
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return await res.json();
+      })
       .catch((err) => null);
 
     if (!servers) return;
@@ -45,10 +51,11 @@ const DashState = (props) => {
     if (!force && state.commands) return;
 
     const commands = await fetch("/api/commands")
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return await res.json();
+      })
       .catch((err) => null);
-
-    console.log(commands);
 
     if (!commands) return;
 
@@ -60,7 +67,7 @@ const DashState = (props) => {
       value={{
         ...state,
         getUser,
-        getUserServers,
+        getUserGuilds,
         getCommands,
       }}
     >

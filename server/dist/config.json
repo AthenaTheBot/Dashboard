@@ -23,6 +23,7 @@
         "cookieSign": "a3KKhMjZ!#Br@B%m8*WkUt@Ze6w+wS37Efqk%dB!"
     },
     "cacheTimeouts": {
-        "users": 1
+        "users": 1,
+        "userGuilds": 1
     }
 }

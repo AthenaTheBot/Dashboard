@@ -1,0 +1,57 @@
+.athena-dash-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.dash-module-selector {
+  height: calc(100vh - 20px);
+  border-radius: 10px;
+  margin: 10px;
+  width: 310px;
+  background-color: var(--primary-background);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dash-module-container {
+  height: 100vh;
+  width: calc(100vw - 320px);
+}
+
+.module-selector-guild {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: var(--secondary-background);
+  margin: 10px;
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.module-selector-guild img {
+  height: 48px;
+  width: 48px;
+  margin: 10px;
+  border-radius: 50%;
+}
+
+.module-selector-guild h5 {
+  margin: 0px;
+  margin-left: 5px;
+}
+
+.module-selector-guild:hover {
+  background-color: var(--primary-theme);
+}
+
+.athena-dash-container .profile-part {
+  position: fixed;
+  right: 5px;
+  top: 30px;
+}

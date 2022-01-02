@@ -16,37 +16,79 @@ const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const axios_1 = __importDefault(require("axios"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const config_json_1 = __importDefault(require("../../config.json"));
 const index_1 = require("../index");
 const discord_js_1 = require("discord.js");
 const router = express_1.default.Router();
 let commandsCache = [];
 let users = new Map();
-const getCurrentUser = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
+let userGuilds = new Map();
+const getCurrentUser = (accessToken, force) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const cachedUser = users.get(accessToken);
+    if (!force && cachedUser)
+        return cachedUser;
     try {
         const serverRes = yield axios_1.default.get(config_json_1.default.oauthEndpoints.getCurrentUser, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
+        users.set(accessToken, serverRes.data);
+        setTimeout(() => {
+            users.delete(accessToken);
+        }, config_json_1.default.cacheTimeouts.users * 60 * 1000);
         return serverRes.data;
     }
     catch (err) {
-        console.log(err);
+        if (!((_a = err === null || err === void 0 ? void 0 : err.data) === null || _a === void 0 ? void 0 : _a.retry_after)) {
+            console.log(err);
+        }
         return null;
     }
 });
-const getCurrentUserGuilds = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
+const getCurrentUserGuilds = (accessToken, returnManageable, force) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const cachedUserGuilds = userGuilds.get(accessToken);
+    if (!force && cachedUserGuilds) {
+        if (returnManageable)
+            return cachedUserGuilds.filter((x) => x.permissions.includes("ADMINISTRATOR") ||
+                x.permissions.includes("MANAGE_GUILD"));
+        else {
+            return cachedUserGuilds;
+        }
+    }
     try {
         const serverRes = yield axios_1.default.get(config_json_1.default.oauthEndpoints.getCurrentUserGuilds, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        return serverRes.data;
+        const guilds = serverRes.data;
+        for (var i = 0; i < guilds.length; i++) {
+            guilds[i].permissions = convertGuildPermissions(guilds[i]);
+            Object.assign(guilds[i], {
+                available: checkGuildAvailability(guilds[i].id),
+            });
+            if (guilds[i].icon) {
+                guilds[i].icon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}`;
+            }
+        }
+        userGuilds.set(accessToken, guilds);
+        setTimeout(() => {
+            userGuilds.delete(accessToken);
+        }, config_json_1.default.cacheTimeouts.userGuilds * 60 * 1000);
+        if (returnManageable)
+            return guilds.filter((x) => x.permissions.includes("ADMINISTRATOR") ||
+                x.permissions.includes("MANAGE_GUILD"));
+        else
+            return guilds;
     }
     catch (err) {
-        console.log(err);
+        if (!((_b = err === null || err === void 0 ? void 0 : err.data) === null || _b === void 0 ? void 0 : _b.retry_after)) {
+            console.log(err);
+        }
         return null;
     }
 });
@@ -63,7 +105,7 @@ const capitalizeText = (text) => {
     return firstLetter + restText;
 };
 router.get("/commands", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _c, _d;
     if (!commandsCache || commandsCache.length == 0) {
         try {
             const commands = JSON.parse(yield fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "..", "data", "commands.json"), "utf-8"));
@@ -73,8 +115,8 @@ router.get("/commands", (req, res) => __awaiter(void 0, void 0, void 0, function
                     ? false
                     : true;
                 if (categorySeen) {
-                    (_b = (_a = categories
-                        .find((x) => x.category == capitalizeText(commands[i].category))) === null || _a === void 0 ? void 0 : _a.commands) === null || _b === void 0 ? void 0 : _b.push(commands[i]);
+                    (_d = (_c = categories
+                        .find((x) => x.category == capitalizeText(commands[i].category))) === null || _c === void 0 ? void 0 : _c.commands) === null || _d === void 0 ? void 0 : _d.push(commands[i]);
                 }
                 else {
                     categories.push({
@@ -94,42 +136,45 @@ router.get("/commands", (req, res) => __awaiter(void 0, void 0, void 0, function
     res.status(200).json(commandsCache).end();
 }));
 router.get("/users/@me", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
-    const session = (_c = req.signedCookies) === null || _c === void 0 ? void 0 : _c.session;
+    var _e;
+    const session = (_e = req.signedCookies) === null || _e === void 0 ? void 0 : _e.session;
     if (!session)
         return res.status(400).json({ message: "Bad Request" }).end();
-    const cache = users.get(session);
-    if (cache)
-        return res.status(200).json(cache).end();
-    const user = yield getCurrentUser(session);
+    const user = yield getCurrentUser(session, false);
     if (!user)
         return res.status(500).json({ message: "Server Error" }).end();
     res.status(200).json(user).end();
-    users.set(session, user);
-    setTimeout(() => {
-        users.delete(session);
-    }, 1000 * 60 * config_json_1.default.cacheTimeouts.users);
 }));
 router.get("/users/@me/guilds", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d;
-    const session = (_d = req.signedCookies) === null || _d === void 0 ? void 0 : _d.session;
+    var _f;
+    const session = (_f = req.signedCookies) === null || _f === void 0 ? void 0 : _f.session;
     if (!session)
         return res.status(400).json({ message: "Bad Request" }).end();
-    const guilds = yield getCurrentUserGuilds(session);
+    const guilds = yield getCurrentUserGuilds(session, true, false);
     if (!guilds || !Array.isArray(guilds))
         return res.status(500).json({ message: "Server Error" }).end();
-    for (var i = 0; i < guilds.length; i++) {
-        guilds[i].permissions = convertGuildPermissions(guilds[i]);
-        Object.assign(guilds[i], {
-            available: checkGuildAvailability(guilds[i].id),
-        });
-        if (guilds[i].icon) {
-            guilds[i].icon = `https://cdn.discordapp.com/icons/${guilds[i].id}/${guilds[i].icon}`;
-        }
-    }
-    const manageableGuilds = guilds.filter((x) => x.permissions.includes("ADMINISTRATOR") ||
-        x.permissions.includes("MANAGE_GUILD"));
-    return res.status(200).json(manageableGuilds).end();
+    return res.status(200).json(guilds).end();
+}));
+router.get("/guilds/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _g;
+    const session = (_g = req.signedCookies) === null || _g === void 0 ? void 0 : _g.session;
+    if (!session)
+        return res.status(400).json({ message: "Bad Request" }).end();
+    const guilds = yield getCurrentUserGuilds(session, true, false);
+    const guild = guilds === null || guilds === void 0 ? void 0 : guilds.find((x) => x.id === req.params.id);
+    if (!guild)
+        return res.status(400).json({ message: "Unauthorized" }).end();
+    if (!mongoose_1.default.connection)
+        return res.status(500).json({ message: "Server Error" }).end();
+    const guildData = (yield mongoose_1.default.connection
+        .collection("guilds")
+        .findOne({ _id: guild.id })
+        .catch((err) => null));
+    if (!guildData)
+        return res.status(500).json({ message: "Server Error" }).end();
+    delete guildData._id;
+    delete guildData.lastUpdated;
+    return res.status(200).json(Object.assign(Object.assign({}, guild), guildData));
 }));
 router.get("/*", (req, res) => {
     res.status(400).json({ message: "Bad Request" }).end();
