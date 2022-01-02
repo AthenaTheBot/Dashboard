@@ -14,11 +14,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transition: all 450ms ease;
 }
 
 .dash-module-container {
   height: 100vh;
   width: calc(100vw - 320px);
+  padding: 20px;
 }
 
 .module-selector-guild {
@@ -54,4 +58,89 @@
   position: fixed;
   right: 5px;
   top: 30px;
+}
+
+.module-selector-body {
+  margin: 50px 0px;
+  margin-bottom: 5px;
+  padding: 0px;
+  list-style: none;
+  width: 90%;
+}
+
+.module-selectory-body-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #9b9898;
+  margin: 0px;
+}
+
+.module-selectory-body-element {
+  margin: 20px 0px;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: var(--secondary-background);
+  border-radius: 10px;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.module-selectory-body-element p {
+  margin: 0px;
+  margin-left: 15px;
+}
+
+.module-selectory-body-element:hover {
+  background-color: var(--primary-theme);
+}
+
+.module-selectory-enabled {
+  transform: translateX(0px) !important;
+}
+
+@keyframes fadeInEffect {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.dash-module-title {
+  cursor: pointer;
+  width: fit-content;
+  transition: all 450ms ease;
+}
+
+.dash-module-title:hover {
+  color: #cac9c9;
+}
+
+@media only screen and (max-width: 900px) {
+  .athena-dash-fade {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: #00000094;
+    z-index: 1000;
+    display: none;
+    animation: fadeInEffect 400ms forwards;
+  }
+
+  .dash-module-container {
+    width: calc(100vw - 60px);
+  }
+
+  .dash-module-selector {
+    position: absolute;
+    z-index: 2000;
+    transform: translateX(-320px);
+  }
 }
