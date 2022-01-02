@@ -20,6 +20,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const config_json_1 = __importDefault(require("../../config.json"));
 const index_1 = require("../index");
 const discord_js_1 = require("discord.js");
+const dayjs_1 = __importDefault(require("dayjs"));
 const router = express_1.default.Router();
 let commandsCache = [];
 let users = new Map();
@@ -174,6 +175,16 @@ router.get("/guilds/:id", (req, res) => __awaiter(void 0, void 0, void 0, functi
         return res.status(500).json({ message: "Server Error" }).end();
     delete guildData._id;
     delete guildData.lastUpdated;
+    const extraGuildData = yield index_1.botClient.guilds.cache.get(guild.id);
+    Object.assign(guild, {
+        members: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.memberCount,
+        channels: {
+            text: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.channels.cache.filter((x) => x.type == "GUILD_TEXT").size,
+            voice: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.channels.cache.filter((x) => x.type == "GUILD_VOICE").size,
+        },
+        roles: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.roles.cache.size,
+        createdAt: dayjs_1.default.unix(extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.createdTimestamp).toString()
+    });
     return res.status(200).json(Object.assign(Object.assign({}, guild), guildData));
 }));
 router.get("/*", (req, res) => {

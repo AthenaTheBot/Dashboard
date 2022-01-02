@@ -1,0 +1,21 @@
+.module-overview-container {
+  background-color: var(--primary-background);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.dash-module-prop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  margin: 10px;
+}
+
+.dash-module-prop-name {
+  margin: 0px;
+}
+
+.dash-module-prop-value {
+  color: var(--primary-theme);
+}

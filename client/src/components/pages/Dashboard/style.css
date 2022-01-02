@@ -2,6 +2,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  animation: fadeIn 1200ms forwards;
 }
 
 .dash-module-selector {
@@ -23,6 +24,8 @@
   height: 100vh;
   width: calc(100vw - 320px);
   padding: 20px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .module-selector-guild {
@@ -52,12 +55,6 @@
 
 .module-selector-guild:hover {
   background-color: var(--primary-theme);
-}
-
-.athena-dash-container .profile-part {
-  position: fixed;
-  right: 5px;
-  top: 30px;
 }
 
 .module-selector-body {
@@ -112,13 +109,24 @@
 }
 
 .dash-module-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash-module-title h5 {
   cursor: pointer;
   width: fit-content;
   transition: all 450ms ease;
 }
 
-.dash-module-title:hover {
+.dash-module-title h5:hover {
   color: #cac9c9;
+}
+
+.dash-module-body {
+  margin: 50px 0px;
+  margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 900px) {
@@ -135,7 +143,7 @@
   }
 
   .dash-module-container {
-    width: calc(100vw - 60px);
+    width: 100vw;
   }
 
   .dash-module-selector {

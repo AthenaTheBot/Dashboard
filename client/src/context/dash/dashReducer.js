@@ -18,6 +18,12 @@ const DashReducer = (state, action) => {
         commands: action.payload,
       };
 
+    case "SET_CURRENT_SERVER":
+      return {
+        ...state,
+        currentServer: action.payload,
+      };
+
     default:
       return state;
   }

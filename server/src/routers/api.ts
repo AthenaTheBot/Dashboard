@@ -7,6 +7,7 @@ import config from "../../config.json";
 import { Guild, User, Command } from "../constants";
 import { botClient } from "../index";
 import { Permissions } from "discord.js";
+import dayjs from "dayjs";
 
 // Router instance
 const router = express.Router();
@@ -224,6 +225,21 @@ router.get("/guilds/:id", async (req, res) => {
   // Delete unncessary meta info
   delete guildData._id;
   delete guildData.lastUpdated;
+
+  const extraGuildData = await botClient.guilds.cache.get(guild.id);
+
+  Object.assign(guild, {
+    members: extraGuildData?.memberCount,
+    channels: {
+      text: extraGuildData?.channels.cache.filter((x) => x.type == "GUILD_TEXT")
+        .size,
+      voice: extraGuildData?.channels.cache.filter(
+        (x) => x.type == "GUILD_VOICE"
+      ).size,
+    },
+    roles: extraGuildData?.roles.cache.size,
+    createdAt: dayjs.unix(extraGuildData?.createdTimestamp as number).toString()
+  });
 
   return res.status(200).json({ ...guild, ...guildData });
 });

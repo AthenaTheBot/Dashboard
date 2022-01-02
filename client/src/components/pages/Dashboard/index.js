@@ -2,8 +2,8 @@ import { Fragment, useEffect, useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { get as cookieGet } from "js-cookie";
 import { FiLayers, FiShield } from "react-icons/fi";
-import { BsArrowBarRight } from "react-icons/bs";
 import { IoMusicalNotesOutline } from "react-icons/io5";
+import { BiCog } from "react-icons/bi";
 import $ from "jquery";
 
 import dashContext from "../../../context/dash/dashContext";
@@ -12,11 +12,10 @@ import CategoryLoader from "./categoryLoader";
 
 import "./style.css";
 
-import Profile from "../../layout/Navbar/Profile";
 import Loader from "../../layout/Loader";
 
 function Dashboard() {
-  const { guilds, getUserGuilds } = useContext(dashContext);
+  const { guilds, setCurrentServer } = useContext(dashContext);
   const { guildId } = useParams();
   const navigate = useNavigate();
   const [currentGuild, setCurrentGuild] = useState([]);
@@ -24,22 +23,24 @@ function Dashboard() {
 
   useEffect(() => {
     (async () => {
-      // const sessionCookie = cookieGet("session");
-      // if (!sessionCookie) return navigate("/oauth/login");
-      // const guild = await fetch(`/api/guilds/${guildId}`)
-      //   .then(async (res) => {
-      //     if (!res.ok) return null;
-      //     return await res.json();
-      //   })
-      //   .catch((err) => null);
-      // if (!guild) return navigate("/servers");
-      // guild.displayName =
-      //   guild.name.length >= 12
-      //     ? (guild.displayName = guild.name.slice(0, 12) + "..")
-      //     : guild.name;
-      // setCurrentGuild(guild);
+      const sessionCookie = cookieGet("session");
+      if (!sessionCookie) return navigate("/oauth/login");
+      const guild = await fetch(`/api/guilds/${guildId}`)
+        .then(async (res) => {
+          if (!res.ok) return null;
+          return await res.json();
+        })
+        .catch((err) => null);
+      if (!guild) return navigate("/servers");
+      setCurrentServer(guild);
+      guild.displayName =
+        guild.name.length >= 12
+          ? (guild.displayName = guild.name.slice(0, 12) + "..")
+          : guild.name;
+      setCurrentGuild(guild);
     })();
-  }, [guilds, guildId, getUserGuilds, navigate]);
+    //eslint-disable-next-line
+  }, [guilds, guildId, navigate]);
 
   const showCategorySelectory = () => {
     $(".dash-module-selector").addClass("module-selectory-enabled");
@@ -76,21 +77,6 @@ function Dashboard() {
       <div className="athena-dash-fade"></div>
       {currentGuild ? (
         <Fragment>
-          <Profile
-            drodpownOptions={[
-              {
-                label: "Servers",
-                link: "/servers",
-                passive: true,
-              },
-              {
-                label: "Logout",
-                link: "/oauth/logout",
-                passive: false,
-                color: "var( --primary-error)",
-              },
-            ]}
-          />
           <div className="dash-module-selector">
             <div className="module-selector-guild">
               <img
@@ -113,35 +99,41 @@ function Dashboard() {
             </div>
             <ul className="module-selector-body">
               <p className="module-selectory-body-title">CATEGORIES</p>
-              <li className="module-selectory-body-element">
+              <li
+                onClick={() => {
+                  setCurrentCategory("overview");
+                }}
+                className="module-selectory-body-element"
+              >
                 <FiLayers />
-                <p
-                  onClick={() => {
-                    setCurrentCategory("overview");
-                  }}
-                >
-                  Overview
-                </p>
+                <p>Overview</p>
               </li>
-              <li className="module-selectory-body-element">
+              <li
+                onClick={() => {
+                  setCurrentCategory("configuration");
+                }}
+                className="module-selectory-body-element"
+              >
+                <BiCog />
+                <p>Configuration</p>
+              </li>
+              <li
+                onClick={() => {
+                  setCurrentCategory("moderation");
+                }}
+                className="module-selectory-body-element"
+              >
                 <FiShield />
-                <p
-                  onClick={() => {
-                    setCurrentCategory("moderation");
-                  }}
-                >
-                  Moderation
-                </p>
+                <p>Moderation</p>
               </li>
-              <li className="module-selectory-body-element">
+              <li
+                onClick={() => {
+                  setCurrentCategory("music");
+                }}
+                className="module-selectory-body-element"
+              >
                 <IoMusicalNotesOutline />
-                <p
-                  onClick={() => {
-                    setCurrentCategory("music");
-                  }}
-                >
-                  Music
-                </p>
+                <p>Music</p>
               </li>
             </ul>
           </div>
