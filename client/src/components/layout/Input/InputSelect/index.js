@@ -7,6 +7,7 @@ import "./style.css";
 const InputSelect = ({ options, inputUpdated }) => {
   const [inputOptions, setInputOptions] = useState([]);
   const [active, setActive] = useState();
+  let optionIds = 0;
 
   useEffect(() => {
     const filteredInputOptions = options.filter((x) => x.active !== true);
@@ -18,7 +19,7 @@ const InputSelect = ({ options, inputUpdated }) => {
 
     setInputOptions(filteredInputOptions);
     setActive(activeEl);
-  }, []);
+  }, [options]);
 
   const optionClicked = (option) => {
     let newInputOptions = inputOptions;
@@ -52,8 +53,10 @@ const InputSelect = ({ options, inputUpdated }) => {
       </div>
       <ul className="athena-input-options">
         {inputOptions.map((inputOption) => {
+          inputOption.compId = optionIds++;
           return (
             <li
+              key={inputOption.compId}
               onClick={() => {
                 optionClicked(inputOption);
               }}

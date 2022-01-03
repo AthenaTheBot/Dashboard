@@ -1,10 +1,14 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
+
+import dashContext from "../../../../../context/dash/dashContext";
+
 import InputSelect from "../../../../layout/Input/InputSelect";
 import InputText from "../../../../layout/Input/InputText";
 
 import "./style.css";
 
 function Configuration() {
+  const { currentServer } = useContext(dashContext);
   const settingChanged = () => {};
 
   return (
@@ -17,7 +21,10 @@ function Configuration() {
           </p>
           <hr />
           <div className="module-prop-body">
-            <InputText inputUpdated={settingChanged} />
+            <InputText
+              value={currentServer?.settings?.prefix}
+              inputUpdated={settingChanged}
+            />
           </div>
         </div>
       </div>
@@ -34,19 +41,17 @@ function Configuration() {
               options={[
                 {
                   content: "English",
-                  active: true,
+                  active:
+                    currentServer?.settings?.language === "en_US"
+                      ? true
+                      : false,
                 },
                 {
-                  content: "Haha",
-                  active: false,
-                },
-                {
-                  content: "Lo",
-                  active: false,
-                },
-                {
-                  content: "Koş",
-                  active: false,
+                  content: "Turkish",
+                  active:
+                    currentServer?.settings?.language === "tr_TR"
+                      ? true
+                      : false,
                 },
               ]}
             />

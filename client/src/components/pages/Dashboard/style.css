@@ -129,6 +129,22 @@
   margin-bottom: 10px;
 }
 
+.dash-module-body * {
+  animation: modulesInit 500ms forwards;
+}
+
+@keyframes modulesInit {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .module-prop {
   background-color: var(--primary-background);
   padding: 15px;
@@ -139,13 +155,18 @@
 .module-prop-title {
   margin: 10px;
   margin-left: 0px;
-  font-size: 32px;
+  font-size: 150%;
 }
 
 .module-prop-description {
   margin: 5px;
   margin-left: 0px;
   color: #cac9c9;
+  font-size: 90%;
+}
+
+.module-prop hr {
+  color: #4d4b4b !important;
 }
 
 @media only screen and (max-width: 900px) {

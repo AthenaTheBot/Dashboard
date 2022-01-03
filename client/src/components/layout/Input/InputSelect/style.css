@@ -1,3 +1,15 @@
+@keyframes inputInitAnim {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .athena-input-select-container {
   width: 100%;
   max-width: 500px;
@@ -26,7 +38,6 @@
 }
 
 .athena-input-options {
-  position: absolute;
   background-color: var(--third-background);
   border: 1px solid var(--primary-background);
   width: 100%;
@@ -46,6 +57,7 @@
   justify-content: center;
   flex-direction: column;
   display: none;
+  animation: inputInitAnim 500ms forwards;
 }
 
 .athena-input-option {
