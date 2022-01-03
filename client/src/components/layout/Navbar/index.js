@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu, FiExternalLink } from "react-icons/fi";
 import $ from "jquery";
 
 // Other Comps
@@ -70,7 +70,10 @@ const NavbarComp = ({ activeElement }) => {
                 }
                 href="/support"
               >
-                Support
+                Support{" "}
+                <FiExternalLink
+                  style={{ marginBottom: "3px", marginLeft: "4px" }}
+                />
               </a>
             </Nav>
             <Profile

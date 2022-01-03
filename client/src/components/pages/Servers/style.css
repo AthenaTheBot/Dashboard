@@ -1,5 +1,5 @@
 .athena-servers {
-  min-height: 400px;
+  min-height: calc(100vh - 640px);
   margin: 100px 0px;
   width: 100%;
   display: flex;

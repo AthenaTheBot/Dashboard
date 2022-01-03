@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 import Cookie from "js-cookie";
 
@@ -16,48 +17,55 @@ function Servers() {
 
   useEffect(
     () => {
-      const isValidSession = Cookie.get("session");
+      if (process.env.NODE_ENV === "production") {
+        const isValidSession = Cookie.get("session");
 
-      if (!isValidSession) return window.location.replace("/oauth/login");
+        if (!isValidSession) return window.location.replace("/oauth/login");
 
-      if (!servers) getUserGuilds();
+        if (!servers) getUserGuilds();
+      }
     },
     // eslint-disable-next-line
     []
   );
 
   return (
-    <div className="athena-servers-container">
-      <Navbar />
-      <div className="athena-servers">
-        <div className="athena-servers-head">
-          <h1>Your Servers</h1>
-          <p>All of the servers that you can manage are listed here..</p>
+    <Fragment>
+      <Helmet>
+        <title>Servers - Athena</title>
+      </Helmet>
+      <div className="athena-servers-container">
+        <Navbar />
+        <div className="athena-servers">
+          <div className="athena-servers-head">
+            <h1>Your Servers</h1>
+            <p>All of the servers that you can manage are listed here..</p>
+          </div>
+          <div className="athena-servers-body">
+            {servers ? (
+              servers?.map((server) => {
+                let name =
+                  server.name.length >= 13
+                    ? server.name.slice(0, 11) + ".."
+                    : server.name;
+                return (
+                  <Server
+                    id={server.id}
+                    name={name}
+                    icon={
+                      server.icon ? server.icon : "/assets/images/default.png"
+                    }
+                  />
+                );
+              })
+            ) : (
+              <Loader active={true} />
+            )}
+          </div>
         </div>
-        <div className="athena-servers-body">
-          {servers ? (
-            servers?.map((server) => {
-              let name =
-                server.name.length >= 13
-                  ? server.name.slice(0, 11) + ".."
-                  : server.name;
-              return (
-                <Server
-                  id={server.id}
-                  name={name}
-                  icon={
-                    server.icon ? server.icon : "/assets/images/default.png"
-                  }
-                />
-              );
-            })
-          ) : (
-            <Loader active={true} />
-          )}
-        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </Fragment>
   );
 }
 

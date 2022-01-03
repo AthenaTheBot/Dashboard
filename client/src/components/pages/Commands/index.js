@@ -80,59 +80,57 @@ const Commands = () => {
         <h1 style={{ color: "var(--primary-theme)" }}>Commands</h1>
         <p>List of all commands that is currently running on Athena.</p>
       </div>
-      <main>
-        <div className="commands-container">
-          {show ? (
-            <Fragment>
-              <div className="categories">
-                <h5
-                  className="category activeCategory"
-                  onClick={(event) => {
-                    loadCategory("All", event);
-                  }}
-                >
-                  All
-                </h5>
-                {categories?.map((d) => {
-                  categoryKeyCount++;
+      <div className="commands-container">
+        {show ? (
+          <Fragment>
+            <div className="categories">
+              <h5
+                className="category activeCategory"
+                onClick={(event) => {
+                  loadCategory("All", event);
+                }}
+              >
+                All
+              </h5>
+              {categories?.map((d) => {
+                categoryKeyCount++;
+                return (
+                  <h5
+                    onClick={(event) => {
+                      loadCategory(d.category, event);
+                    }}
+                    key={categoryKeyCount}
+                    className="category"
+                  >
+                    {d.category}
+                  </h5>
+                );
+              })}
+            </div>
+            <div className="commands">
+              {newCategories.map((d) => {
+                const commands = d.commands.map((command) => {
+                  commandKeyCount++;
                   return (
-                    <h5
-                      onClick={(event) => {
-                        loadCategory(d.category, event);
-                      }}
-                      key={categoryKeyCount}
-                      className="category"
-                    >
-                      {d.category}
-                    </h5>
+                    <Command
+                      name={command.name}
+                      usage={command.usage}
+                      description={command.description}
+                      reqPerms={command.required_perms}
+                      reqBotPerms={command.required_bot_perms}
+                      key={commandKeyCount}
+                    />
                   );
-                })}
-              </div>
-              <div className="commands">
-                {newCategories.map((d) => {
-                  const commands = d.commands.map((command) => {
-                    commandKeyCount++;
-                    return (
-                      <Command
-                        name={command.name}
-                        usage={command.usage}
-                        description={command.description}
-                        reqPerms={command.required_perms}
-                        reqBotPerms={command.required_bot_perms}
-                        key={commandKeyCount}
-                      />
-                    );
-                  });
+                });
 
-                  return commands;
-                })}
-              </div>
-            </Fragment>
-          ) : (
-            <Loader active={true} />
-          )}
-        </div>
-      </main>
+                return commands;
+              })}
+            </div>
+          </Fragment>
+        ) : (
+          <Loader active={true} />
+        )}
+      </div>
       <Footer />
     </Fragment>
   );

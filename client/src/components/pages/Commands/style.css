@@ -21,6 +21,7 @@ h5 {
 .commands-container {
   width: 80vw !important;
   max-width: 1200px;
+  min-height: calc(100vh - 860px);
   display: flex;
   justify-content: center;
   margin: 30px auto;

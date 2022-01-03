@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FiExternalLink } from "react-icons/fi";
 
 // Other Comp
 import "./style.css";
@@ -33,7 +34,12 @@ const Footer = () => {
               <Link to="/terms">Terms of Service</Link>
             </li>
             <li>
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/support">
+                Contact Us{" "}
+                <FiExternalLink
+                  style={{ marginBottom: "3px", marginLeft: "4px" }}
+                />
+              </Link>
             </li>
           </ul>
         </div>
