@@ -24,12 +24,6 @@ const DashReducer = (state, action) => {
         currentServer: action.payload,
       };
 
-    case "SET_SETTINGS_UPDATED":
-      return {
-        ...state,
-        settingsUpdated: action.payload,
-      };
-
     default:
       return state;
   }

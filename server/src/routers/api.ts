@@ -238,10 +238,53 @@ router.get("/guilds/:id", async (req, res) => {
       ).size,
     },
     roles: extraGuildData?.roles.cache.size,
-    createdAt: dayjs.unix(extraGuildData?.createdTimestamp as number).toString()
+    createdAt: dayjs
+      .unix(extraGuildData?.createdTimestamp as number)
+      .toString(),
   });
 
   return res.status(200).json({ ...guild, ...guildData });
+});
+
+router.post("/guilds/:id", async (req, res) => {
+  const session = req.signedCookies?.session;
+
+  if (!session) return res.status(400).json({ message: "Bad Request" }).end();
+
+  const guilds = await getCurrentUserGuilds(session, true, false);
+
+  const guild = guilds?.find((x) => x.id === req.params.id);
+
+  if (!guild) return res.status(400).json({ message: "Unauthorized" }).end();
+
+  try {
+    const guildData = (await mongoose.connection
+      .collection("guilds")
+      .findOne({ _id: req.params.id as any })
+      .catch((err) => null)) as any;
+
+    if (!guildData)
+      return res.status(500).json({ message: "Server Error" }).end();
+
+    if (req.body.prefix)
+      mongoose.connection
+        .collection("guilds")
+        .updateOne(
+          { _id: req.params.id as any },
+          { $set: { "settings.prefix": req.body.prefix } }
+        );
+    if (req.body.language)
+      mongoose.connection
+        .collection("guilds")
+        .updateOne(
+          { _id: req.params.id as any },
+          { $set: { "settings.language": req.body.language } }
+        );
+  } catch (err) {
+    return res.status(500).json({ message: "Server Error" }).end();
+  }
+
+  res.status(200).json({ successfull: true }).end();
 });
 
 router.get("/*", (req, res) => {

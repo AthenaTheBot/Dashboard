@@ -183,9 +183,41 @@ router.get("/guilds/:id", (req, res) => __awaiter(void 0, void 0, void 0, functi
             voice: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.channels.cache.filter((x) => x.type == "GUILD_VOICE").size,
         },
         roles: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.roles.cache.size,
-        createdAt: dayjs_1.default.unix(extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.createdTimestamp).toString()
+        createdAt: dayjs_1.default
+            .unix(extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.createdTimestamp)
+            .toString(),
     });
     return res.status(200).json(Object.assign(Object.assign({}, guild), guildData));
+}));
+router.post("/guilds/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _h;
+    const session = (_h = req.signedCookies) === null || _h === void 0 ? void 0 : _h.session;
+    if (!session)
+        return res.status(400).json({ message: "Bad Request" }).end();
+    const guilds = yield getCurrentUserGuilds(session, true, false);
+    const guild = guilds === null || guilds === void 0 ? void 0 : guilds.find((x) => x.id === req.params.id);
+    if (!guild)
+        return res.status(400).json({ message: "Unauthorized" }).end();
+    try {
+        const guildData = (yield mongoose_1.default.connection
+            .collection("guilds")
+            .findOne({ _id: req.params.id })
+            .catch((err) => null));
+        if (!guildData)
+            return res.status(500).json({ message: "Server Error" }).end();
+        if (req.body.prefix)
+            mongoose_1.default.connection
+                .collection("guilds")
+                .updateOne({ _id: req.params.id }, { $set: { "settings.prefix": req.body.prefix } });
+        if (req.body.language)
+            mongoose_1.default.connection
+                .collection("guilds")
+                .updateOne({ _id: req.params.id }, { $set: { "settings.language": req.body.language } });
+    }
+    catch (err) {
+        return res.status(500).json({ message: "Server Error" }).end();
+    }
+    res.status(200).json({ successfull: true }).end();
 }));
 router.get("/*", (req, res) => {
     res.status(400).json({ message: "Bad Request" }).end();

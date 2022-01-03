@@ -17,6 +17,7 @@
 
 .athena-input-select-main {
   background-color: var(--secondary-background);
+  color: #b6b6b6;
   padding: 10px;
   height: 50px;
   margin: 10px 0px;

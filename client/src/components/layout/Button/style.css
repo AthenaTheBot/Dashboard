@@ -1,0 +1,16 @@
+.athena-button {
+  padding: 5px;
+  color: white;
+  background-color: var(--primary-theme);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 450ms ease;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.athena-button:hover {
+  background-color: var(--secondary-theme);
+}

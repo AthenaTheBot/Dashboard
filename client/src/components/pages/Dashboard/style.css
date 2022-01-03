@@ -25,7 +25,8 @@
   width: calc(100vw - 320px);
   padding: 20px;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: visible;
+  position: relative;
 }
 
 .module-selector-guild {
@@ -167,6 +168,17 @@
 
 .module-prop hr {
   color: #4d4b4b !important;
+}
+
+.module-prop-body {
+  display: flex;
+}
+
+.module-prop-body .athena-button {
+  max-height: 50px;
+  margin-top: 10px;
+  border-radius: 10px;
+  margin-left: 5px;
 }
 
 @media only screen and (max-width: 900px) {

@@ -1,15 +1,62 @@
-import { Fragment, useContext } from "react";
-
+import { Fragment, useContext, useState } from "react";
+import Button from "../../../../layout/Button";
 import dashContext from "../../../../../context/dash/dashContext";
-
 import InputSelect from "../../../../layout/Input/InputSelect";
 import InputText from "../../../../layout/Input/InputText";
 
-import "./style.css";
-
 function Configuration() {
-  const { currentServer } = useContext(dashContext);
-  const settingChanged = () => {};
+  const { currentServer, setCurrentServer } = useContext(dashContext);
+
+  const [currentPrefix, setCurretPrefix] = useState(
+    currentServer?.settings?.prefix
+  );
+  const [currentLanguage, setCurrentLanguage] = useState(
+    currentServer?.settings?.language
+  );
+
+  const updatePrefix = async () => {
+    const data = await fetch(`/api/guilds/${currentServer?.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prefix: currentPrefix,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        return { successfull: false };
+      });
+
+    if (data?.successfull) {
+      currentServer.settings.prefix = currentPrefix;
+      setCurrentServer(currentServer);
+    }
+  };
+
+  const updateLanguage = async () => {
+    const data = await fetch(`/api/guilds/${currentServer?.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        language: currentLanguage,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        return { successfull: false };
+      });
+
+    if (data?.successfull) {
+      currentServer.settings.language = currentLanguage;
+      setCurrentServer(currentServer);
+    } else {
+      setCurrentLanguage(currentServer);
+    }
+  };
 
   return (
     <Fragment>
@@ -21,14 +68,8 @@ function Configuration() {
           </p>
           <hr />
           <div className="module-prop-body">
-            <InputText
-              value={
-                currentServer?.settings?.prefix
-                  ? currentServer.settings.prefix
-                  : "Unknown"
-              }
-              inputUpdated={settingChanged}
-            />
+            <InputText inputUpdated={setCurretPrefix} value={currentPrefix} />
+            <Button buttonClicked={updatePrefix}>Update</Button>
           </div>
         </div>
       </div>
@@ -42,23 +83,23 @@ function Configuration() {
           <hr />
           <div className="module-prop-body">
             <InputSelect
+              inputUpdated={(x) => {
+                setCurrentLanguage(x.id);
+              }}
               options={[
                 {
                   content: "English",
-                  active:
-                    currentServer?.settings?.language === "en_US"
-                      ? true
-                      : false,
+                  id: "en_US",
+                  active: currentLanguage === "en_US" ? true : false,
                 },
                 {
                   content: "Turkish",
-                  active:
-                    currentServer?.settings?.language === "tr_TR"
-                      ? true
-                      : false,
+                  id: "tr_TR",
+                  active: currentLanguage === "tr_TR" ? true : false,
                 },
               ]}
             />
+            <Button buttonClicked={updateLanguage}>Update</Button>
           </div>
         </div>
       </div>
