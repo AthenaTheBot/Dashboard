@@ -21,6 +21,8 @@ const config_json_1 = __importDefault(require("../../config.json"));
 const index_1 = require("../index");
 const discord_js_1 = require("discord.js");
 const dayjs_1 = __importDefault(require("dayjs"));
+const localizedFormat_1 = __importDefault(require("dayjs/plugin/localizedFormat"));
+dayjs_1.default.extend(localizedFormat_1.default);
 const router = express_1.default.Router();
 let commandsCache = [];
 let users = new Map();
@@ -183,9 +185,7 @@ router.get("/guilds/:id", (req, res) => __awaiter(void 0, void 0, void 0, functi
             voice: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.channels.cache.filter((x) => x.type == "GUILD_VOICE").size,
         },
         roles: extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.roles.cache.size,
-        createdAt: dayjs_1.default
-            .unix(extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.createdTimestamp)
-            .toString(),
+        createdAt: (0, dayjs_1.default)(extraGuildData === null || extraGuildData === void 0 ? void 0 : extraGuildData.createdAt).format("L LTS"),
     });
     return res.status(200).json(Object.assign(Object.assign({}, guild), guildData));
 }));

@@ -8,6 +8,9 @@ import { Guild, User, Command } from "../constants";
 import { botClient } from "../index";
 import { Permissions } from "discord.js";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(localizedFormat);
 
 // Router instance
 const router = express.Router();
@@ -238,9 +241,7 @@ router.get("/guilds/:id", async (req, res) => {
       ).size,
     },
     roles: extraGuildData?.roles.cache.size,
-    createdAt: dayjs
-      .unix(extraGuildData?.createdTimestamp as number)
-      .toString(),
+    createdAt: dayjs(extraGuildData?.createdAt).format("L LTS"),
   });
 
   return res.status(200).json({ ...guild, ...guildData });

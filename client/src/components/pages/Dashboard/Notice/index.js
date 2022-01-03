@@ -7,8 +7,8 @@ function Notice() {
     <div className="module-notice">
       <h5>WARNING:&nbsp;&nbsp;</h5>
       <p>
-        This module of dashboard are currently in work so please give us some
-        time to complete it.
+        This module is currently under maintenance, thank you for your
+        understanding!
       </p>
     </div>
   );
