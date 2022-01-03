@@ -1,7 +1,11 @@
-import { Fragment } from "react";
+import Notice from "../../Notice";
 
 function Moderation() {
-  return <Fragment></Fragment>;
+  return (
+    <div className="module-moderation-container">
+      <Notice />
+    </div>
+  );
 }
 
 export default Moderation;

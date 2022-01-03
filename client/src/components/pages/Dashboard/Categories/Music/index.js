@@ -1,7 +1,11 @@
-import { Fragment } from "react";
+import Notice from "../../Notice";
 
 function Music() {
-  return <Fragment></Fragment>;
+  return (
+    <div className="module-music-container">
+      <Notice />
+    </div>
+  );
 }
 
 export default Music;

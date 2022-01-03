@@ -1,0 +1,20 @@
+.module-notice {
+  display: flex;
+  background-color: var(--primary-background);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 3px;
+  border-left: 3px solid var(--primary-theme);
+}
+
+.module-notice h5 {
+  color: var(--primary-error);
+  margin: 0px;
+  margin-right: 5px;
+}
+
+.module-notice p {
+  margin: 0;
+}
