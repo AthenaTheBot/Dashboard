@@ -32,7 +32,7 @@ const App = () => {
 
         <Route path="/privacy" element={<Legal page="privacy" />} />
 
-        <Route path="/tos" element={<Legal page="terms" />} />
+        <Route path="/terms" element={<Legal page="terms" />} />
 
         <Route path="/error" element={<Error />} />
 

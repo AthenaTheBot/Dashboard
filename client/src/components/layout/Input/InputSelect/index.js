@@ -24,7 +24,7 @@ const InputSelect = ({ options, inputUpdated }) => {
   const optionClicked = (option) => {
     let newInputOptions = inputOptions;
 
-    newInputOptions.push(active);
+    if (active) newInputOptions.push(active);
 
     newInputOptions = newInputOptions.filter((x) => x !== option);
 

@@ -27,6 +27,7 @@ const config_json_1 = __importDefault(require("../config.json"));
 const api_1 = __importDefault(require("./routers/api"));
 const oauth_1 = __importDefault(require("./routers/oauth"));
 const links_1 = __importDefault(require("./routers/links"));
+const legal_docs_1 = __importDefault(require("./routers/legal-docs"));
 const logger_1 = __importDefault(require("./logger"));
 colors_1.default.enable();
 const app = (0, express_1.default)();
@@ -78,6 +79,7 @@ app.use((0, cookie_parser_1.default)(config_json_1.default.keys.cookieSign));
 app.use(logger_1.default);
 app.use("/api", api_1.default);
 app.use("/oauth", oauth_1.default);
+app.use("/legal-docs", legal_docs_1.default);
 app.use("/", links_1.default);
 app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", "..", "..", "client", "build")));
 app.get("/*", (req, res) => {

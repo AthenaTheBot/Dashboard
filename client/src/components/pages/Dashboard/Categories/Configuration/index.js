@@ -22,7 +22,11 @@ function Configuration() {
           <hr />
           <div className="module-prop-body">
             <InputText
-              value={currentServer?.settings?.prefix}
+              value={
+                currentServer?.settings?.prefix
+                  ? currentServer.settings.prefix
+                  : "Unknown"
+              }
               inputUpdated={settingChanged}
             />
           </div>

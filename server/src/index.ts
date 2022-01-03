@@ -17,6 +17,7 @@ import config from "../config.json";
 import apiRouter from "./routers/api";
 import oauthRouter from "./routers/oauth";
 import linksRouter from "./routers/links";
+import legalDocs from "./routers/legal-docs";
 
 // Logger middleware
 import logger from "./logger";
@@ -109,6 +110,7 @@ app.use(logger);
 // Attaching routers
 app.use("/api", apiRouter);
 app.use("/oauth", oauthRouter);
+app.use("/legal-docs", legalDocs);
 app.use("/", linksRouter);
 
 // Serving static files
