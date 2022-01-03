@@ -23,21 +23,29 @@ function Dashboard() {
 
   useEffect(() => {
     (async () => {
-      const sessionCookie = cookieGet("session");
-      if (!sessionCookie) return navigate("/oauth/login");
-      const guild = await fetch(`/api/guilds/${guildId}`)
-        .then(async (res) => {
-          if (!res.ok) return null;
-          return await res.json();
-        })
-        .catch((err) => null);
-      if (!guild) return navigate("/servers");
-      setCurrentServer(guild);
-      guild.displayName =
-        guild.name.length >= 12
-          ? (guild.displayName = guild.name.slice(0, 12) + "..")
-          : guild.name;
-      setCurrentGuild(guild);
+      if (process.env.NODE_ENV === "production") {
+        const sessionCookie = cookieGet("session");
+
+        if (!sessionCookie) return navigate("/oauth/login");
+
+        const guild = await fetch(`/api/guilds/${guildId}`)
+          .then(async (res) => {
+            if (!res.ok) return null;
+            return await res.json();
+          })
+          .catch((err) => null);
+
+        if (!guild) return navigate("/servers");
+
+        setCurrentServer(guild);
+
+        guild.displayName =
+          guild.name.length >= 12
+            ? (guild.displayName = guild.name.slice(0, 12) + "..")
+            : guild.name;
+
+        setCurrentGuild(guild);
+      }
     })();
     //eslint-disable-next-line
   }, [guilds, guildId, navigate]);
@@ -52,11 +60,15 @@ function Dashboard() {
     $(".athena-dash-fade").css("display", "none");
   };
 
+  const selectoryCategoryClicked = (category) => {
+    setCurrentCategory(category);
+    hideCategorySelectory();
+  };
+
   useEffect(() => {
-    $(".dash-module-title")
+    $(".dash-module-title h1")
       .off("click")
       .on("click", (e) => {
-        console.log("SJ");
         const selectorEnabled = $(".dash-module-selector").hasClass(
           "module-selectory-enabled"
         );
@@ -70,7 +82,7 @@ function Dashboard() {
       .on("click", (e) => {
         hideCategorySelectory();
       });
-  }, []);
+  });
 
   return (
     <div className="athena-dash-container">
@@ -101,7 +113,7 @@ function Dashboard() {
               <p className="module-selectory-body-title">CATEGORIES</p>
               <li
                 onClick={() => {
-                  setCurrentCategory("overview");
+                  selectoryCategoryClicked("overview");
                 }}
                 className="module-selectory-body-element"
               >
@@ -110,7 +122,7 @@ function Dashboard() {
               </li>
               <li
                 onClick={() => {
-                  setCurrentCategory("configuration");
+                  selectoryCategoryClicked("configuration");
                 }}
                 className="module-selectory-body-element"
               >
@@ -119,7 +131,7 @@ function Dashboard() {
               </li>
               <li
                 onClick={() => {
-                  setCurrentCategory("moderation");
+                  selectoryCategoryClicked("moderation");
                 }}
                 className="module-selectory-body-element"
               >
@@ -128,7 +140,7 @@ function Dashboard() {
               </li>
               <li
                 onClick={() => {
-                  setCurrentCategory("music");
+                  selectoryCategoryClicked("music");
                 }}
                 className="module-selectory-body-element"
               >

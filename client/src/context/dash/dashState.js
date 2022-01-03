@@ -8,6 +8,7 @@ const initialState = {
   servers: null,
   commands: null,
   currentServer: null,
+  settingsUpdated: [],
 };
 
 const DashState = (props) => {
@@ -67,6 +68,11 @@ const DashState = (props) => {
     dispatch({ type: "SET_CURRENT_SERVER", payload: guild });
   };
 
+  const setingsUpdated = (setting) => {
+    const newSettings = state.settingsUpdated.push(setting);
+    dispatch({ type: "SET_SETTINGS_UPDATED", payload: newSettings });
+  };
+
   return (
     <DashContext.Provider
       value={{
@@ -75,6 +81,7 @@ const DashState = (props) => {
         getUserGuilds,
         getCommands,
         setCurrentServer,
+        setingsUpdated,
       }}
     >
       {props.children}

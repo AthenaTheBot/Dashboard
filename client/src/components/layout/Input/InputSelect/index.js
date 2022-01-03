@@ -1,42 +1,65 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import $ from "jquery";
 
 // Syling
 import "./style.css";
 
-const InputSelect = ({ onChange, options, id }) => {
-  let count = 0;
+const InputSelect = ({ options, inputUpdated }) => {
+  const [inputOptions, setInputOptions] = useState([]);
+  const [active, setActive] = useState();
+
   useEffect(() => {
-    $(".athena-input-selection-main").on("click", function () {
-      const slideMenu = $(this).siblings();
-      if (slideMenu.hasClass("disabled")) slideMenu.removeClass("disabled");
-      else slideMenu.addClass("disabled");
+    const filteredInputOptions = options.filter((x) => x.active !== true);
+    let activeEl = null;
+
+    options.forEach((option) => {
+      if (option.active && !activeEl) activeEl = option;
     });
 
-    $(".athena-input-selection-slide-option").on("click", function () {
-      const currentVal = $(this).text();
-      $(this).parent().siblings().text(currentVal);
-      $(this).parent().addClass("disabled");
-      onChange();
-    });
+    setInputOptions(filteredInputOptions);
+    setActive(activeEl);
   }, []);
 
+  const optionClicked = (option) => {
+    let newInputOptions = inputOptions;
+
+    newInputOptions.push(active);
+
+    newInputOptions = newInputOptions.filter((x) => x !== option);
+
+    setActive(option);
+
+    setInputOptions(newInputOptions);
+
+    if (inputUpdated) inputUpdated(option);
+
+    toggleOptionsMenu();
+  };
+
+  const toggleOptionsMenu = () => {
+    const isActive = $(".athena-input-options").hasClass(
+      "athena-input-options-active"
+    );
+    if (isActive)
+      $(".athena-input-options").removeClass("athena-input-options-active");
+    else $(".athena-input-options").addClass("athena-input-options-active");
+  };
+
   return (
-    <div className="athena-input-selection">
-      <div id={id} className="athena-input-selection-main">
-        {options.map((option) => {
-          if (option.active) return option.content;
-        })}
+    <div className="athena-input-select-container">
+      <div className="athena-input-select-main" onClick={toggleOptionsMenu}>
+        <p>{active?.content ? active.content : "Not selected"}</p>
       </div>
-      <ul className="athena-input-selection-slide disabled">
-        {options.map((option) => {
+      <ul className="athena-input-options">
+        {inputOptions.map((inputOption) => {
           return (
             <li
-              data-id={option.id}
-              key={count++}
-              className="athena-input-selection-slide-option"
+              onClick={() => {
+                optionClicked(inputOption);
+              }}
+              className="athena-input-option"
             >
-              {option.content}
+              {inputOption.content}
             </li>
           );
         })}

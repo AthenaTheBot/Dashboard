@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 
 function Music() {
-  return <Fragment>music</Fragment>;
+  return <Fragment></Fragment>;
 }
 
 export default Music;
