@@ -13,7 +13,7 @@
 .athena-server {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   width: 300px;
   cursor: pointer;
@@ -24,6 +24,7 @@
   border: 1px solid var(--primary-background);
   transition: all 450ms ease;
   animation: serverInit 400ms forwards;
+  overflow: hidden;
 }
 
 .athena-server img {
@@ -35,10 +36,31 @@
 .athena-server h1 {
   font-size: 23px;
   margin: 0px;
+  margin-left: 15px;
 }
 
 .athena-server:hover {
   border-color: var(--primary-theme);
+}
+
+.athena-server-invite {
+  height: 100%;
+  width: 100%;
+  background-color: var(--primary-theme-soft);
+  color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 500ms ease;
+  opacity: 0;
+  backdrop-filter: blur(5px);
+}
+
+.athena-server-invite:hover {
+  opacity: 1;
 }
 
 @media only screen and (max-width: 330px) {

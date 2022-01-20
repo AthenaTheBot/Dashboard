@@ -39,6 +39,9 @@
   --primary-theme: #5865f2;
   --secondary-theme: #4b56cc;
 
+  --primary-theme-soft: #5865f2b6;
+  --secondary-theme: #4b56ccbb;
+
   --primary-error: #b12b2b;
 }
 

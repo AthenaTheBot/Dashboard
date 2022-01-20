@@ -7,7 +7,10 @@
     "usage": "",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "ATTACH_FILES"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "ATTACH_FILES"
+    ]
   },
   {
     "name": "dog",
@@ -17,7 +20,10 @@
     "usage": "",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "ATTACH_FILES"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "ATTACH_FILES"
+    ]
   },
   {
     "name": "meme",
@@ -27,7 +33,10 @@
     "usage": "",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "coinflip",
@@ -37,7 +46,9 @@
     "usage": "",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES"]
+    "required_bot_perms": [
+      "SEND_MESSAGES"
+    ]
   },
   {
     "name": "hitler",
@@ -47,7 +58,10 @@
     "usage": "<User>",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "jail",
@@ -57,7 +71,10 @@
     "usage": "<User>",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "jokeoverhead",
@@ -67,7 +84,10 @@
     "usage": "<User>",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "rip",
@@ -77,7 +97,10 @@
     "usage": "<User>",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "trash",
@@ -87,7 +110,10 @@
     "usage": "<User>",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "wanted",
@@ -97,7 +123,10 @@
     "usage": "<User>",
     "cooldown": 4,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "kick",
@@ -106,8 +135,14 @@
     "category": "mod",
     "usage": "<User>",
     "cooldown": 4,
-    "required_perms": ["KICK_MEMBERS"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS", "KICK_MEMBERS"]
+    "required_perms": [
+      "KICK_MEMBERS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "KICK_MEMBERS"
+    ]
   },
   {
     "name": "ban",
@@ -116,8 +151,14 @@
     "category": "mod",
     "usage": "<User>",
     "cooldown": 4,
-    "required_perms": ["BAN_MEMBERS"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS", "BAN_MEMBERS"]
+    "required_perms": [
+      "BAN_MEMBERS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "BAN_MEMBERS"
+    ]
   },
   {
     "name": "slowmode",
@@ -126,78 +167,154 @@
     "category": "mod",
     "usage": "<Timeout>",
     "cooldown": 4,
-    "required_perms": ["MANAGE_CHANNELS"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS", "MANAGE_CHANNELS"]
+    "required_perms": [
+      "MANAGE_CHANNELS"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "MANAGE_CHANNELS"
+    ]
   },
   {
     "name": "clear",
-    "aliases": ["purge"],
+    "aliases": [
+      "purge"
+    ],
     "description": "Clears the specified amount of message in the text channel.",
     "category": "mod",
     "usage": "<Amount>",
     "cooldown": 4,
-    "required_perms": ["MANAGE_MESSAGES"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS", "MANAGE_MESSAGES"]
+    "required_perms": [
+      "MANAGE_MESSAGES"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "MANAGE_MESSAGES"
+    ]
   },
   {
     "name": "play",
-    "aliases": ["p"],
+    "aliases": [
+      "p"
+    ],
     "description": "Play song in a voice channel.",
     "category": "music",
-    "usage": "",
-    "cooldown": 4,
+    "usage": "<Song>",
+    "cooldown": 2,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS", "SPEAK", "CONNECT"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "SPEAK",
+      "CONNECT"
+    ]
   },
   {
     "name": "disconnect",
-    "aliases": ["dc"],
+    "aliases": [
+      "dc"
+    ],
     "description": "Disconnects from voice channel if exits.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 2,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "skip",
-    "aliases": ["s"],
+    "aliases": [
+      "s"
+    ],
     "description": "Skips to another song in the queue.",
     "category": "music",
-    "usage": "<Songs amount>",
-    "cooldown": 4,
+    "usage": "<Song amount>",
+    "cooldown": 2,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "queue",
-    "aliases": ["q"],
+    "aliases": [
+      "q"
+    ],
     "description": "Shows current song queue.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 1,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "pause",
-    "aliases": ["p"],
+    "aliases": [
+      "p"
+    ],
     "description": "Pauses currently playing song.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 2,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "resume",
-    "aliases": ["rs"],
+    "aliases": [
+      "rs"
+    ],
     "description": "Resumes paused song.",
     "category": "music",
     "usage": "",
-    "cooldown": 4,
+    "cooldown": 2,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "loop",
+    "aliases": [
+      "rs"
+    ],
+    "description": "Toggles loop in song queue.",
+    "category": "music",
+    "usage": "",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
+  },
+  {
+    "name": "delsong",
+    "aliases": [
+      "ds"
+    ],
+    "description": "Deletes a specific song from the song queue.",
+    "category": "music",
+    "usage": "<Song id>",
+    "cooldown": 2,
+    "required_perms": [],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "prefix",
@@ -206,8 +323,13 @@
     "category": "settings",
     "usage": "<Prefix>",
     "cooldown": 5,
-    "required_perms": ["ADMINISTRATOR"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "language",
@@ -216,8 +338,13 @@
     "category": "settings",
     "usage": "<Language>",
     "cooldown": 5,
-    "required_perms": ["ADMINISTRATOR"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "adminrole",
@@ -226,18 +353,28 @@
     "category": "settings",
     "usage": "<Role>",
     "cooldown": 4,
-    "required_perms": ["ADMINISTRATOR"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "modrole",
     "aliases": [],
-    "description": "Command for setting admin role.",
+    "description": "Command for setting mod role.",
     "category": "settings",
     "usage": "<Role>",
     "cooldown": 4,
-    "required_perms": ["ADMINISTRATOR"],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_perms": [
+      "ADMINISTRATOR"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "ping",
@@ -247,7 +384,9 @@
     "usage": "",
     "cooldown": 1,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES"]
+    "required_bot_perms": [
+      "SEND_MESSAGES"
+    ]
   },
   {
     "name": "ascii",
@@ -257,7 +396,10 @@
     "usage": "<Text>",
     "cooldown": 3,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "avatar",
@@ -267,7 +409,10 @@
     "usage": "<User>",
     "cooldown": 2,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "invite",
@@ -277,7 +422,10 @@
     "usage": "",
     "cooldown": 1,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   },
   {
     "name": "help",
@@ -287,6 +435,9 @@
     "usage": "",
     "cooldown": 1,
     "required_perms": [],
-    "required_bot_perms": ["SEND_MESSAGES", "EMBED_LINKS"]
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS"
+    ]
   }
 ]

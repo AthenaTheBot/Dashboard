@@ -44,14 +44,10 @@ function Servers() {
           <div className="athena-servers-body">
             {servers ? (
               servers?.map((server) => {
-                let name =
-                  server.name.length >= 13
-                    ? server.name.slice(0, 11) + ".."
-                    : server.name;
                 return (
                   <Server
                     id={server.id}
-                    name={name}
+                    name={server.name}
                     icon={
                       server.icon ? server.icon : "/assets/images/default.png"
                     }
