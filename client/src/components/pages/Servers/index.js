@@ -47,6 +47,7 @@ function Servers() {
                 return (
                   <Server
                     id={server.id}
+                    available={server.available}
                     name={server.name}
                     icon={
                       server.icon ? server.icon : "/assets/images/default.png"
