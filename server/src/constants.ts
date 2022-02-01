@@ -1,3 +1,32 @@
+interface Config {
+  debug: boolean;
+  debugPort: number;
+  dbUrl: string;
+  links: {
+    support: string;
+    invite: string;
+    login: string;
+  };
+  auth: {
+    botToken: string;
+    clientId: string;
+    clientSecret: string;
+    redirectUri: string;
+  };
+  oauthEndpoints: {
+    tokenExchange: string;
+    getCurrentUser: string;
+    getCurrentUserGuilds: string;
+  };
+  keys: {
+    cookieSign: string;
+  };
+  cacheTimeouts: {
+    users: number;
+    userGuilds: number;
+  };
+}
+
 interface AccessTokenResponse {
   access_token: string;
   token_type: string;
@@ -45,4 +74,4 @@ interface Command {
   required_bot_perms: string[];
 }
 
-export { AccessTokenResponse, Guild, User, Command };
+export { Config, AccessTokenResponse, Guild, User, Command };

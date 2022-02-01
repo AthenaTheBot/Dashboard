@@ -2,7 +2,7 @@
   "name": "athena-dashboard",
   "version": "1.0.0",
   "description": "Dashboard and website of Athena Discord Bot.",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "author": "Tuna Sayin",
   "license": "MIT",
   "private": true,

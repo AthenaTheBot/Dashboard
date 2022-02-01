@@ -3,10 +3,10 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 import mongoose from "mongoose";
-import config from "../../config.json";
+import { botClient, config } from "../index";
 import { Guild, User, Command } from "../constants";
-import { botClient } from "../index";
 import { Permissions } from "discord.js";
+import GuildModel from "../models/Guild";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 
@@ -139,7 +139,7 @@ router.get("/commands", async (req, res) => {
     try {
       const commands: Command[] = JSON.parse(
         await fs.readFileSync(
-          path.join(__dirname, "..", "..", "..", "data", "commands.json"),
+          path.join(__dirname, "..", "..", "data", "commands.json"),
           "utf-8"
         )
       );
@@ -169,7 +169,6 @@ router.get("/commands", async (req, res) => {
       commandsCache = categories;
     } catch (err) {
       res.status(500).json({ status: 500, message: "Server Error" }).end();
-      console.log(err);
       return;
     }
   }
@@ -217,17 +216,32 @@ router.get("/guilds/:id", async (req, res) => {
   if (!mongoose.connection)
     return res.status(500).json({ message: "Server Error" }).end();
 
-  const guildData = (await mongoose.connection
-    .collection("guilds")
-    .findOne({ _id: guild.id as any })
-    .catch((err) => null)) as any;
+  let guildData = await GuildModel.findById(guild.id).catch((err) => null);
 
-  if (!guildData)
-    return res.status(500).json({ message: "Server Error" }).end();
+  if (!guildData) {
+    guildData = await GuildModel.create({
+      _id: guild.id,
+      settings: {
+        premium: false,
+        prefix: "at!",
+        language: "en-US",
+      },
+      modules: {
+        moderationModule: {
+          adminRole: null,
+          modRole: null,
+          warnings: [],
+        },
+        funModule: {},
+        utilsModule: {},
+      },
+      lastUpdated: dayjs().format("L LT"),
+    });
+  }
 
   // Delete unncessary meta info
-  delete guildData._id;
-  delete guildData.lastUpdated;
+  delete guildData._doc._id;
+  delete guildData._doc.lastUpdated;
 
   const extraGuildData = await botClient.guilds.cache.get(guild.id);
 
@@ -244,7 +258,7 @@ router.get("/guilds/:id", async (req, res) => {
     createdAt: dayjs(extraGuildData?.createdAt).format("L LTS"),
   });
 
-  return res.status(200).json({ ...guild, ...guildData });
+  return res.status(200).json({ ...guild, ...guildData._doc });
 });
 
 router.post("/guilds/:id", async (req, res) => {

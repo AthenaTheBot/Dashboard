@@ -22,19 +22,19 @@ function Server({ id, available, name, icon }) {
   return (
     <div
       onClick={() => {
-        redirect(available ? `/dashboard/${id}` : "/invite", true);
+        if (available) {
+          redirect(`/dashboard/${id}`, true);
+        } else {
+          window.location.replace("/invite");
+        }
       }}
       className="athena-server"
     >
       <img src={icon} alt={name} />
       <h1>{guildName}</h1>
-      {available ? (
-        ""
-      ) : (
-        <div className="athena-server-invite">
-          <h5>Invite Athena</h5>
-        </div>
-      )}
+      <div className="athena-server-invite">
+        <h5>{available ? "Go To Dashboard" : "Invite Athena"} </h5>
+      </div>
     </div>
   );
 }

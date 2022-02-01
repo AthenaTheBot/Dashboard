@@ -1,6 +1,6 @@
 import express from "express";
 import axios from "axios";
-import config from "../../config.json";
+import { config } from "../index";
 import { AccessTokenResponse } from "../constants";
 
 // Router instance

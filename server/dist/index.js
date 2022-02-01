@@ -24,7 +24,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const colors_1 = __importDefault(require("colors"));
 const discord_js_1 = require("discord.js");
 const config_loader_1 = __importDefault(require("./utils/config-loader"));
-const config = (0, config_loader_1.default)(path_1.default.join(__dirname, ".."));
+const config = (0, config_loader_1.default)(path_1.default.join(__dirname, "..", "config.json"));
 exports.config = config;
 if (!config) {
     console.log("An error occured while loading config file, exiting process.");
@@ -54,9 +54,9 @@ const httpserver = http_1.default.createServer(config.debug
             .end();
     });
 const httpsserver = https_1.default.createServer({
-    cert: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "certs", "cert.pem")),
-    ca: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "certs", "chain.pem")),
-    key: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "certs", "privkey.pem")),
+    cert: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "certs", "cert.pem")),
+    ca: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "certs", "chain.pem")),
+    key: fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "certs", "privkey.pem")),
 }, app);
 const httpPort = config.debug ? config.debugPort : 80;
 const httpsPort = config.debug ? null : 443;
@@ -87,7 +87,7 @@ app.use("/api", api_1.default);
 app.use("/oauth", oauth_1.default);
 app.use("/legal-docs", legal_docs_1.default);
 app.use("/", links_1.default);
-app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", "..", "..", "client", "build")));
+app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", "..", "client", "build")));
 app.get("/*", (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, "..", "..", "..", "client", "build", "index.html"));
+    res.sendFile(path_1.default.join(__dirname, "..", "..", "client", "build", "index.html"));
 });

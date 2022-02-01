@@ -19,7 +19,6 @@
     "getCurrentUserGuilds": "https://discord.com/api/users/@me/guilds"
   },
   "keys": {
-    "cookie": "%2R-d-$^$m@fgF26nrUQp&#4FP#qpMx@xXUSTWg7",
     "cookieSign": "a3KKhMjZ!#Br@B%m8*WkUt@Ze6w+wS37Efqk%dB!"
   },
   "cacheTimeouts": {

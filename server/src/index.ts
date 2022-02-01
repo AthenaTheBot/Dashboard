@@ -9,9 +9,17 @@ import fs from "fs";
 import mongoose from "mongoose";
 import colors from "colors";
 import { Client, Intents } from "discord.js";
+import { Config } from "./constants";
 
-// Config file
-import config from "../config.json";
+// Config loader util script
+import loadConfig from "./utils/config-loader";
+
+const config = loadConfig(path.join(__dirname, "..", "config.json")) as Config;
+
+if (!config) {
+  console.log("An error occured while loading config file, exiting process.");
+  process.exit(1);
+}
 
 // Routers
 import apiRouter from "./routers/api";
@@ -20,7 +28,7 @@ import linksRouter from "./routers/links";
 import legalDocs from "./routers/legal-docs";
 
 // Logger middleware
-import logger from "./logger";
+import logger from "./utils/logger";
 
 // Enabling colors
 colors.enable();
@@ -53,13 +61,9 @@ const httpserver = http.createServer(
 );
 const httpsserver = https.createServer(
   {
-    cert: fs.readFileSync(
-      path.join(__dirname, "..", "..", "certs", "cert.pem")
-    ),
-    ca: fs.readFileSync(path.join(__dirname, "..", "..", "certs", "chain.pem")),
-    key: fs.readFileSync(
-      path.join(__dirname, "..", "..", "certs", "privkey.pem")
-    ),
+    cert: fs.readFileSync(path.join(__dirname, "..", "certs", "cert.pem")),
+    ca: fs.readFileSync(path.join(__dirname, "..", "certs", "chain.pem")),
+    key: fs.readFileSync(path.join(__dirname, "..", "certs", "privkey.pem")),
   },
   app
 );
@@ -116,14 +120,14 @@ app.use("/", linksRouter);
 // Serving static files
 app.use(
   "/",
-  express.static(path.join(__dirname, "..", "..", "..", "client", "build"))
+  express.static(path.join(__dirname, "..", "..", "client", "build"))
 );
 
 // Main route
 app.get("/*", (req, res) => {
   res.sendFile(
-    path.join(__dirname, "..", "..", "..", "client", "build", "index.html")
+    path.join(__dirname, "..", "..", "client", "build", "index.html")
   );
 });
 
-export { app, botClient };
+export { config, app, botClient };

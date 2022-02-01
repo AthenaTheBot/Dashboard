@@ -7,5 +7,5 @@ ReactDOM.render(
   <DashState>
     <App />
   </DashState>,
-  document.getElementById("root")
+  document.getElementById("__athena")
 );

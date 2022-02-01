@@ -1,5 +1,5 @@
 import express from "express";
-import config from "../../config.json";
+import { config } from "../index";
 
 const router = express.Router();
 

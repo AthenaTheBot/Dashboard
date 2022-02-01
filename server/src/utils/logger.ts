@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import config from "../config.json";
+import { config } from "../index";
 
 dayjs.extend(localizedFormat);
 

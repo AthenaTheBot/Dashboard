@@ -5,14 +5,7 @@ import path from "path";
 const router = express.Router();
 
 router.get("/:doc", async (req, res) => {
-  const legalDocsPath = path.join(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "data",
-    "legal-docs"
-  );
+  const legalDocsPath = path.join(__dirname, "..", "..", "data", "legal-docs");
 
   const availableDocs = fs
     .readdirSync(legalDocsPath)

@@ -57,6 +57,7 @@ body {
   animation-duration: 1200ms;
   animation-fill-mode: forwards;
   font-family: "Poppins", sans-serif !important;
+  overflow-x: hidden;
 }
 
 #root {

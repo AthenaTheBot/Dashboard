@@ -46,7 +46,7 @@
 .athena-server-invite {
   height: 100%;
   width: 100%;
-  background-color: var(--primary-theme-soft);
+  background-color: var(--primary-theme);
   color: white;
   position: absolute;
   left: 0;
@@ -56,7 +56,6 @@
   justify-content: center;
   transition: all 500ms ease;
   opacity: 0;
-  backdrop-filter: blur(5px);
 }
 
 .athena-server-invite:hover {

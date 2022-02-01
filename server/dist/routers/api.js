@@ -111,7 +111,7 @@ router.get("/commands", (req, res) => __awaiter(void 0, void 0, void 0, function
     var _c, _d;
     if (!commandsCache || commandsCache.length == 0) {
         try {
-            const commands = JSON.parse(yield fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "..", "data", "commands.json"), "utf-8"));
+            const commands = JSON.parse(yield fs_1.default.readFileSync(path_1.default.join(__dirname, "..", "..", "data", "commands.json"), "utf-8"));
             const categories = [];
             for (var i = 0; i < commands.length; i++) {
                 const categorySeen = categories.filter((x) => x.category == capitalizeText(commands[i].category)).length == 0
