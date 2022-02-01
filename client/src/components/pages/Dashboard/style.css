@@ -206,9 +206,9 @@
   }
 }
 
-@media only screen and (max-width: 330px) {
+@media only screen and (max-width: 350px) {
   .dash-module-selector {
-    width: 260px;
+    width: 240px;
   }
 
   .dash-module-container {
