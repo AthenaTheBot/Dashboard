@@ -74,4 +74,11 @@ interface Command {
   required_bot_perms: string[];
 }
 
-export { Config, AccessTokenResponse, Guild, User, Command };
+enum LogType {
+  SUCCESS = "SUCCESS",
+  ERROR = "ERROR",
+  WARNING = "WARNING",
+  DEFAULT = "LOG",
+}
+
+export { Config, AccessTokenResponse, User, Guild, Command, LogType };

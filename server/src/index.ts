@@ -1,133 +1,62 @@
-// Modules
 import express from "express";
+import path from "path";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import http from "http";
-import https from "https";
-import path from "path";
-import fs from "fs";
-import mongoose from "mongoose";
-import colors from "colors";
-import { Client, Intents } from "discord.js";
-import { Config } from "./constants";
+import Dashboard from "./Dashboard";
+import { Config, LogType } from "./constants";
 
-// Config loader util script
-import loadConfig from "./utils/config-loader";
+// Routes
+import apiRoute from "./routes/api/index";
+import oauthRoute from "./routes/oauth";
+import legalDocsRoute from "./routes/legal-docs";
+import linksRoute from "./routes/links";
 
-const config = loadConfig(path.join(__dirname, "..", "config.json")) as Config;
+const app = new Dashboard();
 
-if (!config) {
-  console.log("An error occured while loading config file, exiting process.");
+app.loadConfig(path.join(__dirname, "..", "config.json"));
+
+if (!app.config) {
+  app.log("Config is not loaded properly, exiting process.", LogType.ERROR);
   process.exit(1);
 }
 
-// Routers
-import apiRouter from "./routers/api";
-import oauthRouter from "./routers/oauth";
-import linksRouter from "./routers/links";
-import legalDocs from "./routers/legal-docs";
+const config = app.config as Config;
+const server = app.instances.server;
+const bot = app.instances.bot;
+const cache = app.cache;
 
-// Logger middleware
-import logger from "./utils/logger";
+// Express app configuration
+server.disable("x-powered-by");
+server.use(bodyParser.json());
+server.use(cookieParser(config.keys.cookieSign));
 
-// Enabling colors
-colors.enable();
-
-// Creating app instance
-const app = express();
-
-// Creating bot instance
-const botClient = new Client({ intents: [Intents.FLAGS.GUILDS] });
-
-// Loggining to application
-botClient.login(config.auth.botToken);
-
-// Event
-botClient.on("ready", () => {
-  console.log("Discord application has initalized!");
-});
-
-// Creating http and https servers
-const httpserver = http.createServer(
-  config.debug
-    ? app
-    : (req, res) => {
-        res
-          .writeHead(302, {
-            Location: "https://" + req.headers["host"] + req.url,
-          })
-          .end();
-      }
-);
-const httpsserver = https.createServer(
-  {
-    cert: fs.readFileSync(path.join(__dirname, "..", "certs", "cert.pem")),
-    ca: fs.readFileSync(path.join(__dirname, "..", "certs", "chain.pem")),
-    key: fs.readFileSync(path.join(__dirname, "..", "certs", "privkey.pem")),
-  },
-  app
-);
-
-// Ports
-const httpPort = config.debug ? config.debugPort : 80;
-const httpsPort = config.debug ? null : 443;
-
-// Stating http and https servers
-try {
-  httpserver.listen(config.debug ? config.debugPort : 80);
-  if (httpsPort) {
-    httpsserver.listen(httpsPort);
-  }
-
-  console.log(
-    `Athena Dashboard has successfully started!\nHTTP Port: ${colors.green(
-      httpPort.toString()
-    )}\nHTTPS Port: ${colors.green(httpsPort ? httpsPort?.toString() : "None")}`
-  );
-} catch (err) {
-  console.error(err);
-}
-
-// Initializing database connection
-try {
-  (async () => {
-    await mongoose.connect(config.dbUrl);
-
-    console.log(
-      `Successfully connected to the database server!\nDatabase URL: ${colors.green(
-        config.dbUrl
-      )}`
-    );
-  })();
-} catch (err) {
-  console.error(err);
-}
-
-// Express configuration
-app.disable("x-powered-by");
-app.use(bodyParser.json());
-app.use(cookieParser(config.keys.cookieSign));
-
-// Attaching logger middleware
-app.use(logger);
-
-// Attaching routers
-app.use("/api", apiRouter);
-app.use("/oauth", oauthRouter);
-app.use("/legal-docs", legalDocs);
-app.use("/", linksRouter);
+// Attaching routes to the express app
+server.use("/api", apiRoute);
+server.use("/oauth", oauthRoute);
+server.use("/legal-docs", legalDocsRoute);
+server.use("/", linksRoute);
 
 // Serving static files
-app.use(
+server.use(
   "/",
   express.static(path.join(__dirname, "..", "..", "client", "build"))
 );
 
 // Main route
-app.get("/*", (req, res) => {
+server.get("/*", (req, res) => {
   res.sendFile(
     path.join(__dirname, "..", "..", "client", "build", "index.html")
   );
 });
 
-export { config, app, botClient };
+(async () => {
+  try {
+    await app.start();
+
+    app.log("Started dashboard.", LogType.SUCCESS);
+  } catch (err) {
+    app.log("An error occured while starting app.", LogType.ERROR);
+  }
+})();
+
+export { config, server, bot, cache };

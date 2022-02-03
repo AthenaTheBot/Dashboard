@@ -1,31 +1,9 @@
 import express from "express";
-import axios from "axios";
+import exchangeToken from "../utils/exchangeToken";
 import { config } from "../index";
-import { AccessTokenResponse } from "../constants";
 
 // Router instance
 const router = express.Router();
-
-// Helper functions
-const exchangeToken = async (
-  token: string
-): Promise<AccessTokenResponse | null> => {
-  try {
-    const serverRes = await axios({
-      url: config.oauthEndpoints.tokenExchange,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: `grant_type=authorization_code&client_id=${config.auth.clientId}&client_id=${config.auth.clientId}&client_secret=${config.auth.clientSecret}&redirect_uri=${config.auth.redirectUri}&code=${token}`,
-    });
-
-    return serverRes.data;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
 
 // Routes
 router.get("/login", (req, res) => {

@@ -3,14 +3,14 @@
   "debugPort": 3000,
   "dbUrl": "mongodb://localhost:27017/AthenaV3",
   "links": {
-    "support": "https://discord.gg/etsgB9J",
+    "support": "",
     "invite": "https://discord.com/api/oauth2/authorize?client_id=$client_id&permissions=8&scope=bot%20applications.commands",
     "login": "https://discord.com/api/oauth2/authorize?client_id=$client_id&redirect_uri=$redirect_uri&response_type=code&scope=identify%20email%20guilds"
   },
   "auth": {
-    "botToken": "NzU0NDI1NTA5NTMzNzEyNTM2.X10jgg.VVBemHlEXPc7gNCJp6Bc3J2f2Sk",
-    "clientId": "754425509533712536",
-    "clientSecret": "heSV96SVepxSxOjzaYjFRd7LNj6Ylqzk",
+    "botToken": "",
+    "clientId": "",
+    "clientSecret": "",
     "redirectUri": "http://localhost:3000/oauth/callback"
   },
   "oauthEndpoints": {
@@ -19,7 +19,7 @@
     "getCurrentUserGuilds": "https://discord.com/api/users/@me/guilds"
   },
   "keys": {
-    "cookieSign": "a3KKhMjZ!#Br@B%m8*WkUt@Ze6w+wS37Efqk%dB!"
+    "cookieSign": ""
   },
   "cacheTimeouts": {
     "users": 1,
