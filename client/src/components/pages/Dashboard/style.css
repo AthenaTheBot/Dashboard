@@ -52,6 +52,11 @@
 .module-selector-guild h5 {
   margin: 0px;
   margin-left: 5px;
+  height: 25px;
+  width: calc(100% - 100px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .module-selector-guild:hover {
@@ -204,6 +209,19 @@
     z-index: 2000;
     transform: translateX(-320px);
   }
+
+  .dash-module-title h1 {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .dash-module-title #profile {
+    margin: 0px;
+  }
+
+  .dash-module-title #profile-username {
+    display: none !important;
+  }
 }
 
 @media only screen and (max-width: 350px) {
@@ -226,5 +244,9 @@
 
   .dash-module-container a {
     font-size: 4vw;
+  }
+
+  .dash-module-title h1 {
+    margin: 0px;
   }
 }

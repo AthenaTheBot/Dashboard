@@ -39,11 +39,6 @@ function Dashboard() {
 
         setCurrentServer(guild);
 
-        guild.displayName =
-          guild.name.length >= 12
-            ? (guild.displayName = guild.name.slice(0, 12) + "..")
-            : guild.name;
-
         setCurrentGuild(guild);
       }
     })();
@@ -97,17 +92,9 @@ function Dashboard() {
                     ? currentGuild.icon
                     : "/assets/images/default.png"
                 }
-                alt={
-                  currentGuild?.displayName
-                    ? currentGuild.displayName
-                    : "Guild Name"
-                }
+                alt={currentGuild?.name ? currentGuild.name : "Guild Name"}
               />
-              <h5>
-                {currentGuild?.displayName
-                  ? currentGuild.displayName
-                  : "Guild Name"}
-              </h5>
+              <h5>{currentGuild?.name ? currentGuild.name : "Guild Name"}</h5>
             </div>
             <ul className="module-selector-body">
               <p className="module-selectory-body-title">CATEGORIES</p>

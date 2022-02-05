@@ -18,3 +18,13 @@
 .module-notice p {
   margin: 0;
 }
+
+@media only screen and (max-width: 560px) {
+  .module-notice {
+    flex-direction: column;
+  }
+
+  .module-notice p {
+    font-size: 3vw;
+  }
+}

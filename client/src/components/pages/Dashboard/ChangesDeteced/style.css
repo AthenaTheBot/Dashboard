@@ -1,0 +1,69 @@
+@keyframes changesDetectedInit {
+  0% {
+    transform: translateY(40px);
+  }
+
+  50% {
+    transform: translateY(-30px);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.athena-changes-detected-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--primary-background);
+  border-radius: 5px;
+  padding: 8px;
+  animation: changesDetectedInit 600ms forwards !important;
+  font-size: 14px !important;
+}
+
+.athena-changes-detected-container .athena-button {
+  padding: 8px;
+}
+
+.athena-changes-detected-container * {
+  animation: unset !important;
+}
+
+.athena-changes-detected-container p {
+  margin: 0px 5px;
+}
+
+@keyframes changesDetectedClosing {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-30px);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+}
+
+.athena-changes-detected-closing {
+  animation: changesDetectedClosing 600ms forwards !important;
+}
+
+@media only screen and (max-width: 610px) {
+  .athena-changes-detected-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .athena-changes-detected-container * {
+    margin: 5px !important;
+  }
+}
