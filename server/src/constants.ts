@@ -59,8 +59,8 @@ interface Guild {
   icon: string;
   owner: boolean;
   permissions: number | string[];
-  permissions_new: string | string[];
-  features: string[];
+  permissions_new?: string | string[];
+  features?: string[];
 }
 
 interface Command {

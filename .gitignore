@@ -1,4 +1,5 @@
 client/node_modules
 server/node_modules
-server/logs/*
 server/dist
+server/config.json
+server/config.build.json

@@ -2,6 +2,7 @@ import express from "express";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import GuildModel from "../../models/Guild";
+import DashCategories from "../../schemas/DashCategories";
 import getCurrentUserGuilds from "../../utils/getUserGuilds";
 import { bot } from "../../index";
 import { connection } from "mongoose";
@@ -50,6 +51,8 @@ router.get("/:id", async (req, res) => {
   // Delete unncessary meta info
   delete guildData._doc._id;
   delete guildData._doc.lastUpdated;
+  delete guild.permissions_new;
+  delete guild.features;
 
   const extraGuildData = await bot.guilds.cache.get(guild.id);
 
@@ -63,13 +66,13 @@ router.get("/:id", async (req, res) => {
       ).size,
     },
     roles: extraGuildData?.roles.cache.size,
-    createdAt: dayjs(extraGuildData?.createdAt).format("L LTS"),
+    createdAt: dayjs(extraGuildData?.createdAt).format("L"),
   });
 
   return res.status(200).json({ ...guild, ...guildData._doc });
 });
 
-router.post("/:id", async (req, res) => {
+router.patch("/:id/:category", async (req, res) => {
   const session = req.signedCookies?.session;
 
   if (!session) return res.status(400).json({ message: "Bad Request" }).end();
@@ -78,36 +81,69 @@ router.post("/:id", async (req, res) => {
 
   const guild = guilds?.find((x) => x.id === req.params.id);
 
-  if (!guild) return res.status(400).json({ message: "Unauthorized" }).end();
+  if (!guild) return res.status(401).json({ message: "Unauthorized" }).end();
 
-  try {
-    const guildData = (await connection
-      .collection("guilds")
-      .findOne({ _id: req.params.id as any })
-      .catch((err) => null)) as any;
+  if (req.params?.category === "settings") {
+    try {
+      await DashCategories.SettingsCategorySchema.validateSync(req.body);
+    } catch (err) {
+      res.status(400).json({ message: "Bad Request" }).end();
+    }
 
-    if (!guildData)
-      return res.status(500).json({ message: "Server Error" }).end();
-
-    if (req.body.prefix)
-      connection
+    try {
+      await connection
         .collection("guilds")
         .updateOne(
           { _id: req.params.id as any },
-          { $set: { "settings.prefix": req.body.prefix } }
+          { $set: { settings: req.body } }
         );
-    if (req.body.language)
-      connection
-        .collection("guilds")
-        .updateOne(
-          { _id: req.params.id as any },
-          { $set: { "settings.language": req.body.language } }
-        );
-  } catch (err) {
-    return res.status(500).json({ message: "Server Error" }).end();
+    } catch (err) {
+      res.status(500).json({ message: "Server Error" }).end();
+    }
+
+    res.status(200).json({ message: "Successfull" }).end();
   }
-
-  res.status(200).json({ successfull: true }).end();
 });
+
+// router.post("/:id", async (req, res) => {
+//   const session = req.signedCookies?.session;
+
+//   if (!session) return res.status(400).json({ message: "Bad Request" }).end();
+
+//   const guilds = await getCurrentUserGuilds(session, true);
+
+//   const guild = guilds?.find((x) => x.id === req.params.id);
+
+//   if (!guild) return res.status(401).json({ message: "Unauthorized" }).end();
+
+//   try {
+//     const guildData = (await connection
+//       .collection("guilds")
+//       .findOne({ _id: req.params.id as any })
+//       .catch((err) => null)) as any;
+
+//     if (!guildData)
+//       return res.status(500).json({ message: "Server Error" }).end();
+
+//     if (req.body.prefix)
+//       connection
+//         .collection("guilds")
+//         .updateOne(
+//           { _id: req.params.id as any },
+//           { $set: { "settings.prefix": req.body.prefix } }
+//         );
+//     if (req.body.language)
+//       connection
+//         .collection("guilds")
+//         .updateOne(
+//           { _id: req.params.id as any },
+//           { $set: { "settings.language": req.body.language } }
+//         );
+//   } catch (err) {
+//     return res.status(500).json({ message: "Server Error" }).end();
+//   }
+
+//   res.status(200).json({ successfull: true }).end();
+// });
 
 export default router;
