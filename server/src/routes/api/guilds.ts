@@ -51,6 +51,7 @@ router.get("/:id", async (req, res) => {
   // Delete unncessary meta info
   delete guildData._doc._id;
   delete guildData._doc.lastUpdated;
+  delete guildData._doc.settings.premium;
   delete guild.permissions_new;
   delete guild.features;
 
@@ -85,10 +86,22 @@ router.patch("/:id/:category", async (req, res) => {
 
   if (req.params?.category === "settings") {
     try {
-      await DashCategories.SettingsCategorySchema.validateSync(req.body);
+      await DashCategories.SettingsCategorySchema.validateSync(req.body, {
+        strict: true,
+      });
+
+      req.body = await DashCategories.SettingsCategorySchema.validateSync(
+        req.body,
+        {
+          stripUnknown: true,
+        }
+      );
     } catch (err) {
       res.status(400).json({ message: "Bad Request" }).end();
+      return;
     }
+
+    req.body.premium = false;
 
     try {
       await connection
@@ -99,51 +112,11 @@ router.patch("/:id/:category", async (req, res) => {
         );
     } catch (err) {
       res.status(500).json({ message: "Server Error" }).end();
+      return;
     }
 
     res.status(200).json({ message: "Successfull" }).end();
   }
 });
-
-// router.post("/:id", async (req, res) => {
-//   const session = req.signedCookies?.session;
-
-//   if (!session) return res.status(400).json({ message: "Bad Request" }).end();
-
-//   const guilds = await getCurrentUserGuilds(session, true);
-
-//   const guild = guilds?.find((x) => x.id === req.params.id);
-
-//   if (!guild) return res.status(401).json({ message: "Unauthorized" }).end();
-
-//   try {
-//     const guildData = (await connection
-//       .collection("guilds")
-//       .findOne({ _id: req.params.id as any })
-//       .catch((err) => null)) as any;
-
-//     if (!guildData)
-//       return res.status(500).json({ message: "Server Error" }).end();
-
-//     if (req.body.prefix)
-//       connection
-//         .collection("guilds")
-//         .updateOne(
-//           { _id: req.params.id as any },
-//           { $set: { "settings.prefix": req.body.prefix } }
-//         );
-//     if (req.body.language)
-//       connection
-//         .collection("guilds")
-//         .updateOne(
-//           { _id: req.params.id as any },
-//           { $set: { "settings.language": req.body.language } }
-//         );
-//   } catch (err) {
-//     return res.status(500).json({ message: "Server Error" }).end();
-//   }
-
-//   res.status(200).json({ successfull: true }).end();
-// });
 
 export default router;
