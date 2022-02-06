@@ -106,7 +106,13 @@ class Dashboard {
 
       await this.instances.server.listen(this.config.debugPort);
 
-      await this.instances.bot.login(this.config.auth.botToken);
+      try {
+        await this.instances.bot.login(this.config.auth.botToken);
+
+        this.log("Logged into the discord app.");
+      } catch (err) {
+        this.log((err as any).message, LogType.ERROR);
+      }
 
       resolve();
     });
