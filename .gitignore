@@ -3,3 +3,4 @@ server/node_modules
 server/dist
 server/config.json
 server/config.build.json
+server/keys/*

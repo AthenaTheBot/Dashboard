@@ -1,9 +1,13 @@
+import http from "http";
+import https from "https";
+import fs from "fs";
 import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import Dashboard from "./Dashboard";
 import { Config, LogType } from "./constants";
+import colors from "colors";
 
 // Routes
 import apiRoute from "./routes/api/index";
@@ -49,9 +53,33 @@ server.get("/*", (req, res) => {
   );
 });
 
+const keysPath = path.join(__dirname, "..", "keys");
+const keys = {
+  key: fs.readFileSync(path.join(keysPath, "privkey.pem"), "utf-8"),
+  cert: fs.readFileSync(path.join(keysPath, "cert.pem"), "utf-8"),
+  ca: fs.readFileSync(path.join(keysPath, "chain.pem"), "utf-8"),
+};
+
+const httpServer = http.createServer(
+  app.config.debug
+    ? app.instances.server
+    : (app.reditectToHTTPS as express.Express)
+);
+const httpsServer = https.createServer(keys, app.instances.server);
+
 (async () => {
   try {
     await app.start();
+
+    httpServer.listen(app.serverPorts.http);
+    if (app.serverPorts.https) httpsServer.listen(app.serverPorts.https);
+
+    app.log(
+      `HTTP servers has been started. Ports:  (HTTP: ${colors.green(
+        app.serverPorts.http as any
+      )}), (HTTPS: ${colors.green(app.serverPorts.https as any)})`,
+      LogType.SUCCESS
+    );
 
     app.log("Started dashboard.", LogType.SUCCESS);
   } catch (err) {

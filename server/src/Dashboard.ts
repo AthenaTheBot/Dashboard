@@ -17,6 +17,11 @@ class Dashboard {
     bot: Discord.Client;
   };
 
+  serverPorts: {
+    http: number;
+    https: number | null;
+  };
+
   cache: {
     users: Map<string, User>;
     userGuilds: Map<string, Guild[]>;
@@ -30,6 +35,11 @@ class Dashboard {
     this.instances = {
       server: express(),
       bot: new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS] }),
+    };
+
+    this.serverPorts = {
+      http: 80,
+      https: 443,
     };
 
     this.cache = {
@@ -98,18 +108,29 @@ class Dashboard {
     }
   }
 
+  reditectToHTTPS(req: express.Request, res: express.Response) {
+    res.writeHead(301, {
+      Location: "https://" + req.headers["host"] + req.url,
+    });
+
+    res.end();
+  }
+
   async start(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       if (!this.config) return reject(new Error("CONFIG_NOT_LOADED"));
 
       await this.connectDB(this.config.dbUrl);
 
-      this.instances.server.listen(this.config.debugPort);
+      if (this.config.debug) {
+        this.serverPorts.http = this.config.debugPort;
+        this.serverPorts.https = null;
+      }
 
       try {
         await this.instances.bot.login(this.config.auth.botToken);
 
-        this.log("Logged into the discord app.");
+        this.log("Logged into the discord app.", LogType.SUCCESS);
       } catch (err) {
         this.log((err as any).message, LogType.ERROR);
       }
