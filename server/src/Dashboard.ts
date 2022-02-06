@@ -104,7 +104,7 @@ class Dashboard {
 
       await this.connectDB(this.config.dbUrl);
 
-      await this.instances.server.listen(this.config.debugPort);
+      this.instances.server.listen(this.config.debugPort);
 
       try {
         await this.instances.bot.login(this.config.auth.botToken);
