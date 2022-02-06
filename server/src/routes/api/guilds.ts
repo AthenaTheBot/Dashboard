@@ -101,6 +101,7 @@ router.patch("/:id/:category", async (req, res) => {
       return;
     }
 
+    // Strictly set premium to false since its not being used by bot
     req.body.premium = false;
 
     try {
