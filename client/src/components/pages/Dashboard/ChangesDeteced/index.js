@@ -4,9 +4,13 @@ import $ from "jquery";
 
 import "./style.css";
 
-function ChangesDetected({ loading, active, savedChanges }) {
-  const saveChanges = () => {
+function ChangesDetected({ loading, active, savedChanges, resetChanges }) {
+  const saveChangesBtn = () => {
     if (savedChanges) savedChanges(closeMenu);
+  };
+
+  const resetChangesBtn = () => {
+    if (resetChanges) resetChanges(closeMenu);
   };
 
   const closeMenu = () => {
@@ -19,9 +23,14 @@ function ChangesDetected({ loading, active, savedChanges }) {
     return (
       <div className="athena-changes-detected-container">
         <p>Changes, detected! Save changes or reset</p>
-        <Button buttonClicked={saveChanges}>
-          {loading ? "Loading.." : "Save Changes"}
-        </Button>
+        <div className="athena-changes-detected-buttons">
+          <Button id="reset-btn" buttonClicked={resetChangesBtn}>
+            Reset Changes
+          </Button>
+          <Button buttonClicked={saveChangesBtn}>
+            {loading ? "Loading.." : "Save Changes"}
+          </Button>
+        </div>
       </div>
     );
   } else return <React.Fragment />;

@@ -23,8 +23,21 @@
   font-size: 14px !important;
 }
 
+.athena-changes-detected-buttons {
+  display: flex;
+}
+
+.athena-changes-detected-container #reset-btn {
+  background-color: transparent;
+}
+
+.athena-changes-detected-container #reset-btn:hover {
+  color: #b3b3b3 !important;
+}
+
 .athena-changes-detected-container .athena-button {
   padding: 8px;
+  margin: 0px 5px;
 }
 
 .athena-changes-detected-container * {
@@ -65,5 +78,11 @@
 
   .athena-changes-detected-container * {
     margin: 5px !important;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .athena-changes-detected-buttons {
+    flex-direction: column;
   }
 }

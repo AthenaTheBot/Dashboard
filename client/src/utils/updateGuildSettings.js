@@ -5,15 +5,17 @@ const updateGuildSettings = async (guild, category, payload) => {
 
   if (!session) return;
 
-  await fetch(`/api/guilds/${guild}/${category}`, {
+  const success = await fetch(`/api/guilds/${guild}/${category}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
-  }).catch((err) => false);
+  })
+    .then((res) => (res.status == 200 ? true : false))
+    .catch((err) => false);
 
-  return;
+  return success;
 };
 
 export default updateGuildSettings;

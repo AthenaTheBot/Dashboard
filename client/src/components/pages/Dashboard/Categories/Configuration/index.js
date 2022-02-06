@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState, useRef } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import ChangesDetected from "../../ChangesDeteced";
 import dashContext from "../../../../../context/dash/dashContext";
 import InputSelect from "../../../../layout/Input/InputSelect";
@@ -7,7 +7,8 @@ import Loader from "../../../../layout/Loader";
 import updateGuildSettings from "../../../../../utils/updateGuildSettings";
 
 function Configuration() {
-  const { currentServer: server } = useContext(dashContext);
+  const { currentServer: server, setCurrentServer: setServer } =
+    useContext(dashContext);
   const [settings, setSettings] = useState(server?.settings);
   const [changeDetected, setChangeDetected] = useState(false);
   const [changesLoading, setChangesLoading] = useState(false);
@@ -19,18 +20,37 @@ function Configuration() {
     } else {
       setChangeDetected(true);
     }
+    //eslint-disable-next-line
   }, [settings, setChangeDetected]);
 
   const saveChanges = async (closeMenu) => {
     setChangesLoading(true);
 
-    await updateGuildSettings(server.id, "settings", settings);
+    const success = await updateGuildSettings(server.id, "settings", settings);
+
+    if (success) {
+      server.settings = settings;
+      setServer(server);
+    }
 
     closeMenu();
     setTimeout(() => {
       setChangesLoading(false);
       setChangeDetected(false);
     }, 700);
+  };
+
+  const resetChanges = (closeMenu) => {
+    if (server?.settings) {
+      setSettings(null);
+      closeMenu();
+
+      setTimeout(() => {
+        setSettings(server.settings);
+        setChangesLoading(false);
+        setChangeDetected(false);
+      }, 700);
+    }
   };
 
   if (settings) {
@@ -90,6 +110,7 @@ function Configuration() {
         </div>
 
         <ChangesDetected
+          resetChanges={resetChanges}
           savedChanges={saveChanges}
           loading={changesLoading}
           active={changeDetected}
