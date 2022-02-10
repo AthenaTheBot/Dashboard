@@ -57,10 +57,9 @@ body {
   animation-duration: 1200ms;
   animation-fill-mode: forwards;
   font-family: "Poppins", sans-serif !important;
-  overflow-x: hidden;
 }
 
-#root {
+#__athena {
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;

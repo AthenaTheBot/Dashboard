@@ -12,7 +12,7 @@ const updateGuildSettings = async (guild, category, payload) => {
     },
     body: JSON.stringify(payload),
   })
-    .then((res) => (res.status == 200 ? true : false))
+    .then((res) => (res.status === 200 ? true : false))
     .catch((err) => false);
 
   return success;
