@@ -57,7 +57,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  display: none;
   animation: inputInitAnim 500ms forwards;
 }
 
@@ -67,10 +66,6 @@
   border-radius: 6px;
   margin: 5px 0px;
   transition: all 250ms ease;
-}
-
-.athena-input-options-active {
-  display: block !important;
 }
 
 .athena-input-option:hover {

@@ -17,9 +17,9 @@ router.get("/:doc", async (req, res) => {
       "utf-8"
     );
 
-    res.status(200).send(fileData).end();
+    res.successfull({ data: fileData });
   } else {
-    res.status(404).json({ message: "File not found" }).end();
+    res.notFound();
   }
 });
 

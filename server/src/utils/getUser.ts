@@ -21,7 +21,7 @@ const getCurrentUser = async (
 
     setTimeout(
       () => cache.users.delete(accessToken),
-      config.cacheTimeouts.users
+      config.cacheTimeouts.users * 1000
     );
 
     return serverRes.data;

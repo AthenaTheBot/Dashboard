@@ -24,6 +24,7 @@ const DashState = (props) => {
         if (!res.ok) return null;
         return await res.json();
       })
+      .then((res) => res.data)
       .catch((err) => null);
 
     if (!user) return;
@@ -41,6 +42,7 @@ const DashState = (props) => {
         if (!res.ok) return null;
         return await res.json();
       })
+      .then((res) => res.data)
       .catch((err) => null);
 
     if (!servers) return;
@@ -56,6 +58,7 @@ const DashState = (props) => {
         if (!res.ok) return null;
         return await res.json();
       })
+      .then((res) => res.data)
       .catch((err) => null);
 
     if (!commands) return;

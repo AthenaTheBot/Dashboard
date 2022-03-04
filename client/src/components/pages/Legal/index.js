@@ -24,7 +24,7 @@ function Legal({ page }) {
         const data = await fetch(`/legal-docs/${page}`)
           .then(async (res) => {
             if (!res.ok) return null;
-            return await res.text();
+            return await res?.data;
           })
           .catch((err) => null);
 

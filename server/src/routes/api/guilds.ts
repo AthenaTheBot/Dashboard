@@ -2,10 +2,12 @@ import express from "express";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import GuildModel from "../../models/Guild";
-import DashCategories from "../../schemas/DashCategories";
+import DashModules from "../../schemas/DashModules";
 import getCurrentUserGuilds from "../../utils/getUserGuilds";
 import { bot } from "../../index";
 import { connection } from "mongoose";
+import { Guild, Role } from "discord.js";
+import updateServerModule from "../../utils/updateServerModule";
 
 dayjs.extend(localizedFormat);
 
@@ -14,16 +16,15 @@ const router = express.Router();
 router.get("/:id", async (req, res) => {
   const session = req.signedCookies?.session;
 
-  if (!session) return res.status(400).json({ message: "Bad Request" }).end();
+  if (!session) return res.badRequest();
 
-  const guilds = await getCurrentUserGuilds(session, true);
+  const guilds = await getCurrentUserGuilds(session, false);
 
   const guild = guilds?.find((x) => x.id === req.params.id);
 
-  if (!guild) return res.status(400).json({ message: "Unauthorized" }).end();
+  if (!guild) return res.unauthorized();
 
-  if (!connection)
-    return res.status(500).json({ message: "Server Error" }).end();
+  if (!connection) return res.serverError();
 
   let guildData = await GuildModel.findById(guild.id).catch((err) => null);
 
@@ -40,6 +41,7 @@ router.get("/:id", async (req, res) => {
           adminRole: null,
           modRole: null,
           warnings: [],
+          autoRole: null,
         },
         funModule: {},
         utilsModule: {},
@@ -73,50 +75,76 @@ router.get("/:id", async (req, res) => {
   return res.status(200).json({ ...guild, ...guildData._doc });
 });
 
-router.patch("/:id/:category", async (req, res) => {
+router.get("/:id/getAvailableRoles", async (req, res) => {
   const session = req.signedCookies?.session;
 
-  if (!session) return res.status(400).json({ message: "Bad Request" }).end();
+  if (!session) return res.badRequest();
 
-  const guilds = await getCurrentUserGuilds(session, true);
+  const guilds = await getCurrentUserGuilds(session, false);
 
   const guild = guilds?.find((x) => x.id === req.params.id);
 
-  if (!guild) return res.status(401).json({ message: "Unauthorized" }).end();
+  if (!guild) return res.unauthorized();
 
-  if (req.params?.category === "settings") {
+  const guildData = (await bot.guilds.cache.get(guild.id)) as Guild;
+
+  if (!guildData) return res.serverError();
+
+  const availableRoles: Role[] = [];
+
+  guildData.roles.cache.forEach((guildRole: Role) => {
+    if (
+      !guildRole.managed &&
+      guildRole.rawPosition != 0 &&
+      guildRole.rawPosition < (guildData.me?.roles?.highest?.rawPosition || 0)
+    ) {
+      Object.assign(guildRole, { color: guildRole.hexColor });
+      availableRoles.push(guildRole);
+    }
+  });
+
+  res.successfull({ data: availableRoles });
+});
+
+router.patch("/:id/:module", async (req, res) => {
+  const session = req.signedCookies?.session;
+
+  if (!session) return res.badRequest();
+
+  const guilds = await getCurrentUserGuilds(session, false);
+
+  const guild = guilds?.find((x) => x.id === req.params.id);
+
+  if (!guild) return res.unauthorized();
+
+  const modules = Object.getOwnPropertyNames(DashModules);
+
+  if (modules.includes(req.params?.module)) {
     try {
-      await DashCategories.SettingsCategorySchema.validateSync(req.body, {
+      await (DashModules as any)[req.params?.module].validateSync(req.body, {
         strict: true,
       });
 
-      req.body = await DashCategories.SettingsCategorySchema.validateSync(
+      req.body = await (DashModules as any)[req.params?.module].validateSync(
         req.body,
         {
           stripUnknown: true,
         }
       );
+
+      const success = await updateServerModule(
+        req.params.id,
+        req.params.module,
+        req.body
+      );
+
+      if (success) return res.successfull();
+      else return res.serverError();
     } catch (err) {
-      res.status(400).json({ message: "Bad Request" }).end();
-      return;
+      return res.badRequest();
     }
-
-    // Strictly set premium to false since its not being used by bot
-    req.body.premium = false;
-
-    try {
-      await connection
-        .collection("guilds")
-        .updateOne(
-          { _id: req.params.id as any },
-          { $set: { settings: req.body } }
-        );
-    } catch (err) {
-      res.status(500).json({ message: "Server Error" }).end();
-      return;
-    }
-
-    res.status(200).json({ message: "Successfull" }).end();
+  } else {
+    res.badRequest();
   }
 });
 

@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import Dashboard from "./Dashboard";
 import { Config, LogType } from "./constants";
 import colors from "colors";
+import responseHandler from "./middlewares/responseHandler";
 
 // Routes
 import apiRoute from "./routes/api/index";
@@ -33,6 +34,7 @@ const cache = app.cache;
 server.disable("x-powered-by");
 server.use(bodyParser.json());
 server.use(cookieParser(config.keys.cookieSign));
+server.use(responseHandler);
 
 // Attaching routes to the express app
 server.use("/api", apiRoute);

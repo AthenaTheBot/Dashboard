@@ -109,12 +109,12 @@ function Dashboard() {
               </li>
               <li
                 onClick={() => {
-                  selectoryCategoryClicked("configuration");
+                  selectoryCategoryClicked("settings");
                 }}
                 className="module-selectory-body-element"
               >
                 <BiCog />
-                <p>Configuration</p>
+                <p>Settings</p>
               </li>
               <li
                 onClick={() => {

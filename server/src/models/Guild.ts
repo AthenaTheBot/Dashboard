@@ -13,6 +13,7 @@ const GuildSchema = new mongoose.Schema(
         adminRole: String || null,
         modRole: String || null,
         warnings: Array,
+        autoRole: String || null,
       },
       funModule: Object,
       utilsModule: Object,

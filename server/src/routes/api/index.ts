@@ -7,6 +7,7 @@ import capitalizeText from "../../utils/capitalizeText";
 import { Command } from "../../constants";
 import guildsRoute from "./guilds";
 import usersRoute from "./users";
+import { config } from "../..";
 
 dayjs.extend(localizedFormat);
 
@@ -52,16 +53,20 @@ router.get("/commands", async (req, res) => {
 
       commandsCache = categories;
     } catch (err) {
-      res.status(500).json({ status: 500, message: "Server Error" }).end();
+      res.serverError();
       return;
     }
   }
 
-  res.status(200).json(commandsCache).end();
+  res.successfull({ data: commandsCache });
+});
+
+router.get("/getAvailableLanguages", (req, res) => {
+  res.successfull({ data: config.availableLanguages });
 });
 
 router.get("/*", (req, res) => {
-  res.status(400).json({ message: "Bad Request" }).end();
+  res.badRequest();
 });
 
 export default router;

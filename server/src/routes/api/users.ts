@@ -7,26 +7,25 @@ const router = express.Router();
 router.get("/@me", async (req, res) => {
   const session = req.signedCookies?.session;
 
-  if (!session) return res.status(400).json({ message: "Bad Request" }).end();
+  if (!session) return res.badRequest();
 
   const user = await getCurrentUser(session);
 
-  if (!user) return res.status(500).json({ message: "Server Error" }).end();
+  if (!user) return res.serverError();
 
-  res.status(200).json(user).end();
+  res.successfull({ data: user });
 });
 
 router.get("/@me/guilds", async (req, res) => {
   const session = req.signedCookies?.session;
 
-  if (!session) return res.status(400).json({ message: "Bad Request" }).end();
+  if (!session) return res.badRequest();
 
   const guilds = await getCurrentUserGuilds(session, true);
 
-  if (!guilds || !Array.isArray(guilds))
-    return res.status(500).json({ message: "Server Error" }).end();
+  if (!guilds || !Array.isArray(guilds)) return res.serverError();
 
-  return res.status(200).json(guilds).end();
+  return res.successfull({ data: guilds });
 });
 
 export default router;

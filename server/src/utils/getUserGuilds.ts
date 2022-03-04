@@ -51,7 +51,7 @@ const getCurrentUserGuilds = async (
 
     setTimeout(
       () => cache.userGuilds.delete(accessToken),
-      config.cacheTimeouts.userGuilds
+      config.cacheTimeouts.userGuilds * 1000
     );
 
     if (returnManageable)
@@ -62,7 +62,7 @@ const getCurrentUserGuilds = async (
       );
     else return guilds;
   } catch (err: any) {
-    if (!err?.data?.retry_after) {
+    if (err?.toJSON()?.status !== 429) {
       console.log(err);
     }
     return null;

@@ -22,7 +22,17 @@
     "cookieSign": ""
   },
   "cacheTimeouts": {
-    "users": 1,
-    "userGuilds": 1
-  }
+    "users": 60,
+    "userGuilds": 60
+  },
+  "availableLanguages": [
+    {
+      "id": "en_US",
+      "label": "English"
+    },
+    {
+      "id": "tr_TR",
+      "label": "Türkçe"
+    }
+  ]
 }

@@ -25,6 +25,12 @@ interface Config {
     users: number;
     userGuilds: number;
   };
+  availableLanguages: Language[];
+}
+
+interface Language {
+  id: string;
+  label: string;
 }
 
 interface AccessTokenResponse {

@@ -5,14 +5,26 @@ import InputSelect from "../../../../layout/Input/InputSelect";
 import InputText from "../../../../layout/Input/InputText";
 import Loader from "../../../../layout/Loader";
 import updateGuildSettings from "../../../../../utils/updateGuildSettings";
+import getAvailableLanguages from "../../../../../utils/getAvailableLagnauges";
 
-function Configuration() {
+function Settings() {
   const { currentServer: server, setCurrentServer: setServer } =
     useContext(dashContext);
-  const [settings, setSettings] = useState(server?.settings);
+  const [settings, setSettings] = useState(server?.modules?.settings);
   const [changeDetected, setChangeDetected] = useState(false);
   const [changesLoading, setChangesLoading] = useState(false);
   const [init, setInit] = useState(false);
+  const [availableLanguages, setAvilableLanguages] = useState();
+
+  useEffect(() => {
+    (async () => {
+      if (!availableLanguages) {
+        const languages = await getAvailableLanguages(server.id);
+        if (languages) setAvilableLanguages(languages);
+      }
+    })();
+    //eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (!init) {
@@ -29,7 +41,7 @@ function Configuration() {
     const success = await updateGuildSettings(server.id, "settings", settings);
 
     if (success) {
-      server.settings = settings;
+      server.modules.settings = settings;
       setServer(server);
     }
 
@@ -41,12 +53,12 @@ function Configuration() {
   };
 
   const resetChanges = (closeMenu) => {
-    if (server?.settings) {
+    if (server?.modules?.settings) {
       setSettings(null);
       closeMenu();
 
       setTimeout(() => {
-        setSettings(server.settings);
+        setSettings(server.modules.settings);
         setChangesLoading(false);
         setChangeDetected(false);
       }, 700);
@@ -56,7 +68,7 @@ function Configuration() {
   if (settings) {
     return (
       <Fragment>
-        <div className="module-configuration-container">
+        <div className="module-settings-container">
           <div className="module-prop">
             <h3 className="module-prop-title">Bot Prefix</h3>
             <p className="module-prop-description">
@@ -77,7 +89,7 @@ function Configuration() {
           </div>
         </div>
 
-        <div className="module-configuration-container">
+        <div className="module-settings-container">
           <div className="module-prop">
             <h3 className="module-prop-title">Bot Language</h3>
             <p className="module-prop-description">
@@ -92,18 +104,18 @@ function Configuration() {
                     language: option.id,
                   }));
                 }}
-                options={[
-                  {
-                    content: "English",
-                    id: "en_US",
-                    active: settings?.language === "en_US" ? true : false,
-                  },
-                  {
-                    content: "Turkish",
-                    id: "tr_TR",
-                    active: settings?.language === "tr_TR" ? true : false,
-                  },
-                ]}
+                options={
+                  availableLanguages
+                    ? availableLanguages.map((language) => {
+                        return {
+                          content: language.label,
+                          id: language.id,
+                          active:
+                            settings?.language === language.id ? true : false,
+                        };
+                      })
+                    : []
+                }
               />
             </div>
           </div>
@@ -122,4 +134,4 @@ function Configuration() {
   }
 }
 
-export default Configuration;
+export default Settings;

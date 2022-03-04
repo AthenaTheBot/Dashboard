@@ -1,5 +1,5 @@
 import Overview from "./Categories/Overview";
-import Configuration from "./Categories/Configuration";
+import Settings from "./Categories/Settings";
 import Moderation from "./Categories/Moderation";
 import Music from "./Categories/Music";
 import Profile from "../../layout/Navbar/Profile";
@@ -14,8 +14,8 @@ const CategoryLoader = ({ category }) => {
       case "overview":
         return <Overview />;
 
-      case "configuration":
-        return <Configuration />;
+      case "settings":
+        return <Settings />;
 
       case "moderation":
         return <Moderation />;
