@@ -34,12 +34,12 @@ const Footer = () => {
               <Link to="/terms">Terms of Service</Link>
             </li>
             <li>
-              <Link to="/support">
+              <a href="/support">
                 Contact Us{" "}
                 <FiExternalLink
                   style={{ marginBottom: "3px", marginLeft: "4px" }}
                 />
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
