@@ -1,39 +1,38 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../../../layout/Button";
 
 import "./style.css";
 
 function Server({ id, available, name, icon }) {
   const navigate = useNavigate();
-  const redirect = (to, passive = true) => {
-    if (passive) {
-      navigate(to);
+  const redirect = () => {
+    if (available) {
+      navigate(`/dashboard/${id}`);
     } else {
-      window.location.replace(to);
+      window.location.replace(`/invite`);
     }
   };
-  const [guildName, setGuildName] = useState("Loading..");
-
-  useEffect(() => {
-    let parsedName = name.length >= 13 ? name.slice(0, 11) + ".." : name;
-    setGuildName(parsedName);
-  }, [name]);
 
   return (
-    <div
-      onClick={() => {
-        if (available) {
-          redirect(`/dashboard/${id}`, true);
-        } else {
-          window.location.replace("/invite");
-        }
-      }}
-      className="athena-server"
-    >
-      <img src={icon} alt={name} />
-      <h1>{guildName}</h1>
-      <div className="athena-server-invite">
-        <h5>{available ? "Go To Dashboard" : "Invite Athena"} </h5>
+    <div className="athena-server" onClick={redirect}>
+      <div className="server-top">
+        <div
+          style={{
+            backgroundImage: `url(${
+              icon ? icon : "/assets/images/default.png"
+            })`,
+          }}
+          className="server-bg"
+        ></div>
+        <div className="server-icon">
+          <img src={icon ? icon : "/assets/images/default.png"} alt="" />
+        </div>
+      </div>
+      <div className="server-bottom">
+        <h3>{name}asdsadsadsad</h3>
+        <Button buttonClicked={redirect}>
+          {available ? "Go To Dashboard" : "Invite Athena"}
+        </Button>
       </div>
     </div>
   );

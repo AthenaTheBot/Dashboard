@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment } from "react";
-import $ from "jquery";
 
 // Syling
 import "./style.css";

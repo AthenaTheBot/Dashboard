@@ -1,9 +1,8 @@
-@keyframes serverInit {
+@keyframes serverCardInit {
   0% {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-30px);
   }
-
   100% {
     opacity: 1;
     transform: translateY(0px);
@@ -13,89 +12,85 @@
 .athena-server {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 300px;
-  cursor: pointer;
+  justify-content: center;
+  flex-direction: column;
   background-color: var(--primary-background);
-  padding: 15px;
-  border-radius: 10px;
-  margin: 30px;
-  border: 1px solid var(--primary-background);
-  transition: all 450ms ease;
-  animation: serverInit 400ms forwards;
+  width: 280px;
+  height: 330px;
   overflow: hidden;
-}
-
-.athena-server img {
-  height: 64px;
-  width: 64px;
+  margin: 15px;
   border-radius: 10px;
+  animation: serverCardInit 600ms forwards;
 }
 
-.athena-server h1 {
-  font-size: 23px;
-  margin: 0px;
-  margin-left: 15px;
-}
-
-.athena-server:hover {
-  border-color: var(--primary-theme);
-}
-
-.athena-server-invite {
-  height: 100%;
+.server-top {
   width: 100%;
-  background-color: var(--primary-theme);
-  color: white;
-  position: absolute;
-  left: 0;
-  top: 0;
+  height: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 500ms ease;
-  opacity: 0;
+  position: relative;
 }
 
-.athena-server-invite:hover {
-  opacity: 1;
+.server-bg {
+  transform: scale(1.1);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  filter: blur(30px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
 }
 
-@media only screen and (max-width: 330px) {
+.server-icon img {
+  height: 96px;
+  width: 96px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 10;
+  border: 3px solid var(--primary-theme);
+  background-color: black;
+  -webkit-box-shadow: 0px 0px 50px 17px rgba(0, 0, 0, 0.35);
+  box-shadow: 0px 0px 50px 17px rgba(0, 0, 0, 0.35);
+}
+
+.server-bottom {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: var(--primary-background);
+  position: relative;
+  box-sizing: border-box;
+  padding: 15px;
+  z-index: 100;
+}
+
+.server-bottom h3 {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.server-bottom .athena-button {
+  width: 100%;
+  font-size: 17px;
+}
+
+@media (max-width: 330px) {
   .athena-server {
-    width: 100%;
-    margin: 15px 0px;
-  }
-
-  .athena-server img {
-    height: 48px;
-    width: 48px;
-  }
-
-  .athena-server h1 {
-    font-size: 17px;
+    width: 260px;
+    height: 300px;
   }
 }
 
-@media only screen and (max-width: 290px) {
-  .athena-server img {
-    height: 48px;
-    width: 48px;
-  }
-
-  .athena-server h1 {
-    font-size: 15px;
-  }
-}
-
-@media only screen and (max-width: 265px) {
-  .athena-server img {
-    height: 32px;
-    width: 32px;
-  }
-
-  .athena-server h1 {
-    font-size: 13px;
+@media (max-width: 300px) {
+  .athena-server {
+    width: 240px;
+    height: 280px;
   }
 }
