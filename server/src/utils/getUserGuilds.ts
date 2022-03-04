@@ -16,7 +16,8 @@ const getCurrentUserGuilds = async (
       return cachedUserGuilds.filter(
         (x) =>
           (x.permissions as string[]).includes("ADMINISTRATOR") ||
-          (x.permissions as string[]).includes("MANAGE_GUILD")
+          ((x.permissions as string[]).includes("MANAGE_GUILD") &&
+            (x.permissions as string[]).includes("MANAGE_ROLES"))
       );
     } else return cachedUserGuilds;
   }
@@ -58,7 +59,8 @@ const getCurrentUserGuilds = async (
       return guilds.filter(
         (x) =>
           (x.permissions as string[]).includes("ADMINISTRATOR") ||
-          (x.permissions as string[]).includes("MANAGE_GUILD")
+          ((x.permissions as string[]).includes("MANAGE_GUILD") &&
+            (x.permissions as string[]).includes("MANAGE_ROLES"))
       );
     else return guilds;
   } catch (err: any) {

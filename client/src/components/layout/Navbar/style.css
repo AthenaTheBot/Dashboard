@@ -75,7 +75,8 @@
     left: 0;
     height: 100vh;
     width: 100vw;
-    background-color: var(--primary-background);
+    background-color: var(--primary-background-soft);
+    backdrop-filter: blur(30px);
     display: flex;
     flex-direction: column;
     align-items: center;

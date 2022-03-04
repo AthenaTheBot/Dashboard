@@ -110,6 +110,13 @@ h5 {
   }
 }
 
+@media (max-width: 560px) {
+  .commands-container {
+    width: 95vw !important;
+    margin: 0;
+  }
+}
+
 @media (max-width: 350px) {
   .commands-container {
     width: 100vw !important;

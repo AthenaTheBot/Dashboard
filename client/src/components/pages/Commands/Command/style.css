@@ -16,12 +16,17 @@
   width: -moz-fit-content;
 }
 
+.command p {
+  line-height: 1.5;
+}
+
 .command code {
   font-size: 15px;
   color: var(--primary-theme);
   padding: 3px;
   border-radius: 3px;
   background-color: var(--secondary-background);
+  margin: 6px 2px;
 }
 
 @keyframes commandExpandAnimText {

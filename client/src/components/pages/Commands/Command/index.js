@@ -30,17 +30,19 @@ const Command = ({ name, usage, description, reqPerms, reqBotPerms }) => {
         </p>
         <p>
           Required Perms:{" "}
-          <code id="command-req-perms">
-            {reqPerms && reqPerms.length > 0 ? reqPerms.join(", ") : "None"}
-          </code>
+          {reqPerms && reqPerms.length > 0
+            ? reqPerms.map((botPerm) => {
+                return <code>{botPerm}</code>;
+              })
+            : "None"}
         </p>
         <p>
           Required Bot Perms:{" "}
-          <code id="command-req-bot-perms">
-            {reqBotPerms && reqBotPerms.length > 0
-              ? reqBotPerms.join(", ")
-              : "None"}
-          </code>
+          {reqBotPerms && reqBotPerms.length > 0
+            ? reqBotPerms.map((botPerm) => {
+                return <code>{botPerm}</code>;
+              })
+            : "None"}
         </p>
       </div>
     </div>
