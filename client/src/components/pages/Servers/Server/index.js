@@ -29,7 +29,7 @@ function Server({ id, available, name, icon }) {
         </div>
       </div>
       <div className="server-bottom">
-        <h3>{name}asdsadsadsad</h3>
+        <h3>{name}</h3>
         <Button buttonClicked={redirect}>
           {available ? "Go To Dashboard" : "Invite Athena"}
         </Button>
