@@ -26,7 +26,7 @@ function Dashboard() {
       if (process.env.NODE_ENV === "production") {
         const sessionCookie = cookieGet("session");
 
-        if (!sessionCookie) return navigate("/oauth/login");
+        if (!sessionCookie) return window.location.replace("/oauth/login");
 
         const guild = await fetch(`/api/guilds/${guildId}`)
           .then(async (res) => {

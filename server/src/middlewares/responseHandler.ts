@@ -46,7 +46,13 @@ const responseHandler = (
       .end();
   };
 
-  Object.assign(res, { badRequest, unauthorized, serverError, successfull });
+  Object.assign(res, {
+    badRequest,
+    unauthorized,
+    notFound,
+    serverError,
+    successfull,
+  });
 
   next();
 };

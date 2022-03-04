@@ -21,10 +21,10 @@ function Legal({ page }) {
   useEffect(() => {
     (async () => {
       if (process.env.NODE_ENV === "production") {
-        const data = await fetch(`/legal-docs/${page}`)
+        const data = await fetch(`/legalDocs/${page}`)
           .then(async (res) => {
             if (!res.ok) return null;
-            return await res?.data;
+            return await res.text();
           })
           .catch((err) => null);
 

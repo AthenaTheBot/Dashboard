@@ -4,7 +4,6 @@ const GuildSchema = new mongoose.Schema(
   {
     _id: String,
     settings: {
-      premium: Boolean,
       prefix: String,
       language: String,
     },
@@ -12,8 +11,8 @@ const GuildSchema = new mongoose.Schema(
       moderationModule: {
         adminRole: String || null,
         modRole: String || null,
-        warnings: Array,
         autoRole: String || null,
+        warnings: Array,
       },
       funModule: Object,
       utilsModule: Object,

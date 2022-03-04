@@ -13,7 +13,7 @@ import responseHandler from "./middlewares/responseHandler";
 // Routes
 import apiRoute from "./routes/api/index";
 import oauthRoute from "./routes/oauth";
-import legalDocsRoute from "./routes/legal-docs";
+import legalDocsRoute from "./routes/legalDocs";
 import linksRoute from "./routes/links";
 
 const app = new Dashboard();
@@ -39,7 +39,7 @@ server.use(responseHandler);
 // Attaching routes to the express app
 server.use("/api", apiRoute);
 server.use("/oauth", oauthRoute);
-server.use("/legal-docs", legalDocsRoute);
+server.use("/legalDocs", legalDocsRoute);
 server.use("/", linksRoute);
 
 // Serving static files

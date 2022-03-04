@@ -6,8 +6,9 @@ import DashModules from "../../schemas/DashModules";
 import getCurrentUserGuilds from "../../utils/getUserGuilds";
 import { bot } from "../../index";
 import { connection } from "mongoose";
-import { Guild, Role } from "discord.js";
+import { Guild, GuildMember, Role } from "discord.js";
 import updateServerModule from "../../utils/updateServerModule";
+import getCurrentUser from "../../utils/getUser";
 
 dayjs.extend(localizedFormat);
 
@@ -32,7 +33,6 @@ router.get("/:id", async (req, res) => {
     guildData = await GuildModel.create({
       _id: guild.id,
       settings: {
-        premium: false,
         prefix: "at!",
         language: "en_US",
       },
@@ -40,11 +40,11 @@ router.get("/:id", async (req, res) => {
         moderationModule: {
           adminRole: null,
           modRole: null,
-          warnings: [],
           autoRole: null,
+          warnings: [],
         },
-        funModule: {},
-        utilsModule: {},
+        fun: {},
+        utils: {},
       },
       lastUpdated: dayjs().format("L LT"),
     });
@@ -57,7 +57,9 @@ router.get("/:id", async (req, res) => {
   delete guild.permissions_new;
   delete guild.features;
 
-  const extraGuildData = await bot.guilds.cache.get(guild.id);
+  const extraGuildData =
+    (await bot.guilds.cache.get(guild.id)) ||
+    (await bot.guilds.fetch(guild.id));
 
   Object.assign(guild, {
     members: extraGuildData?.memberCount,
@@ -83,12 +85,16 @@ router.get("/:id/getAvailableRoles", async (req, res) => {
   const guilds = await getCurrentUserGuilds(session, false);
 
   const guild = guilds?.find((x) => x.id === req.params.id);
+  const user = await getCurrentUser(session, false);
 
-  if (!guild) return res.unauthorized();
+  if (!guild || !user) return res.unauthorized();
 
-  const guildData = (await bot.guilds.cache.get(guild.id)) as Guild;
+  const guildData =
+    ((await bot.guilds.cache.get(guild.id)) as Guild) ||
+    ((await bot.guilds.fetch(guild.id)) as Guild);
+  const userData = (await guildData.members.fetch(user?.id)) as GuildMember;
 
-  if (!guildData) return res.serverError();
+  if (!guildData || !userData) return res.serverError();
 
   const availableRoles: Role[] = [];
 
@@ -96,7 +102,9 @@ router.get("/:id/getAvailableRoles", async (req, res) => {
     if (
       !guildRole.managed &&
       guildRole.rawPosition != 0 &&
-      guildRole.rawPosition < (guildData.me?.roles?.highest?.rawPosition || 0)
+      guildRole.rawPosition <
+        (guildData.me?.roles?.highest?.rawPosition || 0) &&
+      guildRole.rawPosition < userData.roles.highest.rawPosition
     ) {
       Object.assign(guildRole, { color: guildRole.hexColor });
       availableRoles.push(guildRole);

@@ -1,1 +1,1 @@
-- Fetching available languages rather than hard-coding the values in client-side.
+- Instead of hard-coding the default values for a guild fetch them from the bot process.
