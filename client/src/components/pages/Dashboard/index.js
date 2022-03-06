@@ -86,15 +86,27 @@ function Dashboard() {
         <Fragment>
           <div className="dash-module-selector">
             <div className="module-selector-guild">
-              <img
-                src={
-                  currentGuild?.icon
-                    ? currentGuild.icon
-                    : "/assets/images/default.png"
-                }
-                alt={currentGuild?.name ? currentGuild.name : "Guild Name"}
-              />
-              <h5>{currentGuild?.name ? currentGuild.name : "Guild Name"}</h5>
+              <div
+                style={{
+                  backgroundImage: `url(${
+                    currentGuild?.icon
+                      ? currentGuild.icon
+                      : "/assets/images/default.png"
+                  })`,
+                }}
+                className="module-selector-guild-background"
+              ></div>
+              <div className="module-selector-guild-inner">
+                <img
+                  src={
+                    currentGuild?.icon
+                      ? currentGuild.icon
+                      : "/assets/images/default.png"
+                  }
+                  alt={currentGuild?.name ? currentGuild.name : "Guild Name"}
+                />
+                <h5>{currentGuild?.name ? currentGuild.name : "Guild Name"}</h5>
+              </div>
             </div>
             <ul className="module-selector-body">
               <p className="module-selectory-body-title">CATEGORIES</p>

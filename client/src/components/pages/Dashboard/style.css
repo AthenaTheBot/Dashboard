@@ -16,8 +16,8 @@
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  overflow-y: scroll;
-  transition: all 450ms ease;
+  overflow-y: auto;
+  transition: transform 450ms ease;
 }
 
 .dash-module-container {
@@ -36,17 +36,41 @@
   flex-wrap: wrap;
   padding: 5px;
   border-radius: 10px;
-  background-color: var(--secondary-background);
+  position: relative;
+  z-index: 100;
   margin: 10px;
-  cursor: pointer;
   transition: all 250ms ease;
+  position: relative;
 }
 
 .module-selector-guild img {
   height: 48px;
   width: 48px;
-  margin: 10px;
+  margin: 10px 5px;
   border-radius: 50%;
+}
+
+.module-selector-guild-background {
+  filter: blur(60px);
+  transform: scale(1.7);
+  position: absolute;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+}
+
+.module-selector-guild-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background-color: #ffffff2c;
+  border-radius: 10px;
+  user-select: none;
 }
 
 .module-selector-guild h5 {
@@ -57,10 +81,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.module-selector-guild:hover {
-  background-color: var(--primary-theme);
 }
 
 .module-selector-body {
