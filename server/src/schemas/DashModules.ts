@@ -8,9 +8,9 @@ const settings = yup.object().shape({
 });
 
 const moderation = yup.object().shape({
-  adminRole: yup.string().required(),
-  modRole: yup.string().required(),
-  autoRole: yup.string().required(),
+  adminRole: yup.string().nullable(true).defined(),
+  autoRole: yup.string().nullable(true).defined(),
+  modRole: yup.string().nullable(true).defined(),
 });
 
 export default { settings, moderation };

@@ -129,16 +129,16 @@ router.patch("/:id/:module", async (req, res) => {
 
   if (modules.includes(req.params?.module)) {
     try {
-      await (DashModules as any)[req.params?.module].validateSync(req.body, {
-        strict: true,
-      });
-
-      req.body = await (DashModules as any)[req.params?.module].validateSync(
+      req.body = await (DashModules as any)[req.params?.module].validate(
         req.body,
         {
           stripUnknown: true,
         }
       );
+
+      await (DashModules as any)[req.params?.module].validateSync(req.body, {
+        strict: true,
+      });
 
       const success = await updateServerModule(
         req.params.id,

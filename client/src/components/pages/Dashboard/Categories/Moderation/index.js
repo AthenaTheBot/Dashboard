@@ -19,7 +19,13 @@ function Moderation() {
     (async () => {
       if (!availableRoles) {
         const roles = await getAvailableRoles(server.id);
-        if (roles) setAvailableRoles(roles);
+        if (roles) {
+          roles?.push({
+            id: null,
+            name: "Not selected",
+          });
+          setAvailableRoles(roles);
+        }
       }
     })();
     //eslint-disable-next-line
@@ -45,8 +51,9 @@ function Moderation() {
 
     if (success) {
       server.modules.moderation = moderation;
-      setServer(server);
     }
+
+    setServer(server);
 
     closeMenu();
 

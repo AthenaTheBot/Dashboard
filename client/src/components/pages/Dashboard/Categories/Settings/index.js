@@ -42,8 +42,9 @@ function Settings() {
 
     if (success) {
       server.modules.settings = settings;
-      setServer(server);
     }
+
+    setServer(server);
 
     closeMenu();
     setTimeout(() => {
