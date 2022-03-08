@@ -136,7 +136,7 @@ router.patch("/:id/:module", async (req, res) => {
         }
       );
 
-      await (DashModules as any)[req.params?.module].validateSync(req.body, {
+      await (DashModules as any)[req.params?.module].validate(req.body, {
         strict: true,
       });
 
