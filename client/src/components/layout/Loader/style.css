@@ -1,7 +1,3 @@
-.loader {
-  text-align: center;
-}
-
 @keyframes loaderDisabledAnim {
   0% {
     opacity: 1;
@@ -10,44 +6,6 @@
   100% {
     opacity: 0;
   }
-}
-
-.loader-disabled {
-  animation: loaderDisabledAnim 600ms forwards;
-}
-
-.spinner p {
-  margin: 5px;
-  padding: 5px;
-}
-
-.spinner {
-  margin: 100px auto 0;
-  width: fit-content;
-  width: -moz-fit-content;
-  text-align: center;
-}
-
-.spinner > div {
-  width: 22px;
-  height: 22px;
-  background-color: var(--primary-theme);
-  margin: 5px;
-
-  border-radius: 100%;
-  display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.3s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.3s infinite ease-in-out both;
-}
-
-.spinner .bounce1 {
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-
-.spinner .bounce2 {
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
 }
 
 @-webkit-keyframes sk-bouncedelay {
@@ -72,6 +30,49 @@
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loader p {
+  margin: 5px;
+  padding: 5px;
+}
+
+.loader-disabled {
+  animation: loaderDisabledAnim 600ms forwards;
+}
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner > div {
+  width: 22px;
+  height: 22px;
+  background-color: var(--primary-theme);
+  margin: 0px 5px;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.3s infinite ease-in-out both !important;
+  animation: sk-bouncedelay 1.3s infinite ease-in-out both !important;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s !important;
+  animation-delay: -0.32s !important;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s !important;
+  animation-delay: -0.16s !important;
 }
 
 .cover {

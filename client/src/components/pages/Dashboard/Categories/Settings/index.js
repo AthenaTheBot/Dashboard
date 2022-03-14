@@ -19,7 +19,7 @@ function Settings() {
   useEffect(() => {
     (async () => {
       if (!availableLanguages) {
-        const languages = await getAvailableLanguages(server.id);
+        const languages = await getAvailableLanguages(server?.id);
         if (languages) setAvilableLanguages(languages);
       }
     })();
@@ -38,19 +38,19 @@ function Settings() {
   const saveChanges = async (closeMenu) => {
     setChangesLoading(true);
 
-    const success = await updateGuildSettings(server.id, "settings", settings);
+    const success = await updateGuildSettings(server?.id, "settings", settings);
 
     if (success) {
       server.modules.settings = settings;
     }
 
-    setServer(server);
+    closeMenu(success, 400);
 
-    closeMenu();
     setTimeout(() => {
+      setServer(server);
       setChangesLoading(false);
       setChangeDetected(false);
-    }, 700);
+    }, 1500);
   };
 
   const resetChanges = (closeMenu) => {
@@ -59,7 +59,7 @@ function Settings() {
       closeMenu();
 
       setTimeout(() => {
-        setSettings(server.modules.settings);
+        setSettings(server?.modules?.settings);
         setChangesLoading(false);
         setChangeDetected(false);
       }, 700);

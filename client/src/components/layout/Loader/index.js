@@ -1,34 +1,37 @@
 import { useEffect } from "react";
+import $ from "jquery";
 
 // Styling
 import "./style.css";
 
-const Loader = ({ active, coverAllPage, loaderMsg }) => {
+const Loader = ({ active, coverAllPage, loaderColor, loaderMsg }) => {
   useEffect(() => {
     if (!active) {
-      document.getElementById("loader").classList.add("loader-disabled");
+      $(".loader").addClass("loader-disabled");
       setTimeout(() => {
-        document.getElementById("loader").classList.add("disabled");
+        $(".loader").addClass("disabled");
       }, 610);
     } else {
-      document.getElementById("loader").classList.remove("loader-disabled");
+      $(".loader").removeClass("loader-disabled");
     }
 
     if (coverAllPage) {
-      document.getElementById("loader").classList.add("cover");
+      $(".loader").addClass("cover");
     } else {
-      document.getElementById("loader").classList.remove("cover");
+      $(".loader").removeClass("cover");
     }
   });
 
   return (
-    <div id="loader">
+    <div className="loader">
       <div className="spinner">
-        <div className="bounce1"></div>
-        <div className="bounce2"></div>
-        <div className="bounce3"></div>
-        <p>{loaderMsg ? loaderMsg : "Sit tight! We are getting there.."}</p>
+        <div style={{ backgroundColor: loaderColor }} className="bounce1"></div>
+        <div style={{ backgroundColor: loaderColor }} className="bounce2"></div>
+        <div style={{ backgroundColor: loaderColor }} className="bounce3"></div>
       </div>
+      <p style={{ display: loaderMsg === "__empty" ? "none" : "block" }}>
+        {loaderMsg ? loaderMsg : "Sit tight! We are getting there.."}
+      </p>
     </div>
   );
 };

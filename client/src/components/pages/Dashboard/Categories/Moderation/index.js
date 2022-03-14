@@ -18,7 +18,7 @@ function Moderation() {
   useEffect(() => {
     (async () => {
       if (!availableRoles) {
-        const roles = await getAvailableRoles(server.id);
+        const roles = await getAvailableRoles(server?.id);
         if (roles) {
           roles?.push({
             id: null,
@@ -44,7 +44,7 @@ function Moderation() {
     setChangesLoading(true);
 
     const success = await updateGuildSettings(
-      server.id,
+      server?.id,
       "moderation",
       moderation
     );
@@ -53,14 +53,13 @@ function Moderation() {
       server.modules.moderation = moderation;
     }
 
-    setServer(server);
-
-    closeMenu();
+    closeMenu(success, 400);
 
     setTimeout(() => {
+      setServer(server);
       setChangesLoading(false);
       setChangeDetected(false);
-    }, 700);
+    }, 1500);
   };
 
   const resetChanges = (closeMenu) => {
@@ -69,7 +68,7 @@ function Moderation() {
       closeMenu();
 
       setTimeout(() => {
-        setModeration(server.modules.moderation);
+        setModeration(server?.modules?.moderation);
         setChangesLoading(false);
         setChangeDetected(false);
       }, 700);

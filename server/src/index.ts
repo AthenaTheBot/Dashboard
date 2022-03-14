@@ -4,6 +4,7 @@ import fs from "fs";
 import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
+import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import Dashboard from "./Dashboard";
 import { Config, LogType } from "./constants";
@@ -32,6 +33,14 @@ const cache = app.cache;
 
 // Express app configuration
 server.disable("x-powered-by");
+server.use(
+  rateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 server.use(bodyParser.json());
 server.use(cookieParser(config.keys.cookieSign));
 server.use(responseHandler);
