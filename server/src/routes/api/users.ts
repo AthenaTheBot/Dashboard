@@ -1,13 +1,14 @@
 import express from "express";
+import authController from "../../middlewares/authController";
 import getCurrentUser from "../../utils/getUser";
 import getCurrentUserGuilds from "../../utils/getUserGuilds";
 
 const router = express.Router();
 
+router.use(authController);
+
 router.get("/@me", async (req, res) => {
   const session = req.signedCookies?.session;
-
-  if (!session) return res.badRequest();
 
   const user = await getCurrentUser(session);
 
@@ -18,8 +19,6 @@ router.get("/@me", async (req, res) => {
 
 router.get("/@me/guilds", async (req, res) => {
   const session = req.signedCookies?.session;
-
-  if (!session) return res.badRequest();
 
   const guilds = await getCurrentUserGuilds(session, true);
 

@@ -26,6 +26,7 @@ interface Config {
     userGuilds: number;
   };
   availableLanguages: Language[];
+  requestLimitPerMinute: number;
 }
 
 interface Language {

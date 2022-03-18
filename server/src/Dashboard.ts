@@ -25,6 +25,7 @@ class Dashboard {
   cache: {
     users: Map<string, User>;
     userGuilds: Map<string, Guild[]>;
+    rateLimits: Map<string, number>;
   };
 
   dbConnection: mongoose.Connection | null;
@@ -45,6 +46,7 @@ class Dashboard {
     this.cache = {
       users: new Map(),
       userGuilds: new Map(),
+      rateLimits: new Map(),
     };
 
     this.dbConnection = null;

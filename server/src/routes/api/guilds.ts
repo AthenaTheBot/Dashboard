@@ -9,15 +9,16 @@ import { connection } from "mongoose";
 import { Guild, GuildMember, Role } from "discord.js";
 import updateServerModule from "../../utils/updateServerModule";
 import getCurrentUser from "../../utils/getUser";
+import authController from "../../middlewares/authController";
 
 dayjs.extend(localizedFormat);
 
 const router = express.Router();
 
+router.use(authController);
+
 router.get("/:id", async (req, res) => {
   const session = req.signedCookies?.session;
-
-  if (!session) return res.badRequest();
 
   const guilds = await getCurrentUserGuilds(session, false);
 
@@ -80,8 +81,6 @@ router.get("/:id", async (req, res) => {
 router.get("/:id/getAvailableRoles", async (req, res) => {
   const session = req.signedCookies?.session;
 
-  if (!session) return res.badRequest();
-
   const guilds = await getCurrentUserGuilds(session, false);
 
   const guild = guilds?.find((x) => x.id === req.params.id);
@@ -116,8 +115,6 @@ router.get("/:id/getAvailableRoles", async (req, res) => {
 
 router.patch("/:id/:module", async (req, res) => {
   const session = req.signedCookies?.session;
-
-  if (!session) return res.badRequest();
 
   const guilds = await getCurrentUserGuilds(session, false);
 

@@ -34,5 +34,6 @@
       "id": "tr_TR",
       "label": "Türkçe"
     }
-  ]
+  ],
+  "requestLimitPerMinute": 40
 }
