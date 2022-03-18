@@ -20,8 +20,6 @@ const rateLimiter = (req: Request, res: Response, next: NextFunction) => {
           "We have received too many requests from your IP address, please wait a while to make another request again."
         );
 
-      console.log("Sent warn to ip adress: ", req.ip);
-
       cache.rateLimits.set(req.ip, remainingRequests + 1);
 
       return;
