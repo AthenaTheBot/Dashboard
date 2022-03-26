@@ -1,0 +1,30 @@
+.athena-input-menu-role {
+  padding: 8px 5px;
+  border-radius: 5px;
+  margin: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.athena-input-menu-role:hover {
+  background-color: var(--secondary-background);
+}
+
+.athena-input-menu-role-color {
+  height: 13px;
+  width: 13px;
+  background-color: blue;
+  border-radius: 50%;
+  margin-left: 3px;
+}
+
+.athena-input-menu-role-name {
+  margin-left: 10px;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

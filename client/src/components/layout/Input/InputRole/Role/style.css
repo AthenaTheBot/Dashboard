@@ -1,0 +1,31 @@
+.athena-role-container {
+  width: fit-content;
+  padding: 4px 7px;
+  border-radius: 5px;
+  background-color: var(--primary-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px;
+}
+
+.athena-role-color {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b4b4b4;
+  padding: 1.1px;
+  box-sizing: border-box;
+}
+
+.athena-role-color > * {
+  display: none;
+}
+
+.athena-role-name {
+  margin-left: 5px;
+}

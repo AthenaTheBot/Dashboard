@@ -1,0 +1,38 @@
+.athena-input-role-container {
+  width: 85% !important;
+  background-color: var(--secondary-background);
+  border: none;
+  border-radius: 10px;
+  margin: 10px 0px;
+  transition: all 350ms ease;
+  color: #b6b6b6;
+  padding: 10px;
+  border: 1px solid transparent;
+  max-width: 500px !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.athena-input-roles {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.athena-input-roles-add-btn {
+  cursor: pointer;
+  margin: 0px 10px;
+}
+
+.athena-input-roles-add-menu {
+  position: absolute;
+  top: 120%;
+  width: 90%;
+  padding: 7px;
+  background-color: var(--primary-background);
+  border-radius: 7px;
+  max-height: 300px;
+  overflow-y: scroll;
+}

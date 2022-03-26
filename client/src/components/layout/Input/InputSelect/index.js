@@ -10,14 +10,22 @@ const InputSelect = ({ options, inputUpdated }) => {
   let optionIds = 0;
 
   useEffect(() => {
-    const filteredInputOptions = options.filter((x) => x.active !== true);
+    let nonActiveElements = options.filter((x) => x.active !== true);
     let activeEl = null;
 
     options.forEach((option) => {
       if (option.active && !activeEl) activeEl = option;
     });
 
-    setInputOptions(filteredInputOptions);
+    for (let i = 0; i < nonActiveElements?.length; i++) {
+      if (!nonActiveElements[i]?.content) {
+        nonActiveElements[i] = null;
+      }
+    }
+
+    nonActiveElements = nonActiveElements.filter((x) => x != null);
+
+    setInputOptions(nonActiveElements);
     setActive(activeEl);
   }, [options]);
 
@@ -38,6 +46,7 @@ const InputSelect = ({ options, inputUpdated }) => {
   };
 
   const toggleOptionsMenu = () => {
+    if (!inputOptions?.length) return;
     setOptionsEnabled(optionsEnabled ? false : true);
   };
 
@@ -46,7 +55,7 @@ const InputSelect = ({ options, inputUpdated }) => {
       <div className="athena-input-select-main" onClick={toggleOptionsMenu}>
         <p>{active?.content ? active.content : "Not selected"}</p>
       </div>
-      {optionsEnabled ? (
+      {optionsEnabled && inputOptions?.length ? (
         <ul className="athena-input-options">
           {inputOptions.map((inputOption) => {
             inputOption.compId = optionIds++;
