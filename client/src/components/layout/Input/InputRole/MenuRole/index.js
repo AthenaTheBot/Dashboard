@@ -1,9 +1,9 @@
 import "./style.css";
 
-function MenuRole({ id, color, name, onRoleClick }) {
+function MenuRole({ id, color, name, onRoleAdd }) {
   const roleClicked = () => {
-    if (onRoleClick && typeof onRoleClick === "function") {
-      onRoleClick(id);
+    if (onRoleAdd && typeof onRoleAdd === "function") {
+      onRoleAdd({ id, name, color });
     }
   };
 

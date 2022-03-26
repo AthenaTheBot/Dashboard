@@ -6,7 +6,7 @@ import "./style.css";
 function Role({ id, color, name, onRoleRemove }) {
   const removeRole = () => {
     if (onRoleRemove && typeof onRoleRemove === "function") {
-      onRoleRemove(id);
+      onRoleRemove({ id, name, color });
     }
   };
 

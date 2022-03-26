@@ -32,7 +32,7 @@ function Development() {
         <InputRole
           currentRoles={[{ id: "213131", name: "Testing Role", color: "red" }]}
           menuRoles={[{ id: "151", name: "Shiny Role", color: "blue" }]}
-          roleLimit={2}
+          roleLimit={5}
         />
       </div>
     </div>
