@@ -3,7 +3,7 @@ import "./style.css";
 function MenuRole({ id, color, name, onRoleClick }) {
   const roleClicked = () => {
     if (onRoleClick && typeof onRoleClick === "function") {
-      roleClicked(id);
+      onRoleClick(id);
     }
   };
 

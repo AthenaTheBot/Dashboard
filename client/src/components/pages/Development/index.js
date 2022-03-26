@@ -8,7 +8,6 @@ import "./style.css";
 import Input from "../../layout/Input/InputText";
 import InputSelect from "../../layout/Input/InputSelect";
 import InputRole from "../../layout/Input/InputRole";
-import Button from "../../layout/Button";
 
 function Development() {
   const navigate = useNavigate();
@@ -31,7 +30,8 @@ function Development() {
 
       <div className="athena-test-div">
         <InputRole
-          roles={[{ id: "121", name: "Sj", color: "red" }]}
+          currentRoles={[{ id: "213131", name: "Testing Role", color: "red" }]}
+          menuRoles={[{ id: "151", name: "Shiny Role", color: "blue" }]}
           roleLimit={2}
         />
       </div>

@@ -1,3 +1,14 @@
+@keyframes rolesMenuInit {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .athena-input-role-container {
   width: 85% !important;
   background-color: var(--secondary-background);
@@ -34,5 +45,10 @@
   background-color: var(--primary-background);
   border-radius: 7px;
   max-height: 300px;
+  overflow: hidden;
+  animation: rolesMenuInit 200ms forwards;
+}
+
+.athena-input-roles-add-menu:hover {
   overflow-y: scroll;
 }

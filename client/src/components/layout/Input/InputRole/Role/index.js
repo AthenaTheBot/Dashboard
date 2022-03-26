@@ -23,7 +23,7 @@ function Role({ id, color, name, onRoleRemove }) {
   return (
     <div style={{ borderColor: color }} className="athena-role-container">
       <div
-        onClick={{ removeRole }}
+        onClick={removeRole}
         style={{ backgroundColor: color }}
         className="athena-role-color"
       >
