@@ -57,7 +57,12 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  animation: inputInitAnim 500ms forwards;
+  animation: inputInitAnim 250ms forwards;
+  overflow-y: hidden;
+}
+
+.athena-input-options:hover {
+  overflow-y: scroll;
 }
 
 .athena-input-option {
@@ -66,6 +71,7 @@
   border-radius: 6px;
   margin: 5px 0px;
   transition: all 250ms ease;
+  animation: unset !important;
 }
 
 .athena-input-option:hover {

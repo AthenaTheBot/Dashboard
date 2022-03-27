@@ -5,22 +5,23 @@ import InputSelect from "../../../../layout/Input/InputSelect";
 import InputText from "../../../../layout/Input/InputText";
 import Loader from "../../../../layout/Loader";
 import updateGuildSettings from "../../../../../utils/updateGuildSettings";
-import getAvailableLanguages from "../../../../../utils/getAvailableLagnauges";
 
 function Settings() {
-  const { currentServer: server, setCurrentServer: setServer } =
-    useContext(dashContext);
+  const {
+    currentServer: server,
+    setCurrentServer: setServer,
+    getAvailableLanguages,
+    availableLanguages,
+  } = useContext(dashContext);
   const [settings, setSettings] = useState(server?.modules?.settings);
   const [changeDetected, setChangeDetected] = useState(false);
   const [changesLoading, setChangesLoading] = useState(false);
   const [init, setInit] = useState(false);
-  const [availableLanguages, setAvilableLanguages] = useState();
 
   useEffect(() => {
     (async () => {
       if (!availableLanguages) {
-        const languages = await getAvailableLanguages(server?.id);
-        if (languages) setAvilableLanguages(languages);
+        getAvailableLanguages();
       }
     })();
     //eslint-disable-next-line

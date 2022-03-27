@@ -61,7 +61,7 @@ router.get("/commands", async (req, res) => {
   res.successfull({ data: commandsCache });
 });
 
-router.get("/getAvailableLanguages", (req, res) => {
+router.get("/available-languages", (req, res) => {
   res.successfull({ data: config.availableLanguages });
 });
 

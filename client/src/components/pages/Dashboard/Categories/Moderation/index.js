@@ -4,7 +4,6 @@ import dashContext from "../../../../../context/dash/dashContext";
 import InputRole from "../../../../layout/Input/InputRole";
 import Loader from "../../../../layout/Loader";
 import updateGuildSettings from "../../../../../utils/updateGuildSettings";
-import getAvailableRoles from "../../../../../utils/getAvailableRoles";
 
 function Moderation() {
   const { currentServer: server, setCurrentServer: setServer } =
@@ -13,28 +12,16 @@ function Moderation() {
   const [changeDetected, setChangeDetected] = useState(false);
   const [changesLoading, setChangesLoading] = useState(false);
   const [init, setInit] = useState(false);
-  const [availableRoles, setAvailableRoles] = useState();
-
-  useEffect(() => {
-    (async () => {
-      if (!availableRoles) {
-        const roles = await getAvailableRoles(server?.id);
-        if (roles) {
-          setAvailableRoles(roles);
-        }
-      }
-    })();
-    //eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     if (!init) {
+      if (!server?.availableRoles) return;
       setInit(true);
     } else {
       setChangeDetected(true);
     }
     //eslint-disable-next-line
-  }, [moderation, setModeration]);
+  }, [moderation, setModeration, setInit]);
 
   const saveChanges = async (closeMenu) => {
     setChangesLoading(true);
@@ -83,6 +70,7 @@ function Moderation() {
           <div className="module-prop-body">
             <InputRole
               onRoleUpdate={(roles) => {
+                if (roles?.length === 0) roles[0] = { id: null };
                 setModeration((state) => ({
                   ...state,
                   adminRole: roles[0].id,
@@ -90,8 +78,8 @@ function Moderation() {
               }}
               roleLimit={1}
               roles={
-                availableRoles
-                  ? availableRoles.map((role) => {
+                server?.availableRoles
+                  ? server?.availableRoles.map((role) => {
                       return {
                         name: role.name,
                         id: role.id,
@@ -114,6 +102,7 @@ function Moderation() {
           <div className="module-prop-body">
             <InputRole
               onRoleUpdate={(roles) => {
+                if (roles?.length === 0) roles[0] = { id: null };
                 setModeration((state) => ({
                   ...state,
                   modRole: roles[0].id,
@@ -121,8 +110,8 @@ function Moderation() {
               }}
               roleLimit={1}
               roles={
-                availableRoles
-                  ? availableRoles.map((role) => {
+                server?.availableRoles
+                  ? server?.availableRoles.map((role) => {
                       return {
                         name: role.name,
                         id: role.id,
@@ -145,6 +134,7 @@ function Moderation() {
           <div className="module-prop-body">
             <InputRole
               onRoleUpdate={(roles) => {
+                if (roles?.length === 0) roles[0] = { id: null };
                 setModeration((state) => ({
                   ...state,
                   autoRole: roles[0].id,
@@ -152,8 +142,8 @@ function Moderation() {
               }}
               roleLimit={1}
               roles={
-                availableRoles
-                  ? availableRoles.map((role) => {
+                server?.availableRoles
+                  ? server?.availableRoles.map((role) => {
                       return {
                         name: role.name,
                         id: role.id,

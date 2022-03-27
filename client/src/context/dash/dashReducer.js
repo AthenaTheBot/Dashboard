@@ -24,6 +24,21 @@ const DashReducer = (state, action) => {
         currentServer: action.payload,
       };
 
+    case "SET_AVAILABLE_ROLES":
+      return {
+        ...state,
+        currentServer: {
+          ...state?.currentServer,
+          availableRoles: action.payload,
+        },
+      };
+
+    case "SET_AVAILABLE_LANGUAGES":
+      return {
+        ...state,
+        availableLanguages: action.payload,
+      };
+
     default:
       return state;
   }

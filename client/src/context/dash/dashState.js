@@ -8,6 +8,7 @@ const initialState = {
   servers: null,
   commands: null,
   currentServer: null,
+  availableLanguages: null,
 };
 
 const DashState = (props) => {
@@ -33,9 +34,7 @@ const DashState = (props) => {
   };
 
   const getUserGuilds = async (force) => {
-    if (!cookies?.session) return;
-
-    if (!force && state.servers) return;
+    if ((!force && state.servers) || !cookies?.session) return;
 
     const servers = await fetch("/api/users/@me/guilds")
       .then(async (res) => {
@@ -66,6 +65,22 @@ const DashState = (props) => {
     dispatch({ type: "SET_COMMANDS", payload: commands });
   };
 
+  const getAvailableLanguages = async (force) => {
+    if (!force && state?.availableLangauges) return;
+
+    const availableLangauges = await fetch("/api/available-languages")
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return await res.json();
+      })
+      .then((res) => res.data)
+      .catch((err) => null);
+
+    if (!availableLangauges) return;
+
+    dispatch({ type: "SET_AVAILABLE_LANGUAGES", payload: availableLangauges });
+  };
+
   const setCurrentServer = async (guild) => {
     dispatch({ type: "SET_CURRENT_SERVER", payload: guild });
   };
@@ -77,6 +92,7 @@ const DashState = (props) => {
         getUser,
         getUserGuilds,
         getCommands,
+        getAvailableLanguages,
         setCurrentServer,
       }}
     >

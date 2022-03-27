@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from "react";
-import $ from "jquery";
 import { BsPlusCircle } from "react-icons/bs";
 import Role from "./Role";
 import MenuRole from "./MenuRole";
@@ -40,7 +39,7 @@ function InputRole({
       onRoleRemove(role, _currentRoles);
     }
 
-    roleUpdated();
+    roleUpdated(newCurrentRoles);
   };
 
   const roleAdded = (role) => {
@@ -56,12 +55,12 @@ function InputRole({
       onRoleAdd(role);
     }
 
-    roleUpdated();
+    roleUpdated(newCurrentRoles);
   };
 
-  const roleUpdated = () => {
+  const roleUpdated = (data) => {
     if (onRoleUpdate && typeof onRoleUpdate === "function") {
-      onRoleUpdate(_currentRoles);
+      onRoleUpdate(data);
     }
   };
 
