@@ -30,8 +30,10 @@ function Development() {
 
       <div className="athena-test-div">
         <InputRole
-          currentRoles={[{ id: "213131", name: "Testing Role", color: "red" }]}
-          menuRoles={[{ id: "151", name: "Shiny Role", color: "blue" }]}
+          roles={[
+            { id: "1", name: "Testing Role", color: "red", active: false },
+            { id: "2", name: "Shiny Role", color: "blue", active: false },
+          ]}
           roleLimit={5}
         />
       </div>

@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import ChangesDetected from "../../ChangesDeteced";
 import dashContext from "../../../../../context/dash/dashContext";
-import InputSelect from "../../../../layout/Input/InputSelect";
+import InputRole from "../../../../layout/Input/InputRole";
 import Loader from "../../../../layout/Loader";
 import updateGuildSettings from "../../../../../utils/updateGuildSettings";
 import getAvailableRoles from "../../../../../utils/getAvailableRoles";
@@ -20,10 +20,6 @@ function Moderation() {
       if (!availableRoles) {
         const roles = await getAvailableRoles(server?.id);
         if (roles) {
-          roles?.push({
-            id: null,
-            name: "Not selected",
-          });
           setAvailableRoles(roles);
         }
       }
@@ -78,105 +74,96 @@ function Moderation() {
   if (moderation) {
     return (
       <Fragment>
-        <div className="module-moderation-container">
-          <div className="module-configuration-container">
-            <div className="module-prop">
-              <h3 className="module-prop-title">Admin Role</h3>
-              <p className="module-prop-description">
-                Change the admin role in your server.
-              </p>
-              <hr />
-              <div className="module-prop-body">
-                <InputSelect
-                  inputUpdated={(option) => {
-                    setModeration((state) => ({
-                      ...state,
-                      adminRole: option.id,
-                    }));
-                  }}
-                  options={
-                    availableRoles
-                      ? availableRoles.map((role) => {
-                          return {
-                            content: role.name,
-                            id: role.id,
-                            active:
-                              moderation.adminRole === role.id ? true : false,
-                          };
-                        })
-                      : []
-                  }
-                />
-              </div>
-            </div>
+        <div className="module-prop">
+          <h3 className="module-prop-title">Admin Role</h3>
+          <p className="module-prop-description">
+            Change the admin role in your server.
+          </p>
+          <hr />
+          <div className="module-prop-body">
+            <InputRole
+              onRoleUpdate={(roles) => {
+                setModeration((state) => ({
+                  ...state,
+                  adminRole: roles[0].id,
+                }));
+              }}
+              roleLimit={1}
+              roles={
+                availableRoles
+                  ? availableRoles.map((role) => {
+                      return {
+                        name: role.name,
+                        id: role.id,
+                        color: role.color,
+                        active: moderation.adminRole === role.id ? true : false,
+                      };
+                    })
+                  : []
+              }
+            />
           </div>
         </div>
 
-        <div className="module-moderation-container">
-          <div className="module-configuration-container">
-            <div className="module-prop">
-              <h3 className="module-prop-title">Mod Role</h3>
-              <p className="module-prop-description">
-                Change mod role in your server.
-              </p>
-              <hr />
-              <div className="module-prop-body">
-                <InputSelect
-                  inputUpdated={(option) => {
-                    setModeration((state) => ({
-                      ...state,
-                      modRole: option.id,
-                    }));
-                  }}
-                  options={
-                    availableRoles
-                      ? availableRoles.map((role) => {
-                          return {
-                            content: role.name,
-                            id: role.id,
-                            active:
-                              moderation.modRole === role.id ? true : false,
-                          };
-                        })
-                      : []
-                  }
-                />
-              </div>
-            </div>
+        <div className="module-prop">
+          <h3 className="module-prop-title">Mod Role</h3>
+          <p className="module-prop-description">
+            Change mod role in your server.
+          </p>
+          <hr />
+          <div className="module-prop-body">
+            <InputRole
+              onRoleUpdate={(roles) => {
+                setModeration((state) => ({
+                  ...state,
+                  modRole: roles[0].id,
+                }));
+              }}
+              roleLimit={1}
+              roles={
+                availableRoles
+                  ? availableRoles.map((role) => {
+                      return {
+                        name: role.name,
+                        id: role.id,
+                        color: role.color,
+                        active: moderation.modRole === role.id ? true : false,
+                      };
+                    })
+                  : []
+              }
+            />
           </div>
         </div>
 
-        <div className="module-moderation-container">
-          <div className="module-configuration-container">
-            <div className="module-prop">
-              <h3 className="module-prop-title">Auto Role</h3>
-              <p className="module-prop-description">
-                Change auto role in your server.
-              </p>
-              <hr />
-              <div className="module-prop-body">
-                <InputSelect
-                  inputUpdated={(option) => {
-                    setModeration((state) => ({
-                      ...state,
-                      autoRole: option.id,
-                    }));
-                  }}
-                  options={
-                    availableRoles
-                      ? availableRoles.map((role) => {
-                          return {
-                            content: role.name,
-                            id: role.id,
-                            active:
-                              moderation.autoRole === role.id ? true : false,
-                          };
-                        })
-                      : []
-                  }
-                />
-              </div>
-            </div>
+        <div className="module-prop">
+          <h3 className="module-prop-title">Auto Role</h3>
+          <p className="module-prop-description">
+            Change auto role in your server.
+          </p>
+          <hr />
+          <div className="module-prop-body">
+            <InputRole
+              onRoleUpdate={(roles) => {
+                setModeration((state) => ({
+                  ...state,
+                  autoRole: roles[0].id,
+                }));
+              }}
+              roleLimit={1}
+              roles={
+                availableRoles
+                  ? availableRoles.map((role) => {
+                      return {
+                        name: role.name,
+                        id: role.id,
+                        color: role.color,
+                        active: moderation.autoRole === role.id ? true : false,
+                      };
+                    })
+                  : []
+              }
+            />
           </div>
         </div>
 

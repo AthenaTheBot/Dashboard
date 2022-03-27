@@ -1,30 +1,31 @@
 import { Fragment, useEffect, useState } from "react";
+import $ from "jquery";
 import { BsPlusCircle } from "react-icons/bs";
 import Role from "./Role";
 import MenuRole from "./MenuRole";
 import "./style.css";
 
 function InputRole({
-  currentRoles,
-  menuRoles,
+  roles,
   roleLimit,
   onRoleAdd,
   onRoleRemove,
+  onRoleUpdate,
 }) {
   const [roleMenuState, setRoleMenuState] = useState(false);
-  const [_currentRoles, _setCurrentRoles] = useState(currentRoles);
-  const [_menuRoles, _setMenuRoles] = useState(menuRoles);
+  const [_currentRoles, _setCurrentRoles] = useState([]);
+  const [_menuRoles, _setMenuRoles] = useState([]);
 
   let currentRoleCount = 0;
   let menuRoleCount = 0;
 
   useEffect(() => {
-    _setCurrentRoles(currentRoles);
-  }, [currentRoles]);
+    const __menuRoles = roles.filter((x) => !x.active);
+    const __currentRoles = roles.filter((x) => x.active);
 
-  useEffect(() => {
-    _setMenuRoles(menuRoles);
-  }, [menuRoles]);
+    _setCurrentRoles(__currentRoles);
+    _setMenuRoles(__menuRoles);
+  }, [roles]);
 
   const roleRemoved = (role) => {
     let newCurrentRoles = _currentRoles.filter((x) => x.id !== role.id);
@@ -36,8 +37,10 @@ function InputRole({
     setRoleMenuState(false);
 
     if (onRoleRemove && typeof onRoleRemove === "function") {
-      onRoleRemove(role.id);
+      onRoleRemove(role, _currentRoles);
     }
+
+    roleUpdated();
   };
 
   const roleAdded = (role) => {
@@ -50,40 +53,51 @@ function InputRole({
     setRoleMenuState(false);
 
     if (onRoleAdd && typeof onRoleAdd === "function") {
-      onRoleAdd(role.id);
+      onRoleAdd(role);
+    }
+
+    roleUpdated();
+  };
+
+  const roleUpdated = () => {
+    if (onRoleUpdate && typeof onRoleUpdate === "function") {
+      onRoleUpdate(_currentRoles);
     }
   };
 
-  const toggleRoleMenu = () => {
-    if (!menuRoles?.length) return;
-    setRoleMenuState(roleMenuState ? false : true);
+  const toggleRoleMenu = (e) => {
+    if (!_menuRoles?.length) return;
+    if (roleMenuState) setRoleMenuState(false);
+    else setRoleMenuState(true);
   };
 
   return (
     <div className="athena-input-role-container">
-      <div className="athena-input-roles">
-        {_currentRoles?.length
-          ? _currentRoles?.map((role) => {
-              currentRoleCount++;
-              return (
-                <Role
-                  key={currentRoleCount}
-                  color={role.color}
-                  name={role.name}
-                  id={role.id}
-                  onRoleRemove={roleRemoved}
-                />
-              );
-            })
-          : "None"}
-      </div>
-      {_currentRoles?.length === roleLimit ? (
-        <Fragment></Fragment>
-      ) : (
-        <div onClick={toggleRoleMenu} className="athena-input-roles-add-btn">
-          <BsPlusCircle />
+      <div className="athena-input-role-wrapper">
+        <div className="athena-input-roles">
+          {_currentRoles?.length
+            ? _currentRoles?.map((role) => {
+                currentRoleCount++;
+                return (
+                  <Role
+                    key={currentRoleCount}
+                    color={role.color}
+                    name={role.name}
+                    id={role.id}
+                    onRoleRemove={roleRemoved}
+                  />
+                );
+              })
+            : "None"}
         </div>
-      )}
+        {_currentRoles?.length === roleLimit ? (
+          <Fragment></Fragment>
+        ) : (
+          <div onClick={toggleRoleMenu} className="athena-input-roles-add-btn">
+            <BsPlusCircle />
+          </div>
+        )}
+      </div>
       {_menuRoles?.length > 0 && roleMenuState ? (
         <div className="athena-input-roles-add-menu">
           {_menuRoles?.map((menuRole) => {

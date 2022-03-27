@@ -69,56 +69,52 @@ function Settings() {
   if (settings) {
     return (
       <Fragment>
-        <div className="module-settings-container">
-          <div className="module-prop">
-            <h3 className="module-prop-title">Bot Prefix</h3>
-            <p className="module-prop-description">
-              Change Athena's prefix in your server.
-            </p>
-            <hr />
-            <div className="module-prop-body">
-              <InputText
-                inputUpdated={(prefix) => {
-                  setSettings((state) => ({
-                    ...state,
-                    prefix: prefix,
-                  }));
-                }}
-                value={settings?.prefix}
-              />
-            </div>
+        <div className="module-prop">
+          <h3 className="module-prop-title">Bot Prefix</h3>
+          <p className="module-prop-description">
+            Change Athena's prefix in your server.
+          </p>
+          <hr />
+          <div className="module-prop-body">
+            <InputText
+              inputUpdated={(prefix) => {
+                setSettings((state) => ({
+                  ...state,
+                  prefix: prefix,
+                }));
+              }}
+              value={settings?.prefix}
+            />
           </div>
         </div>
 
-        <div className="module-settings-container">
-          <div className="module-prop">
-            <h3 className="module-prop-title">Bot Language</h3>
-            <p className="module-prop-description">
-              Change Athena's language in your server.
-            </p>
-            <hr />
-            <div className="module-prop-body">
-              <InputSelect
-                inputUpdated={(option) => {
-                  setSettings((state) => ({
-                    ...state,
-                    language: option.id,
-                  }));
-                }}
-                options={
-                  availableLanguages
-                    ? availableLanguages.map((language) => {
-                        return {
-                          content: language.label,
-                          id: language.id,
-                          active:
-                            settings?.language === language.id ? true : false,
-                        };
-                      })
-                    : []
-                }
-              />
-            </div>
+        <div className="module-prop">
+          <h3 className="module-prop-title">Bot Language</h3>
+          <p className="module-prop-description">
+            Change Athena's language in your server.
+          </p>
+          <hr />
+          <div className="module-prop-body">
+            <InputSelect
+              inputUpdated={(option) => {
+                setSettings((state) => ({
+                  ...state,
+                  language: option.id,
+                }));
+              }}
+              options={
+                availableLanguages
+                  ? availableLanguages.map((language) => {
+                      return {
+                        content: language.label,
+                        id: language.id,
+                        active:
+                          settings?.language === language.id ? true : false,
+                      };
+                    })
+                  : []
+              }
+            />
           </div>
         </div>
 

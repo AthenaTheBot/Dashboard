@@ -3,19 +3,19 @@ import mongoose from "mongoose";
 const GuildSchema = new mongoose.Schema(
   {
     _id: String,
-    settings: {
-      prefix: String,
-      language: String,
-    },
     modules: {
-      moderationModule: {
+      settings: {
+        prefix: String,
+        language: String,
+      },
+      moderation: {
         adminRole: String || null,
         modRole: String || null,
         autoRole: String || null,
         warnings: Array,
       },
-      funModule: Object,
-      utilsModule: Object,
+      fun: Object,
+      utils: Object,
     },
     lastUpdated: String,
   },

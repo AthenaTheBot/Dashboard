@@ -33,12 +33,12 @@ router.get("/:id", async (req, res) => {
   if (!guildData) {
     guildData = await GuildModel.create({
       _id: guild.id,
-      settings: {
-        prefix: "at!",
-        language: "en_US",
-      },
       modules: {
-        moderationModule: {
+        settings: {
+          prefix: "at!",
+          language: "en_US",
+        },
+        moderation: {
           adminRole: null,
           modRole: null,
           autoRole: null,
@@ -52,11 +52,10 @@ router.get("/:id", async (req, res) => {
   }
 
   // Delete unncessary meta info
-  delete guildData._doc._id;
-  delete guildData._doc.lastUpdated;
-  delete guildData._doc.settings.premium;
-  delete guild.permissions_new;
-  delete guild.features;
+  delete guildData._doc?._id;
+  delete guildData._doc?.lastUpdated;
+  delete guild?.permissions_new;
+  delete guild?.features;
 
   const extraGuildData =
     (await bot.guilds.cache.get(guild.id)) ||
@@ -103,7 +102,8 @@ router.get("/:id/getAvailableRoles", async (req, res) => {
       guildRole.rawPosition != 0 &&
       guildRole.rawPosition <
         (guildData.me?.roles?.highest?.rawPosition || 0) &&
-      guildRole.rawPosition < userData.roles.highest.rawPosition
+      (guildRole.rawPosition < userData.roles.highest.rawPosition ||
+        guildData.ownerId === userData.id)
     ) {
       Object.assign(guildRole, { color: guildRole.hexColor });
       availableRoles.push(guildRole);
