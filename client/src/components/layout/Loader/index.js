@@ -24,14 +24,25 @@ const Loader = ({ active, coverAllPage, loaderColor, loaderMsg }) => {
 
   return (
     <div className="loader">
-      <div className="spinner">
-        <div style={{ backgroundColor: loaderColor }} className="bounce1"></div>
-        <div style={{ backgroundColor: loaderColor }} className="bounce2"></div>
-        <div style={{ backgroundColor: loaderColor }} className="bounce3"></div>
+      <div className="loader-inner">
+        <div className="spinner">
+          <div
+            style={{ backgroundColor: loaderColor }}
+            className="bounce1"
+          ></div>
+          <div
+            style={{ backgroundColor: loaderColor }}
+            className="bounce2"
+          ></div>
+          <div
+            style={{ backgroundColor: loaderColor }}
+            className="bounce3"
+          ></div>
+        </div>
+        <p style={{ display: loaderMsg === "__empty" ? "none" : "block" }}>
+          {loaderMsg ? loaderMsg : "Sit tight! We are getting there.."}
+        </p>
       </div>
-      <p style={{ display: loaderMsg === "__empty" ? "none" : "block" }}>
-        {loaderMsg ? loaderMsg : "Sit tight! We are getting there.."}
-      </p>
     </div>
   );
 };

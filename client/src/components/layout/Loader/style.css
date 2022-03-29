@@ -37,11 +37,13 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin: 10px;
 }
 
-.loader p {
-  margin: 5px;
+.loader-inner p {
   padding: 5px;
+  margin-top: 15px !important;
+  text-align: center;
 }
 
 .loader-disabled {
