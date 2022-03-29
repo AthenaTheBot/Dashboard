@@ -18,7 +18,7 @@ function Dashboard() {
   const { guilds, setCurrentServer } = useContext(dashContext);
   const { guildId } = useParams();
   const navigate = useNavigate();
-  const [currentGuild, setCurrentGuild] = useState([]);
+  const [currentGuild, setCurrentGuild] = useState(null);
   const [currentCategory, setCurrentCategory] = useState("overview");
 
   useEffect(() => {
@@ -40,6 +40,8 @@ function Dashboard() {
         setCurrentServer(guild);
 
         setCurrentGuild(guild);
+      } else {
+        setCurrentGuild([]);
       }
     })();
     //eslint-disable-next-line
