@@ -20,7 +20,6 @@ function Dashboard() {
   const { guildId, category } = useParams();
   const navigate = useNavigate();
   const [currentGuild, setCurrentGuild] = useState(null);
-  const [currentCategory, setCurrentCategory] = useState("overview");
 
   useEffect(() => {
     (async () => {
@@ -28,6 +27,8 @@ function Dashboard() {
         const sessionCookie = cookieGet("session");
 
         if (!sessionCookie) return window.location.replace("/oauth/login");
+
+        if (currentGuild) return;
 
         const guild = await fetch(`/api/guilds/${guildId}`)
           .then(async (res) => {
@@ -52,7 +53,6 @@ function Dashboard() {
     if (!category || !validCategories.includes(category))
       navigate(`/dashboard/${guildId}/overview`);
     else {
-      setCurrentCategory(category);
     }
   }, [navigate, category, guildId]);
 
@@ -160,7 +160,7 @@ function Dashboard() {
             </ul>
           </div>
           <div className="dash-module-container">
-            <CategoryLoader category={currentCategory} />
+            <CategoryLoader category={category} />
           </div>
         </Fragment>
       ) : (
