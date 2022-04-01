@@ -33,6 +33,8 @@ const buildServer = () => {
 };
 
 const placeBuildFiles = () => {
+  program.log("Placing build files to a clean directory.");
+
   fs.ensureDirSync(TARGET_PATH);
 
   fs.copySync(
@@ -69,6 +71,8 @@ const placeBuildFiles = () => {
     path.join(__dirname, "yarn.lock"),
     path.join(TARGET_PATH, "yarn.lock")
   );
+
+  program.log("Successfully placed all build files.");
 };
 
 program
