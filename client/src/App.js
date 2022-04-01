@@ -33,7 +33,9 @@ const App = () => {
 
         <Route path="/servers" element={<Servers />} />
 
-        <Route path="/dashboard/:guildId" element={<Dashboard />} />
+        <Route path="/dashboard/:guildId/" element={<Dashboard />} />
+
+        <Route path="/dashboard/:guildId/:category" element={<Dashboard />} />
 
         <Route path="/privacy" element={<Legal page="privacy" />} />
 

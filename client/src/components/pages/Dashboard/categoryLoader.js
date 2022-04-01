@@ -6,6 +6,7 @@ import Profile from "../../layout/Navbar/Profile";
 import { Fragment } from "react";
 
 const CategoryLoader = ({ category }) => {
+  category = `${category}`;
   const capitalizedCategory =
     category.slice(0, 1).toUpperCase() + category.slice(1, category.length);
 
@@ -56,3 +57,4 @@ const CategoryLoader = ({ category }) => {
 };
 
 export default CategoryLoader;
+export const validCategories = ["overview", "settings", "moderation", "music"];

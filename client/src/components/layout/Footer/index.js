@@ -11,8 +11,9 @@ const Footer = () => {
         <div className="athena-footer-brand">
           <img src="/assets/images/logo.png" alt="Athena" />
           <p>
-            Athena is a multi-purpose discord bot that aims to serve every
-            function of a discord bot that can perform.
+            Athena is a multi-functional discord bot that offers many services
+            for free such as playing any song you desire or making moderation of
+            your server easier.
           </p>
         </div>
         <div className="athena-footer-link-part">

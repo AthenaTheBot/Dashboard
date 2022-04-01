@@ -6,6 +6,7 @@ import { IoMusicalNotesOutline } from "react-icons/io5";
 import { BiCog } from "react-icons/bi";
 import $ from "jquery";
 
+import { validCategories } from "./categoryLoader";
 import dashContext from "../../../context/dash/dashContext";
 
 import CategoryLoader from "./categoryLoader";
@@ -16,7 +17,7 @@ import Loader from "../../layout/Loader";
 
 function Dashboard() {
   const { guilds, setCurrentServer } = useContext(dashContext);
-  const { guildId } = useParams();
+  const { guildId, category } = useParams();
   const navigate = useNavigate();
   const [currentGuild, setCurrentGuild] = useState(null);
   const [currentCategory, setCurrentCategory] = useState("overview");
@@ -47,6 +48,14 @@ function Dashboard() {
     //eslint-disable-next-line
   }, [guilds, guildId, navigate]);
 
+  useEffect(() => {
+    if (!category || !validCategories.includes(category))
+      navigate(`/dashboard/${guildId}/overview`);
+    else {
+      setCurrentCategory(category);
+    }
+  }, [navigate, category, guildId]);
+
   const showCategorySelectory = () => {
     $(".dash-module-selector").addClass("module-selectory-enabled");
     $(".athena-dash-fade").css("display", "block");
@@ -58,7 +67,7 @@ function Dashboard() {
   };
 
   const selectoryCategoryClicked = (category) => {
-    setCurrentCategory(category);
+    navigate(`/dashboard/${guildId}/${category}`);
     hideCategorySelectory();
   };
 
