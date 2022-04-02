@@ -35,5 +35,6 @@
       "label": "Türkçe"
     }
   ],
-  "requestLimitPerMinute": 40
+  "requestLimitPerMinute": 40,
+  "hostname": "athena.bot"
 }

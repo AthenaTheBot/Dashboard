@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { hostname } from "os";
+import { config } from "../index";
 
 const redirectDns = (req: Request, res: Response, next: NextFunction) => {
   const isPureIp = !isNaN(req?.hostname.replaceAll(".", "") as any);
 
-  if (isPureIp) res.redirect(`https://${hostname()}${req.url}`);
+  if (isPureIp && !config.debug)
+    res.redirect(`https://${config.hostname}${req.url}`);
   else next();
 };
 

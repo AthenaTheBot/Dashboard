@@ -27,6 +27,7 @@ interface Config {
   };
   availableLanguages: Language[];
   requestLimitPerMinute: number;
+  hostname: string;
 }
 
 interface Language {
