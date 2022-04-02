@@ -25,6 +25,7 @@ function Dashboard() {
   const { guildId, category } = useParams();
   const navigate = useNavigate();
   const [currentGuild, setCurrentGuild] = useState(null);
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -47,11 +48,13 @@ function Dashboard() {
 
         if (!guild) return navigate("/servers");
 
-        setTimeout(() => {
-          setCurrentServer(guild);
+        setCurrentServer(guild);
 
-          setCurrentGuild(guild);
-        }, 100);
+        setCurrentGuild(guild);
+
+        setTimeout(() => {
+          setShowLoader(false);
+        }, 600);
       } else {
         setCurrentGuild([]);
       }
@@ -103,7 +106,7 @@ function Dashboard() {
   return (
     <div className="athena-dash-container">
       <div className="athena-dash-fade"></div>
-      {currentGuild ? (
+      {currentGuild && !showLoader ? (
         <Fragment>
           <div className="dash-module-selector">
             <div className="module-selector-guild">
