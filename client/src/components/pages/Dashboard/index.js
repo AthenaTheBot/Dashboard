@@ -47,9 +47,11 @@ function Dashboard() {
 
         if (!guild) return navigate("/servers");
 
-        setCurrentServer(guild);
+        setTimeout(() => {
+          setCurrentServer(guild);
 
-        setCurrentGuild(guild);
+          setCurrentGuild(guild);
+        }, 100);
       } else {
         setCurrentGuild([]);
       }
