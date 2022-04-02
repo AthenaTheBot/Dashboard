@@ -16,7 +16,12 @@ import "./style.css";
 import Loader from "../../layout/Loader";
 
 function Dashboard() {
-  const { guilds, setCurrentServer } = useContext(dashContext);
+  const {
+    guilds,
+    setCurrentServer,
+    getAvailableLanguages,
+    availableLanguages,
+  } = useContext(dashContext);
   const { guildId, category } = useParams();
   const navigate = useNavigate();
   const [currentGuild, setCurrentGuild] = useState(null);
@@ -24,6 +29,8 @@ function Dashboard() {
   useEffect(() => {
     (async () => {
       if (process.env.NODE_ENV === "production") {
+        if (!availableLanguages) return getAvailableLanguages();
+
         const sessionCookie = cookieGet("session");
 
         if (!sessionCookie) return window.location.replace("/oauth/login");
@@ -35,6 +42,7 @@ function Dashboard() {
             if (!res.ok) return null;
             return await res.json();
           })
+          .then((res) => res.data)
           .catch((err) => null);
 
         if (!guild) return navigate("/servers");
@@ -47,7 +55,7 @@ function Dashboard() {
       }
     })();
     //eslint-disable-next-line
-  }, [guilds, guildId, navigate]);
+  }, [availableLanguages, guilds, guildId, navigate, getAvailableLanguages]);
 
   useEffect(() => {
     if (!category || !validCategories.includes(category))

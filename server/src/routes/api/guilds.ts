@@ -6,9 +6,7 @@ import DashModules from "../../schemas/DashModules";
 import getCurrentUserGuilds from "../../utils/getUserGuilds";
 import { bot } from "../../index";
 import { connection } from "mongoose";
-import { Guild, GuildMember, Role } from "discord.js";
 import updateServerModule from "../../utils/updateServerModule";
-import getCurrentUser from "../../utils/getUser";
 import getAvailableRoles from "../../utils/getAvailableRoles";
 import authController from "../../middlewares/authController";
 
@@ -83,9 +81,9 @@ router.get("/:id", async (req, res) => {
 
   if (!availableRoles) availableRoles = [];
 
-  return res
-    .status(200)
-    .json({ ...guild, ...guildData._doc, availableRoles: availableRoles });
+  return res.successfull({
+    data: { ...guild, ...guildData._doc, availableRoles: availableRoles },
+  });
 });
 
 router.patch("/:id/:module", async (req, res) => {
