@@ -11,6 +11,8 @@ import colors from "colors";
 import responseHandler from "./middlewares/responseHandler";
 import rateLimiter from "./middlewares/rateLimiter";
 
+import redirectDns from "./middlewares/redirectDns";
+
 // Routes
 import apiRoute from "./routes/api/index";
 import oauthRoute from "./routes/oauth";
@@ -33,6 +35,7 @@ const cache = app.cache;
 
 // Express app configuration
 server.disable("x-powered-by");
+server.use(redirectDns);
 server.use(rateLimiter);
 server.use(bodyParser.json());
 server.use(cookieParser(config.keys.cookieSign));
