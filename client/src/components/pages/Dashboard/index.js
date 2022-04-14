@@ -106,7 +106,8 @@ function Dashboard() {
   return (
     <div className="athena-dash-container">
       <div className="athena-dash-fade"></div>
-      {currentGuild && !showLoader ? (
+      {(currentGuild && !showLoader) ||
+      process.env.NODE_ENV === "development" ? (
         <Fragment>
           <div className="dash-module-selector">
             <div className="module-selector-guild">

@@ -5,6 +5,7 @@ import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import compression from "compression";
 import Dashboard from "./Dashboard";
 import { Config, LogType } from "./constants";
 import colors from "colors";
@@ -35,8 +36,8 @@ const cache = app.cache;
 
 // Express app configuration
 server.disable("x-powered-by");
-server.use(redirectDns);
 server.use(rateLimiter);
+server.use(compression());
 server.use(bodyParser.json());
 server.use(cookieParser(config.keys.cookieSign));
 server.use(responseHandler);
