@@ -1,1 +1,0 @@
-- Instead of hard-coding the default values for a guild fetch them from the bot process.

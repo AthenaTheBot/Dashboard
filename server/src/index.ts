@@ -11,7 +11,6 @@ import { Config, LogType } from "./constants";
 import colors from "colors";
 import responseHandler from "./middlewares/responseHandler";
 import rateLimiter from "./middlewares/rateLimiter";
-
 import redirectDns from "./middlewares/redirectDns";
 
 // Routes
@@ -37,6 +36,7 @@ const cache = app.cache;
 // Express app configuration
 server.disable("x-powered-by");
 server.use(rateLimiter);
+server.use(redirectDns);
 server.use(compression());
 server.use(bodyParser.json());
 server.use(cookieParser(config.keys.cookieSign));
