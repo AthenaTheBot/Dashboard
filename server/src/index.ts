@@ -13,12 +13,6 @@ import responseHandler from "./middlewares/responseHandler";
 import rateLimiter from "./middlewares/rateLimiter";
 import redirectDns from "./middlewares/redirectDns";
 
-// Routes
-import apiRoute from "./routes/api/index";
-import oauthRoute from "./routes/oauth";
-import legalDocsRoute from "./routes/legalDocs";
-import linksRoute from "./routes/links";
-
 const app = new Dashboard();
 
 app.loadConfig(path.join(__dirname, "..", "config.json"));
@@ -32,6 +26,15 @@ const config = app.config as Config;
 const server = app.instances.server;
 const bot = app.instances.bot;
 const cache = app.cache;
+
+// eslint-disable-next-line
+import apiRoute from "./routes/api/index";
+// eslint-disable-next-line
+import oauthRoute from "./routes/oauth";
+// eslint-disable-next-line
+import legalDocsRoute from "./routes/legalDocs";
+// eslint-disable-next-line
+import linksRoute from "./routes/links";
 
 // Express app configuration
 server.disable("x-powered-by");
@@ -61,26 +64,26 @@ server.get("/*", (req, res) => {
   );
 });
 
-const keysPath = path.join(__dirname, "..", "keys");
-const keys = {
-  key: fs.readFileSync(path.join(keysPath, "privkey.pem"), "utf-8"),
-  cert: fs.readFileSync(path.join(keysPath, "cert.pem"), "utf-8"),
-  ca: fs.readFileSync(path.join(keysPath, "chain.pem"), "utf-8"),
-};
+// const keysPath = path.join(__dirname, "..", "keys");
+// const keys = {
+//   key: fs.readFileSync(path.join(keysPath, "privkey.pem"), "utf-8"),
+//   cert: fs.readFileSync(path.join(keysPath, "cert.pem"), "utf-8"),
+//   ca: fs.readFileSync(path.join(keysPath, "chain.pem"), "utf-8"),
+// };
 
 const httpServer = http.createServer(
   app.config.debug
     ? app.instances.server
     : (app.reditectToHTTPS as express.Express)
 );
-const httpsServer = https.createServer(keys, app.instances.server);
+// const httpsServer = https.createServer(keys, app.instances.server);
 
 (async () => {
   try {
     await app.start();
 
     httpServer.listen(app.serverPorts.http);
-    if (app.serverPorts.https) httpsServer.listen(app.serverPorts.https);
+    // if (app.serverPorts.https) httpsServer.listen(app.serverPorts.https);
 
     app.log(
       `HTTP servers has been started. Ports:  (HTTP: ${colors.green(

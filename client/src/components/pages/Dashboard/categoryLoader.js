@@ -1,7 +1,6 @@
 import Overview from "./Categories/Overview";
 import Settings from "./Categories/Settings";
 import Moderation from "./Categories/Moderation";
-import Music from "./Categories/Music";
 import Profile from "../../layout/Navbar/Profile";
 import { Fragment } from "react";
 
@@ -20,9 +19,6 @@ const CategoryLoader = ({ category }) => {
 
       case "moderation":
         return <Moderation />;
-
-      case "music":
-        return <Music />;
 
       default:
         return <Fragment></Fragment>;
@@ -57,4 +53,4 @@ const CategoryLoader = ({ category }) => {
 };
 
 export default CategoryLoader;
-export const validCategories = ["overview", "settings", "moderation", "music"];
+export const validCategories = ["overview", "settings", "moderation"];

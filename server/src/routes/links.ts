@@ -3,16 +3,19 @@ import { config } from "../index";
 
 const router = express.Router();
 
-router.get("/support", (req, res) => {
-  res.redirect(config.links.support);
-});
+const links = Object.getOwnPropertyNames(config?.links || {}) || [];
 
-router.get("/invite", (req, res) => {
-  res.redirect(
-    config.links.invite
-      .replace("$client_id", config.auth.clientId)
-      .replace("$redirect_uri", config.auth.redirectUri)
-  );
-});
+for (let i = 0; i < links.length; i++) {
+  const url = (config.links as any)[links[i] as any];
+  if (url) {
+    router.get(`/${links[i]}`, (req, res) => {
+      const formattedUrl = url
+        .replace("$client_id", config.auth.clientId)
+        .replace("$redirect_uri", config.auth.redirectUri);
+
+      res.redirect(formattedUrl);
+    });
+  }
+}
 
 export default router;

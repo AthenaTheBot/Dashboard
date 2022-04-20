@@ -25,6 +25,9 @@ const Footer = () => {
             <li>
               <Link to="/commands">Commands</Link>
             </li>
+            <li>
+              <a href="/source-code">Source Code</a>
+            </li>
           </ul>
           <ul className="athena-footer-links">
             <h3>Legal</h3>

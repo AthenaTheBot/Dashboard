@@ -6,6 +6,7 @@ interface Config {
     support: string;
     invite: string;
     login: string;
+    source: string;
   };
   auth: {
     botToken: string;

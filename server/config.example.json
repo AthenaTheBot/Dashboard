@@ -5,7 +5,8 @@
   "links": {
     "support": "",
     "invite": "https://discord.com/api/oauth2/authorize?client_id=$client_id&permissions=8&scope=bot%20applications.commands",
-    "login": "https://discord.com/api/oauth2/authorize?client_id=$client_id&redirect_uri=$redirect_uri&response_type=code&scope=identify%20email%20guilds"
+    "login": "https://discord.com/api/oauth2/authorize?client_id=$client_id&redirect_uri=$redirect_uri&response_type=code&scope=identify%20email%20guilds",
+    "source-code": "https://github.com/AthenaTheBot/"
   },
   "auth": {
     "botToken": "",

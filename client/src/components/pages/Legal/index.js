@@ -45,10 +45,10 @@ function Legal({ page }) {
 
   return (
     <Fragment>
-      <Navbar />
       <Helmet>
         <title>Legal - Athena</title>
       </Helmet>
+      <Navbar />
       <div className="athena-legal-container">
         <div className="athena-legal-head">
           <h1 style={{ color: "var(--primary-theme)" }}>{title}</h1>

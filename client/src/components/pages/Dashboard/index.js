@@ -2,7 +2,6 @@ import { Fragment, useEffect, useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { get as cookieGet } from "js-cookie";
 import { FiLayers, FiShield } from "react-icons/fi";
-import { IoMusicalNotesOutline } from "react-icons/io5";
 import { BiCog } from "react-icons/bi";
 import $ from "jquery";
 
@@ -161,15 +160,6 @@ function Dashboard() {
               >
                 <FiShield />
                 <p>Moderation</p>
-              </li>
-              <li
-                onClick={() => {
-                  selectoryCategoryClicked("music");
-                }}
-                className="module-selectory-body-element"
-              >
-                <IoMusicalNotesOutline />
-                <p>Music</p>
               </li>
             </ul>
           </div>

@@ -1,0 +1,32 @@
+@keyframes maintenanceWarmInit {
+  0% {
+    max-height: 0px;
+    padding: 3px;
+  }
+
+  100% {
+    padding: 3px;
+    max-height: 200px;
+  }
+}
+
+.maintenance-warn {
+  width: 100vw;
+  max-height: 0px;
+  background-color: var(--primary-error);
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 650ms ease;
+  animation: maintenanceWarmInit 1500ms forwards;
+  animation-delay: 1.5s;
+  overflow: hidden;
+}
+
+.maintenance-warn * {
+  margin: 0px;
+  padding: 0px;
+  font-size: 14px !important;
+}
