@@ -132,6 +132,9 @@ class Dashboard {
       try {
         await this.instances.bot.login(this.config.auth.botToken);
 
+        await this.instances.bot.user?.setActivity("Under maintenance");
+        await this.instances.bot.user?.setStatus("idle");
+
         this.log("Logged into the discord app.", LogType.SUCCESS);
       } catch (err) {
         this.log((err as any).message, LogType.ERROR);
