@@ -64,26 +64,37 @@ server.get("/*", (req, res) => {
   );
 });
 
-// const keysPath = path.join(__dirname, "..", "keys");
-// const keys = {
-//   key: fs.readFileSync(path.join(keysPath, "privkey.pem"), "utf-8"),
-//   cert: fs.readFileSync(path.join(keysPath, "cert.pem"), "utf-8"),
-//   ca: fs.readFileSync(path.join(keysPath, "chain.pem"), "utf-8"),
-// };
+let keys: https.ServerOptions | null = null;
+if (!config.debug) {
+  try {
+    const keysPath = path.join(__dirname, "..", "keys");
+    keys = {
+      key: fs.readFileSync(path.join(keysPath, "privkey.pem"), "utf-8"),
+      cert: fs.readFileSync(path.join(keysPath, "cert.pem"), "utf-8"),
+      ca: fs.readFileSync(path.join(keysPath, "chain.pem"), "utf-8"),
+    };
+  } catch (err) {
+    app.log(
+      "SSL files are not placed properly, exiting process.",
+      LogType.ERROR
+    );
+    process.exit(1);
+  }
+}
 
 const httpServer = http.createServer(
   app.config.debug
     ? app.instances.server
     : (app.reditectToHTTPS as express.Express)
 );
-// const httpsServer = https.createServer(keys, app.instances.server);
+const httpsServer = https.createServer(keys as any, app.instances.server);
 
 (async () => {
   try {
     await app.start();
 
     httpServer.listen(app.serverPorts.http);
-    // if (app.serverPorts.https) httpsServer.listen(app.serverPorts.https);
+    if (app.serverPorts.https) httpsServer.listen(app.serverPorts.https);
 
     app.log(
       `HTTP servers has been started. Ports:  (HTTP: ${colors.green(
