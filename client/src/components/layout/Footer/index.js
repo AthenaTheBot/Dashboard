@@ -26,7 +26,12 @@ const Footer = () => {
               <Link to="/commands">Commands</Link>
             </li>
             <li>
-              <a href="/source-code">Source Code</a>
+              <a target="_blank" rel="noopener noreferrer" href="/source-code">
+                Source Code{" "}
+                <FiExternalLink
+                  style={{ marginBottom: "3px", marginLeft: "4px" }}
+                />
+              </a>
             </li>
           </ul>
           <ul className="athena-footer-links">
@@ -38,7 +43,7 @@ const Footer = () => {
               <Link to="/terms">Terms of Service</Link>
             </li>
             <li>
-              <a href="/support">
+              <a target="_blank" rel="noopener noreferrer" href="/support">
                 Contact Us{" "}
                 <FiExternalLink
                   style={{ marginBottom: "3px", marginLeft: "4px" }}
