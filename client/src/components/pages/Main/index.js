@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 // Other Comp
 import Navbar from "../../layout/Navbar/";
@@ -31,7 +32,11 @@ const Main = () => {
         <div className="features">
           <div className="feature">
             <div id="feature_music" className="featureContent">
-              <img src="/assets/images/feature_music.svg" alt="Music" />
+              <LazyLoadImage
+                src="/assets/images/feature_music.svg"
+                alt="Music"
+                effect="opacity"
+              />
               <div className="feature_desc">
                 <h1>Music</h1>
                 <p>
@@ -43,7 +48,11 @@ const Main = () => {
           </div>
           <div className="feature">
             <div id="feature_moderation" className="featureContent">
-              <img src="/assets/images/feature_moderation.svg" alt="Music" />
+              <LazyLoadImage
+                src="/assets/images/feature_moderation.svg"
+                alt="Music"
+                effect="opacity"
+              />
               <div className="feature_desc">
                 <h1>Moderation</h1>
                 <p>
@@ -55,7 +64,11 @@ const Main = () => {
           </div>
           <div className="feature">
             <div id="feature_fun" className="featureContent">
-              <img src="/assets/images/feature_fun.svg" alt="Music" />
+              <LazyLoadImage
+                src="/assets/images/feature_fun.svg"
+                alt="Music"
+                effect="opacity"
+              />
               <div className="feature_desc">
                 <h1>Fun</h1>
                 <p>
@@ -68,7 +81,11 @@ const Main = () => {
           </div>
           <div className="feature">
             <div id="feature_misc" className="featureContent">
-              <img src="/assets/images/feature_misc.svg" alt="Music" />
+              <LazyLoadImage
+                src="/assets/images/feature_misc.svg"
+                effect="opacity"
+                alt="Music"
+              />
               <div className="feature_desc">
                 <h1>Misc</h1>
                 <p>

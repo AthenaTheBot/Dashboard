@@ -4,15 +4,8 @@ import { config, cache } from "../index";
 const rateLimiter = (req: Request, res: Response, next: NextFunction) => {
   const remainingRequests = cache.rateLimits.get(req.ip);
 
-  if (remainingRequests) {
+  if (remainingRequests && !config.debug) {
     if (remainingRequests >= config.requestLimitPerMinute) {
-      const warnSentCount = remainingRequests - config.requestLimitPerMinute;
-
-      if (warnSentCount >= 10) {
-        res.destroy();
-        return;
-      }
-
       res
         .type("text/plain")
         .status(429)

@@ -1,18 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import "./style.css";
 
-function Dropdown({ options = [], disabled = true }) {
-  const navigate = useNavigate();
-  const redirect = (to, passive = true) => {
-    if (passive) {
-      navigate(to);
-    } else {
-      window.location.replace(to);
-    }
-  };
-
+function Dropdown({ options = [], disabled = true, optionClicked = () => {} }) {
   let optionCount = 0;
-
   return (
     <ul className={disabled ? "dropdown disabled" : "dropdown"}>
       {options?.map((option) => {
@@ -21,7 +10,7 @@ function Dropdown({ options = [], disabled = true }) {
             style={{ color: `${option.color}` }}
             key={optionCount++}
             onClick={() => {
-              redirect(option.link, option.passive);
+              optionClicked(option);
             }}
           >
             {option.label}

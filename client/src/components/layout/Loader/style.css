@@ -85,6 +85,9 @@
   width: 100vw;
   z-index: 1000;
   background-color: var(--secondary-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cover > .spinner {

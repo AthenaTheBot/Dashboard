@@ -47,6 +47,10 @@
   --primary-error: #b12b2b;
 }
 
+h1 {
+  font-weight: bold !important;
+}
+
 body {
   background-color: var(--third-background);
   color: white;
@@ -60,6 +64,7 @@ body {
   animation-fill-mode: forwards;
   font-family: "Poppins", sans-serif !important;
   scrollbar-color: var(--primary-theme) var(--primary-background);
+  scroll-behavior: smooth;
 }
 
 #__athena {

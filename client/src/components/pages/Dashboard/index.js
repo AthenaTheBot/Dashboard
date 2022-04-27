@@ -45,7 +45,11 @@ function Dashboard() {
           .then((res) => res.data)
           .catch((err) => null);
 
-        if (!guild) return navigate("/servers");
+        if (!guild) {
+          return setTimeout(() => {
+            navigate("/servers");
+          }, 600);
+        }
 
         setCurrentServer(guild);
 

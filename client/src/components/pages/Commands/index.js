@@ -21,12 +21,14 @@ const Commands = () => {
   let categoryKeyCount = 0;
 
   const { getCommands, commands } = useContext(dashContext);
-  const [show, setShow] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [newCategories, setNewCategories] = useState([]);
+  const [categories, setCategories] = useState(commands ? commands : []);
+  const [newCategories, setNewCategories] = useState(commands ? commands : []);
+  const [show, setShow] = useState(commands ? true : false);
 
   useEffect(() => {
-    getCommands();
+    setTimeout(() => {
+      getCommands();
+    }, 600);
     //eslint-disable-next-line
   }, []);
 
@@ -78,7 +80,7 @@ const Commands = () => {
       <Navbar activeElement="commands" />
       <div className="command-page-header">
         <h1 style={{ color: "var(--primary-theme)" }}>Commands</h1>
-        <p>List of all commands that is currently running on Athena.</p>
+        <p>List of all active commands</p>
       </div>
       <div className="commands-container">
         {show ? (

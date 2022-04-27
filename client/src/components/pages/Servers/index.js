@@ -56,7 +56,7 @@ function Servers() {
                 );
               })
             ) : (
-              <Loader active={true} />
+              <Loader loaderMsg="Fetching servers..." active={true} />
             )}
           </div>
         </div>
