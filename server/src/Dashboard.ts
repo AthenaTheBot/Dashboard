@@ -110,22 +110,6 @@ class Dashboard {
     }
   }
 
-  async startBotPresence(): Promise<void> {
-    const wait = (ms: number) =>
-      new Promise(() => {
-        setTimeout((resolve) => {
-          resolve();
-        }, ms);
-      });
-
-    while (true) {
-      this.instances.bot.user?.setActivity("Under maintenance");
-      this.instances.bot.user?.setStatus("idle");
-
-      await wait(1000 * 60);
-    }
-  }
-
   reditectToHTTPS(req: express.Request, res: express.Response) {
     res.writeHead(301, {
       Location: "https://" + req.headers["host"] + req.url,
@@ -147,8 +131,6 @@ class Dashboard {
 
       try {
         await this.instances.bot.login(this.config.auth.botToken);
-
-        this.startBotPresence();
 
         this.log("Logged into the discord app.", LogType.SUCCESS);
       } catch (err) {

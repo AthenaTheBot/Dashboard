@@ -64,19 +64,6 @@
     ]
   },
   {
-    "name": "meme",
-    "aliases": [],
-    "description": "Fetches random memes from reddit.",
-    "category": "fun",
-    "usage": "",
-    "cooldown": 4,
-    "required_perms": [],
-    "required_bot_perms": [
-      "SEND_MESSAGES",
-      "EMBED_LINKS"
-    ]
-  },
-  {
     "name": "rip",
     "aliases": [],
     "description": "R.I.P",
@@ -473,6 +460,38 @@
     "required_perms": [],
     "required_bot_perms": [
       "SEND_MESSAGES"
+    ]
+  },
+  {
+    "name": "poll-create",
+    "aliases": [],
+    "description": "Create a poll",
+    "category": "utils",
+    "usage": "<timeout> <question>",
+    "cooldown": 5,
+    "required_perms": [
+      "MANAGE_GUILD"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "ADD_REACTIONS"
+    ]
+  },
+  {
+    "name": "poll-end",
+    "aliases": [],
+    "description": "Ends a poll",
+    "category": "utils",
+    "usage": "<poll-id>",
+    "cooldown": 4,
+    "required_perms": [
+      "MANAGE_GUILD"
+    ],
+    "required_bot_perms": [
+      "SEND_MESSAGES",
+      "EMBED_LINKS",
+      "ADD_REACTIONS"
     ]
   }
 ]
