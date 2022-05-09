@@ -1,0 +1,6 @@
+/node_modules
+src/client/build
+src/server/dist
+keys/*
+config.build.json
+config.json
