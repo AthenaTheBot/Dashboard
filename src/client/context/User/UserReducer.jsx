@@ -3,7 +3,7 @@ const CommandsReducer = (state, action) => {
     case "SET_USER":
       return {
         ...state,
-        user: action.payoad,
+        user: action.payload,
       };
 
     default:

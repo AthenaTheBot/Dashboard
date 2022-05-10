@@ -14,7 +14,12 @@ router.get("/@me", async (req, res) => {
 
   if (!user) return res.serverError();
 
-  res.successfull(user);
+  res.successfull({
+    ...user,
+    avatar: user?.avatar
+      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`
+      : null,
+  });
 });
 
 router.get("/@me/guilds", async (req, res) => {

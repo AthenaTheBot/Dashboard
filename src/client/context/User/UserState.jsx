@@ -8,12 +8,12 @@ const UserState = (props) => {
     user: null,
   });
 
-  const getUser = (force = false) => {
+  const getUser = async (force = false) => {
     const sessionCookie = Cookie.get("session");
 
     if (!sessionCookie || (!force && state?.user)) return;
 
-    const userData = fetch("/api/users/@me")
+    const userData = await fetch("/api/users/@me")
       .then((res) => {
         if (res.status === 200) return res.json();
         else return null;

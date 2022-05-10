@@ -1,7 +1,7 @@
 import { Link as PassiveLink } from "react-router-dom";
 import { FiExternalLink } from "react-icons/fi";
 
-const Link = ({ id, className, passive, to, children }) => {
+const Link = ({ id, className, passive, to, children, noIcon = false }) => {
   if (passive) {
     return (
       <PassiveLink to={to} id={id} className={className}>
@@ -18,7 +18,7 @@ const Link = ({ id, className, passive, to, children }) => {
         rel="noopener noreferrer"
       >
         {children}
-        <FiExternalLink style={{ marginLeft: "5px" }} />
+        {!noIcon ? <FiExternalLink style={{ marginLeft: "5px" }} /> : ""}
       </a>
     );
   }

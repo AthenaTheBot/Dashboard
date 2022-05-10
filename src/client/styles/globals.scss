@@ -74,3 +74,8 @@ button {
     background-color: var(--secondary-link);
   }
 }
+
+.scrollDisabled {
+  height: 100%;
+  overflow: hidden;
+}

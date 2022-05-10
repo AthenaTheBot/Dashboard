@@ -1,7 +1,10 @@
-import styles from "../styles/Navbar.module.scss";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
+
 import Link from "./Link";
+import User from "./User";
+
+import styles from "../styles/Navbar.module.scss";
 
 const Navbar = () => {
   const [collapsed, setCollapsed] = useState(true);
@@ -9,8 +12,14 @@ const Navbar = () => {
   const toggleNavbar = (e) => {
     if (collapsed) {
       setCollapsed(false);
+
+      window.onscroll = function () {
+        window.scrollTo(0, 0);
+      };
     } else {
       setCollapsed(true);
+
+      window.onscroll = null;
     }
   };
 
@@ -33,7 +42,10 @@ const Navbar = () => {
             <Link passive to="/commands">
               Commands
             </Link>
-            <Link to="/support">Support</Link>
+            <Link noIcon to="/support">
+              Support
+            </Link>
+            <User />
           </ul>
         </div>
       </div>
