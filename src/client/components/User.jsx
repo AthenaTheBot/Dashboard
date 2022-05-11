@@ -15,7 +15,12 @@ function User() {
 
   if (user) {
     return (
-      <div className={styles.userContainer}>
+      <div
+        onClick={() => {
+          window.location.replace("/oauth/logout");
+        }}
+        className={styles.userContainer}
+      >
         {user?.avatar ? (
           <img src={user?.avatar} alt={user?.username} />
         ) : (
@@ -27,7 +32,7 @@ function User() {
     );
   } else {
     return (
-      <Link noIcon className={styles.loginBtn} to="/oauth/login">
+      <Link noNewPage noIcon className={styles.loginBtn} to="/oauth/login">
         Login
       </Link>
     );

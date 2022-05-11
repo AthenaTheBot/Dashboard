@@ -76,7 +76,11 @@ function Commands() {
                           loadCategory(currentCategory);
                         }}
                         key={currentCategories.indexOf(currentCategory)}
-                        className={styles.category}
+                        className={`${styles.category} ${
+                          currentCategory === selectedCategory
+                            ? styles.selectedCategory
+                            : ""
+                        }`}
                       >
                         {currentCategory}
                       </div>

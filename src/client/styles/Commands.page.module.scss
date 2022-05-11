@@ -1,3 +1,15 @@
+@keyframes categoryAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
 .container {
   min-height: 58vh;
   padding: 15px;
@@ -38,6 +50,7 @@
   overflow: hidden;
   min-width: 200px;
   max-width: 250px;
+  animation: categoryAnimation 500ms forwards;
 }
 
 .category {
@@ -60,6 +73,12 @@
   &:hover {
     background-color: var(--secondary-theme);
   }
+}
+
+.selectedCategory {
+  background-color: var(--third-theme);
+  cursor: default;
+  pointer-events: none;
 }
 
 .commands {

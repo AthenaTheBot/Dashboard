@@ -1,3 +1,15 @@
+@keyframes commandAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .command {
   width: 100%;
   background-color: var(--primary-background);
@@ -9,6 +21,7 @@
   max-width: 800px;
   overflow: hidden;
   cursor: pointer;
+  animation: commandAnimation 500ms forwards;
 }
 
 .commandHead {
