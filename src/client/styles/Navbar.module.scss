@@ -41,11 +41,11 @@
 
 @media only screen and (max-width: 900px) {
   .navbarActive {
-    background-color: var(--primary-background-glass);
+    background-color: var(--primary-background);
 
     .navLinks {
       display: flex !important;
-      background-color: var(--primary-background-glass);
+      background-color: var(--primary-background);
     }
   }
 

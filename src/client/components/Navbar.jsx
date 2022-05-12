@@ -13,8 +13,10 @@ const Navbar = () => {
     if (collapsed) {
       setCollapsed(false);
 
+      console.log(window.innerWidth);
+
       window.onscroll = function () {
-        window.scrollTo(0, 0);
+        if (window.innerWidth <= 900) window.scrollTo(0, 0);
       };
     } else {
       setCollapsed(true);

@@ -21,7 +21,14 @@
   max-width: 800px;
   overflow: hidden;
   cursor: pointer;
-  animation: commandAnimation 500ms forwards;
+  opacity: 0;
+  animation: commandAnimation 200ms forwards;
+}
+
+@for $i from 1 through 500 {
+  .command:nth-child(#{$i}n) {
+    animation-delay: #{$i * 25}ms;
+  }
 }
 
 .commandHead {
