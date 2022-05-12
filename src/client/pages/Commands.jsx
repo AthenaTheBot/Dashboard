@@ -19,7 +19,7 @@ function Commands() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
-    if (!commands) getCommands();
+    if (!commands) setTimeout(getCommands, 500);
     else {
       let _categories = [];
       let _commands = [];
@@ -66,7 +66,7 @@ function Commands() {
         </div>
         <div className={styles.body}>
           <div className={styles.wrapper}>
-            {commands ? (
+            {currentCommands.length > 0 ? (
               <Fragment>
                 <div className={styles.categories}>
                   {currentCategories?.map((currentCategory) => {
