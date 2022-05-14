@@ -63,9 +63,24 @@
 
 @media only screen and (max-width: 900px) {
   .userContainer {
+    margin: 10px 0px;
+
+    img {
+      display: none;
+    }
+
+    .avatarPlaceHolder {
+      display: none;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+
     &::before {
-      border: unset;
       margin: 0px;
+      border: unset;
+      content: "Profile";
     }
   }
 }

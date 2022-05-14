@@ -9,16 +9,18 @@ const Link = ({
   children,
   noIcon = false,
   noNewPage = false,
+  style = null,
 }) => {
   if (passive) {
     return (
-      <PassiveLink to={to} id={id} className={className}>
+      <PassiveLink style={style} to={to} id={id} className={className}>
         {children}
       </PassiveLink>
     );
   } else {
     return (
       <a
+        style={style}
         href={to}
         id={id}
         className={className}

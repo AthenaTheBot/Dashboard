@@ -13,7 +13,7 @@ function User() {
     //eslint-disable-next-line
   }, []);
 
-  if (user) {
+  if (!user) {
     return (
       <div
         onClick={() => {

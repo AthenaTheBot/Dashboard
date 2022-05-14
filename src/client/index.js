@@ -9,6 +9,7 @@ import UserState from "./context/User/UserState";
 
 import Home from "./pages/Home";
 import Commands from "./pages/Commands";
+import NotFound from "./pages/NotFound";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -20,6 +21,7 @@ root.render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/commands" element={<Commands />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </UserState>

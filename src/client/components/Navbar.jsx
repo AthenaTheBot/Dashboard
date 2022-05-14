@@ -1,12 +1,14 @@
 import { FiMenu, FiX } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useContext, Fragment } from "react";
 
+import UserContext from "../context/User/UserContext";
 import Link from "./Link";
 import User from "./User";
 
 import styles from "../styles/Navbar.module.scss";
 
 const Navbar = () => {
+  const { user } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleNavbar = (e) => {
@@ -44,6 +46,13 @@ const Navbar = () => {
             <Link passive to="/commands">
               Commands
             </Link>
+            {user ? (
+              <Link passive to="/servers">
+                Servers
+              </Link>
+            ) : (
+              <Fragment />
+            )}
             <Link noIcon to="/support">
               Support
             </Link>
