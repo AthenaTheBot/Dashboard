@@ -5,7 +5,7 @@ const Link = ({
   id,
   className,
   passive,
-  to,
+  to = "/",
   children,
   noIcon = false,
   noNewPage = false,

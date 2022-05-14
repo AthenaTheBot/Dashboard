@@ -1,13 +1,17 @@
-import { Route } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Navigate as PassiveNavigate } from "react-router-dom";
+import { Navigate } from "react-router";
 
-const ControlledRoute = ({ path, element, restriction }) => {
+const ControlledRoute = ({ element, restriction }) => {
   const [canView, newPath, passiveLink] = restriction();
 
   if (canView) {
-    return <Route path={path} element={element} />;
+    return element;
   } else {
-    <Navigate to={newPath} replace={passiveLink} />;
+    return passiveLink ? (
+      <PassiveNavigate to={newPath} />
+    ) : (
+      <Navigate to={newPath} />
+    );
   }
 };
 

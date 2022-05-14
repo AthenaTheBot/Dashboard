@@ -46,7 +46,7 @@ function Commands() {
   };
 
   return (
-    <Container bgGradientColor="var(--third-theme)">
+    <Container bgGradientColor="var(--secondary-theme)">
       <Seo
         title="Commands - Athena"
         keywords={[
@@ -62,9 +62,8 @@ function Commands() {
       <div className={styles.container}>
         <div className={styles.header}>
           <h1>Commands</h1>
-          <p>List of all active commands</p>
         </div>
-        <div className={styles.body}>
+        <div className={styles.main}>
           <div className={styles.wrapper}>
             {currentCommands.length > 0 ? (
               <Fragment>

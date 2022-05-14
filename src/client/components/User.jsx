@@ -13,7 +13,7 @@ function User() {
     //eslint-disable-next-line
   }, []);
 
-  if (!user) {
+  if (user) {
     return (
       <div
         onClick={() => {
@@ -25,7 +25,7 @@ function User() {
           <img src={user?.avatar} alt={user?.username} />
         ) : (
           <div className={styles.avatarPlaceHolder}>
-            {user?.username.slice(0, 1)}
+            {user?.username?.trim()?.slice(0, 1)}
           </div>
         )}
       </div>
