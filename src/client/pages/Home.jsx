@@ -9,6 +9,7 @@ import FeatureMusic from "../images/FeatureMusic.svg";
 import FeatureModeration from "../images/FeatureModeration.svg";
 import FeatureFun from "../images/FeatureFun.svg";
 import FeatureMisc from "../images/FeatureMisc.svg";
+import Link from "../components/Link";
 
 function Home() {
   return (
@@ -79,13 +80,9 @@ function Home() {
       </main>
       <footer className={styles.footer}>
         <h1>Ready To Try Athena?</h1>
-        <button
-          onClick={() => {
-            window.location.replace("/invite");
-          }}
-        >
+        <Link className={styles.btn} noIcon to="/invite">
           Invite Athena!
-        </button>
+        </Link>
       </footer>
       <Footer />
     </Container>
