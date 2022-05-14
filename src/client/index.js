@@ -16,6 +16,9 @@ import Servers from "./pages/Servers";
 import NotFound from "./pages/NotFound";
 import UserContext from "./context/User/UserContext";
 
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+
 const root = createRoot(document.getElementById("root"));
 
 const ServersRouteRestriction = () => {
@@ -48,6 +51,8 @@ root.render(
                   />
                 }
               />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
