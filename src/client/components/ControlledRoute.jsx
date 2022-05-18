@@ -1,5 +1,4 @@
 import { Navigate as PassiveNavigate } from "react-router-dom";
-import { Navigate } from "react-router";
 
 const ControlledRoute = ({ element, restriction }) => {
   const [canView, newPath, passiveLink] = restriction();
@@ -10,7 +9,7 @@ const ControlledRoute = ({ element, restriction }) => {
     return passiveLink ? (
       <PassiveNavigate to={newPath} />
     ) : (
-      <Navigate to={newPath} />
+      window.location.replace(newPath)
     );
   }
 };
