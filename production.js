@@ -36,12 +36,12 @@ const placeBuildFiles = () => {
 
   fs.copySync(
     path.join(CLIENT_ROOT_PATH, "build"),
-    path.join(TARGET_PATH, "client", "build")
+    path.join(TARGET_PATH, "src", "client", "build")
   );
 
   fs.copySync(
     path.join(SERVER_ROOT_PATH, "dist"),
-    path.join(TARGET_PATH, "server", "dist")
+    path.join(TARGET_PATH, "src", "server", "dist")
   );
 
   fs.copySync("data", path.join(TARGET_PATH, "data"));

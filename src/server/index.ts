@@ -64,7 +64,8 @@ server.get("/*", (req, res) => {
 let keys: https.ServerOptions | null = null;
 if (!config.debug) {
   try {
-    const keysPath = path.join(__dirname, "..", "..", "keys");
+    const keysPath = path.join(__dirname, "..", "..", "..", "keys");
+    console.log(keysPath);
     keys = {
       key: fs.readFileSync(path.join(keysPath, "privkey.pem"), "utf-8"),
       cert: fs.readFileSync(path.join(keysPath, "cert.pem"), "utf-8"),
