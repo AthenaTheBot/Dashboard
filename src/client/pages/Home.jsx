@@ -9,7 +9,7 @@ import FeatureMusic from "../images/FeatureMusic.svg";
 import FeatureModeration from "../images/FeatureModeration.svg";
 import FeatureFun from "../images/FeatureFun.svg";
 import FeatureMisc from "../images/FeatureMisc.svg";
-import Link from "../components/Link";
+import Button from "../components/Button";
 
 function Home() {
   return (
@@ -80,9 +80,9 @@ function Home() {
       </main>
       <footer className={styles.footer}>
         <h1>Ready To Try Athena?</h1>
-        <Link className={styles.btn} noIcon to="/invite">
+        <Button className={styles.btn} to="/invite">
           Invite Athena!
-        </Link>
+        </Button>
       </footer>
       <Footer />
     </Container>

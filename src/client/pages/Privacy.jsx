@@ -3,12 +3,25 @@ import Container from "../components/Container";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Link from "../components/Link";
+import Seo from "../components/Seo";
 
 import styles from "../styles/Legal.module.scss";
 
 const Privacy = () => {
   return (
     <Container bgGradientColor="var(--third-theme)">
+      <Seo
+        title="Privacy - Athena"
+        keywords={[
+          "privacy-policy",
+          "privacy",
+          "policy",
+          "athena",
+          "athenabot",
+          "discordbot",
+        ]}
+        description="Privacy policy of Athena."
+      />
       <Navbar />
       <div className={styles.header}>
         <h1>Privacy Policy</h1>

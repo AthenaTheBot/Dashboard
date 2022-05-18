@@ -13,6 +13,10 @@ const ServersState = (props) => {
 
     if (!sessionCookie || (!force && state?.user)) return;
 
+    dispatch({
+      type: "SET_LOADING",
+    });
+
     const serverData = await fetch("/api/users/@me/guilds")
       .then((res) => {
         if (res.status === 200) return res.json();

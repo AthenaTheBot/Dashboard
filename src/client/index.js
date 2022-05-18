@@ -1,40 +1,41 @@
-import { StrictMode, useContext } from "react";
+import { StrictMode, useContext, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import "./styles/globals.scss";
-
 import CommandsState from "./context/Commands/CommandsState";
 import UserState from "./context/User/UserState";
 import ServersState from "./context/Servers/ServersState";
-
 import ControlledRoute from "./components/ControlledRoute";
-
 import Home from "./pages/Home";
 import Commands from "./pages/Commands";
 import Servers from "./pages/Servers";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import UserContext from "./context/User/UserContext";
-
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import UserContext from "./context/User/UserContext";
+import ServersContext from "./context/Servers/ServersContext";
+import Cookie from "js-cookie";
+import "./styles/globals.scss";
 
 const root = createRoot(document.getElementById("root"));
 
 const ServersRouteRestriction = () => {
-  const { user } = useContext(UserContext);
-
   if (process.env.NODE_ENV === "development") return [true, null, null];
-
-  if (user) {
-    return [true, null, null];
-  } else {
-    return [false, "/oauth/login", true];
-  }
+  if (Cookie.get("session")) return [true, null, null];
+  else return [false, "/oauth/login", false];
 };
 
-root.render(
-  <StrictMode>
+const App = () => {
+  const { getUser } = useContext(UserContext);
+  const { getServers } = useContext(ServersContext);
+
+  useEffect(() => {
+    getUser();
+    getServers();
+    //eslint-disable-next-line
+  }, []);
+
+  return (
     <CommandsState>
       <UserState>
         <ServersState>
@@ -51,6 +52,15 @@ root.render(
                   />
                 }
               />
+              <Route
+                path="/dashboard/:id"
+                element={
+                  <ControlledRoute
+                    element={<Dashboard />}
+                    restriction={ServersRouteRestriction}
+                  />
+                }
+              />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/*" element={<NotFound />} />
@@ -59,5 +69,11 @@ root.render(
         </ServersState>
       </UserState>
     </CommandsState>
+  );
+};
+
+root.render(
+  <StrictMode>
+    <App />
   </StrictMode>
 );

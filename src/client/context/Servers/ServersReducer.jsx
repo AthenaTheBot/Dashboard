@@ -5,6 +5,7 @@ const ServerReducer = (state, action) => {
         ...state,
         servers: action.payload,
       };
+
     default:
       return state;
   }

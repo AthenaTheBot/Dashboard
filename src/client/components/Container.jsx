@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/Container.module.scss";
 
-const Container = ({ bgGradientColor = "var(--primary-theme)", children }) => {
+const Container = ({
+  id,
+  className,
+  bgGradientColor = "var(--primary-theme)",
+  children,
+}) => {
   const [gradientColor, setGradientColor] = useState();
   const [gradientOpacity, setGradientOpacity] = useState(1);
 
@@ -14,7 +19,7 @@ const Container = ({ bgGradientColor = "var(--primary-theme)", children }) => {
   }, [bgGradientColor]);
 
   return (
-    <div className={styles.container}>
+    <div id={id}>
       <div
         style={{
           "--bgGradientColor": gradientColor,
@@ -22,7 +27,7 @@ const Container = ({ bgGradientColor = "var(--primary-theme)", children }) => {
         }}
         className={styles.bgGradient}
       ></div>
-      <div className={styles.wrapper}>{children}</div>
+      <div className={`${styles.wrapper} ${className}`}>{children}</div>
     </div>
   );
 };

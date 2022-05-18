@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import Server from "../components/Server";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
+import Seo from "../components/Seo";
 
 const Servers = () => {
   const { servers, getServers } = useContext(ServersContext);
@@ -19,6 +20,10 @@ const Servers = () => {
 
   return (
     <Container bgGradientColor="var(--third-theme)">
+      <Seo
+        title="Servers - Athena"
+        description="See the servers you can manage."
+      />
       <Navbar />
       <div className={styles.header}>
         <h1>Servers</h1>

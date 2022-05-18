@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 
 import UserContext from "../context/User/UserContext";
-import Link from "./Link";
+import Link from "../components/Link";
 
 import styles from "../styles/User.module.scss";
 
@@ -32,7 +32,7 @@ function User() {
     );
   } else {
     return (
-      <Link noNewPage noIcon className={styles.loginBtn} to="/oauth/login">
+      <Link noIcon noNewPage to="/oauth/login">
         Login
       </Link>
     );
