@@ -33,6 +33,7 @@ const placeBuildFiles = () => {
   log("Placing build files to a clean directory.");
 
   fs.ensureDirSync(TARGET_PATH);
+  fs.ensureDirSync(path.join(TARGET_PATH, "src"));
 
   fs.copySync(
     path.join(CLIENT_ROOT_PATH, "build"),
