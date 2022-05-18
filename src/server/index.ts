@@ -32,8 +32,6 @@ import apiRoute from "./routes/api/index";
 // eslint-disable-next-line
 import oauthRoute from "./routes/oauth";
 // eslint-disable-next-line
-import legalDocsRoute from "./routes/legalDocs";
-// eslint-disable-next-line
 import linksRoute from "./routes/links";
 
 // Express app configuration
@@ -48,7 +46,6 @@ server.use(responseHandler);
 // Attaching routes to the express app
 server.use("/api", apiRoute);
 server.use("/oauth", oauthRoute);
-server.use("/legalDocs", legalDocsRoute);
 server.use("/", linksRoute);
 
 // Serving static files
