@@ -1,4 +1,4 @@
-import { Helmet as Head } from "react-helmet";
+import Head from "react-meta-tags";
 
 const Seo = ({
   keywords = [
