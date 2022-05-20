@@ -3,8 +3,8 @@ import Link from "./Link";
 
 const Footer = () => {
   return (
-    <div className={styles.footer}>
-      <div className={styles.footerWrapper}>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
         <div className={styles.brand}>
           <img src="/logo.png" alt="Athena" height={128} width={128} />
           <p>

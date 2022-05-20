@@ -29,7 +29,7 @@ const Server = ({ id, name, icon }) => {
           to={`/dashboard/${id}`}
           className={styles.btn}
         >
-          Manager Server
+          Manage Server
         </Link>
       </div>
     </div>
