@@ -6,7 +6,7 @@ import Seo from "../components/Seo";
 import logo from "../images/logo.png";
 import $ from "jquery";
 import ServersContext from "../context/Servers/ServersContext";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { BiCube } from "react-icons/bi";
 import { FaCogs } from "react-icons/fa";
 import { GiThorHammer } from "react-icons/gi";
@@ -25,7 +25,6 @@ const Dashboard = () => {
   const { servers, getServers } = useContext(ServersContext);
   const navigate = useNavigate();
   const server = servers?.find((x) => x.id === id);
-  const [content, setContent] = useState("overview");
 
   useEffect(() => {
     if (!servers) getServers();
@@ -45,24 +44,19 @@ const Dashboard = () => {
     }
   };
 
+  const toggleMenu = () => {
+    const menu = $(`.${styles.menu}`);
+
+    if (menu.hasClass(styles.menuOpened)) {
+      menu.removeClass(styles.menuOpened);
+    } else {
+      menu.addClass(styles.menuOpened);
+    }
+  };
+
   useEffect(() => {
     if (!category) navigate(`/dashboard/${id}/overview`);
-    else {
-      setContent(category.trim());
-    }
   }, [category, navigate, id]);
-
-  useEffect(() => {
-    $(`.${styles.menuToggle}`).on("click", (e) => {
-      const menu = $(`.${styles.menu}`);
-
-      if (menu.hasClass(styles.menuOpened)) {
-        menu.removeClass(styles.menuOpened);
-      } else {
-        menu.addClass(styles.menuOpened);
-      }
-    });
-  }, []);
 
   return (
     <Container className={styles.container} bgColor>
@@ -108,7 +102,8 @@ const Dashboard = () => {
         <div className={styles.categories}>
           <div
             onClick={() => {
-              setContent("overview");
+              navigate(`/dashboard/${id}/overview`);
+              toggleMenu();
             }}
             className={styles.category}
           >
@@ -117,7 +112,8 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
-              setContent("settings");
+              navigate(`/dashboard/${id}/settings`);
+              toggleMenu();
             }}
             className={styles.category}
           >
@@ -126,7 +122,8 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
-              setContent("moderation");
+              navigate(`/dashboard/${id}/moderation`);
+              toggleMenu();
             }}
             className={styles.category}
           >
@@ -135,7 +132,8 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
-              setContent("music");
+              navigate(`/dashboard/${id}/music`);
+              toggleMenu();
             }}
             className={styles.category}
           >
@@ -145,9 +143,9 @@ const Dashboard = () => {
         </div>
       </div>
       <div className={styles.content}>
-        <VscMenu className={styles.menuToggle} />
+        <VscMenu className={styles.menuToggle} onClick={toggleMenu} />
         {(() => {
-          switch (content) {
+          switch (category) {
             case "overview":
               return <Overview />;
 

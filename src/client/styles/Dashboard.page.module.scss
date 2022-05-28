@@ -19,6 +19,7 @@
   position: relative;
   transition: all 450ms ease;
   position: relative;
+  backdrop-filter: blur(100px);
 }
 
 .content {

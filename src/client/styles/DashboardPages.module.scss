@@ -1,0 +1,28 @@
+.module {
+  width: 100%;
+  background-color: var(--primary-background-glass);
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0px;
+
+  .moduleHead {
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ffffff3f;
+    padding-bottom: 10px;
+
+    p {
+      color: #949292;
+      font-weight: bold;
+    }
+  }
+}
+
+.futureAvailable {
+  width: 100%;
+  margin: 20px 0px;
+  font-weight: bold;
+  border-left: 1px solid yellow;
+  padding: 5px;
+  padding-left: 10px;
+  background-color: var(--primary-background-glass);
+}
