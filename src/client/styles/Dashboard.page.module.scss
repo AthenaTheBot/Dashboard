@@ -1,10 +1,236 @@
 .container {
   height: 100vh;
-  width: 100vw;
-  min-height: 300px;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.menu {
+  height: 100%;
+  width: 300px;
+  border-right: 1px solid #ffffff3f;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: all 450ms ease;
+  position: relative;
+}
+
+.content {
+  height: 100%;
+  width: calc(100% - 300px);
+  padding: 15px;
+}
+
+.brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img {
+    height: 128px;
+    width: 128px;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.guildSelector {
+  width: 90%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0px;
+  position: relative;
+
+  .currentGuild {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #05050583;
+    background-color: #05050556;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 450ms ease;
+
+    &:hover {
+      background-color: #05050583;
+    }
+
+    img {
+      height: 32px;
+      width: 32px;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: bold;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-wrap: nowrap;
+    }
+  }
+
+  .guilds {
+    width: 100%;
+    max-height: 250px;
+    border: 1px solid #05050583;
+    background-color: #05050556;
+    border-radius: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 10px;
+    z-index: 100;
+    display: none;
+
+    .guild {
+      width: 100%;
+      padding: 5px 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      margin: 5px 0px;
+      cursor: pointer;
+      transition: all 150ms ease;
+
+      &:hover {
+        background-color: #05050583;
+      }
+
+      img {
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      p {
+        font-weight: bold;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .guildsMenuEnabled {
+    display: block !important;
+  }
+}
+
+.categories {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 15px;
+  width: 100%;
+
+  .category {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+    padding: 10px;
+    margin: 5px 0px;
+    background-color: #05050556;
+    border-radius: 5px;
+    transition: all 200ms ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #05050583;
+    }
+
+    svg {
+      color: white;
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    p {
+      width: fit-content;
+    }
+  }
+}
+
+.iconPlaceholder {
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+@keyframes menuClosingAnim {
+  0% {
+    position: fixed;
+    left: 0;
+  }
+  100% {
+    position: fixed;
+    left: -300px;
+  }
+}
+
+@keyframes menuOpeningAnim {
+  0% {
+    position: fixed;
+    left: -300px;
+  }
+  100% {
+    position: fixed;
+    left: 0;
+  }
+}
+
+.menuToggle {
+  position: absolute;
+  right: 15px;
+  top: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 5px;
+  box-sizing: unset;
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .menu {
+    animation: menuClosingAnim 300ms forwards;
+  }
+
+  .content {
+    width: 100vw;
+    min-width: 300px;
+  }
+
+  .menuToggle {
+    display: block;
+  }
+
+  .menuOpened {
+    background-color: var(--third-background-glass);
+    animation: menuOpeningAnim 300ms forwards !important;
+  }
 }

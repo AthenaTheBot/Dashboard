@@ -61,6 +61,15 @@ const App = () => {
                   />
                 }
               />
+              <Route
+                path="/dashboard/:id/:category"
+                element={
+                  <ControlledRoute
+                    element={<Dashboard />}
+                    restriction={ServersRouteRestriction}
+                  />
+                }
+              />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/*" element={<NotFound />} />
