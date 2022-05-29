@@ -1,6 +1,6 @@
 {
   "debug": true,
-  "debugPort": 3000,
+  "debugPort": 8080,
   "dbUrl": "mongodb://localhost:27017/AthenaV3",
   "links": {
     "support": "",
@@ -12,7 +12,7 @@
     "botToken": "",
     "clientId": "",
     "clientSecret": "",
-    "redirectUri": "http://localhost:3000/oauth/callback"
+    "redirectUri": "http://localhost:8080/oauth/callback"
   },
   "oauthEndpoints": {
     "tokenExchange": "https://discord.com/api/oauth2/token",

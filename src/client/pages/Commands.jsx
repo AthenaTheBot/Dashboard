@@ -1,7 +1,7 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import $ from "jquery";
 
-import CommandsContext from "../context/Commands/CommandsContext";
+import UtilsContext from "../context/Utils/UtilsContext";
 
 import Container from "../components/Container";
 import Navbar from "../components/Navbar";
@@ -13,7 +13,7 @@ import Loader from "../components/Loader";
 import styles from "../styles/Commands.page.module.scss";
 
 function Commands() {
-  const { commands, getCommands } = useContext(CommandsContext);
+  const { commands, getCommands } = useContext(UtilsContext);
   const [currentCategories, setCurrentCategories] = useState([]);
   const [currentCommands, setCurrentCommands] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");

@@ -1,11 +1,12 @@
 import { useReducer } from "react";
 
-import CommandsContext from "./CommandsContext";
-import CommandsReducer from "./CommandsReducer";
+import UtilsStateContext from "./UtilsContext";
+import UtilsStateReducer from "./UtilsReducer";
 
-const CommandsState = (props) => {
-  const [state, dispatch] = useReducer(CommandsReducer, {
+const UtilsState = (props) => {
+  const [state, dispatch] = useReducer(UtilsStateReducer, {
     commands: null,
+    availableLanguages: null,
   });
 
   const getCommands = async (force = false) => {
@@ -32,24 +33,41 @@ const CommandsState = (props) => {
       commands: allCommands,
     });
 
-    console.log(commands);
-
     dispatch({
       type: "SET_COMMANDS",
       payload: commands,
     });
   };
 
+  const getAvailableLanguages = async (force = false) => {
+    if (!force && state?.availableLanguages) return;
+
+    const availableLanguages = await fetch("/api/available-languages")
+      .then((res) => {
+        if (res.status === 200) return res.json();
+        else return null;
+      })
+      .catch((err) => null);
+
+    if (availableLanguages) {
+      dispatch({
+        type: "SET_AVAILABLE_LANGUAGES",
+        payload: availableLanguages,
+      });
+    }
+  };
+
   return (
-    <CommandsContext.Provider
+    <UtilsStateContext.Provider
       value={{
         ...state,
         getCommands,
+        getAvailableLanguages,
       }}
     >
       {props.children}
-    </CommandsContext.Provider>
+    </UtilsStateContext.Provider>
   );
 };
 
-export default CommandsState;
+export default UtilsState;

@@ -12,7 +12,16 @@ export const Overview = () => {
   );
 };
 
-export const Settings = () => {
+export const Settings = ({ serverData }) => {
+  for (let i = 0; i < serverData?.availableLanguages?.length; i++) {
+    if (
+      serverData?.availableLanguages[i]?.id ===
+      serverData?.modules?.settings?.language
+    ) {
+      serverData.availableLanguages[i].active = true;
+    } else serverData.availableLanguages[i].active = false;
+  }
+
   return (
     <Fragment>
       <h1>Settings</h1>
@@ -26,7 +35,7 @@ export const Settings = () => {
           </p>
         </div>
         <div className={styles.moduleInner}>
-          <TextInput />
+          <TextInput initialValue={serverData?.modules?.settings?.prefix} />
         </div>
       </div>
 
@@ -36,15 +45,7 @@ export const Settings = () => {
           <p>Change the language of Athena in your server.</p>
         </div>
         <div className={styles.moduleInner}>
-          <SelectInput
-            options={[
-              { id: "en_us", content: "English" },
-              {
-                id: "tr_tr",
-                content: "Türkçe",
-              },
-            ]}
-          />
+          <SelectInput options={serverData?.availableLanguages || []} />
         </div>
       </div>
     </Fragment>
@@ -62,9 +63,46 @@ export const Moderation = () => {
           <p>Make Athena give members to your new members of your guild.</p>
         </div>
         <div className={styles.moduleInner}>
-          <p>Whatever you want to put in here</p>
+          <p className={styles.futureAvailable}>
+            This module will be available in the future.
+          </p>
         </div>
       </div>
+
+      <div className={styles.module}>
+        <div className={styles.moduleHead}>
+          <h2>Bot Verificiation</h2>
+          <p>Verify your members and protect your server from spam and bots.</p>
+        </div>
+        <div className={styles.moduleInner}>
+          <p className={styles.futureAvailable}>
+            This module will be available in the future.
+          </p>
+        </div>
+      </div>
+
+      <div className={styles.module}>
+        <div className={styles.moduleHead}>
+          <h2>Bad Word Protection</h2>
+          <p>Protect your server members from bad words.</p>
+        </div>
+        <div className={styles.moduleInner}>
+          <p className={styles.futureAvailable}>
+            This module will be available in the future.
+          </p>
+        </div>
+      </div>
+    </Fragment>
+  );
+};
+
+export const Logging = () => {
+  return (
+    <Fragment>
+      <h1>Logging</h1>
+      <p className={styles.futureAvailable}>
+        This module will be available in the future.
+      </p>
     </Fragment>
   );
 };
@@ -81,5 +119,5 @@ export const Music = () => {
 };
 
 export const NotFound = () => {
-  return <h1>Page not found!</h1>;
+  return <h1>Module not found!</h1>;
 };

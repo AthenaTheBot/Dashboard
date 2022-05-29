@@ -25,7 +25,7 @@ router.get("/@me", async (req, res) => {
 router.get("/@me/guilds", async (req, res) => {
   const session = req.signedCookies?.session;
 
-  const guilds = await getCurrentUserGuilds(session, true);
+  const guilds = await getCurrentUserGuilds(session, true, false);
 
   if (!guilds || !Array.isArray(guilds)) return res.serverError();
 

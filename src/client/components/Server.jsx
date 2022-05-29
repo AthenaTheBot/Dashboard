@@ -1,7 +1,7 @@
 import styles from "../styles/Server.module.scss";
 import Link from "./Link";
 
-const Server = ({ id, name, icon }) => {
+const Server = ({ id, name, icon, available }) => {
   const background = {
     backgroundImage: `url(${icon})`,
   };
@@ -26,10 +26,10 @@ const Server = ({ id, name, icon }) => {
           passive
           noIcon
           noNewPage
-          to={`/dashboard/${id}`}
+          to={available ? `/dashboard/${id}` : `/invite?server=${id}`}
           className={styles.btn}
         >
-          Manage Server
+          {available ? "Manager Server" : "Invite Athena"}
         </Link>
       </div>
     </div>

@@ -4,6 +4,7 @@
   padding: 15px;
   border-radius: 6px;
   margin: 20px 0px;
+  max-width: 1200px;
 
   .moduleHead {
     margin-bottom: 5px;
@@ -19,10 +20,10 @@
 
 .futureAvailable {
   width: 100%;
-  margin: 20px 0px;
+  margin: 10px 0px;
   font-weight: bold;
-  border-left: 1px solid yellow;
+  border-left: 1px solid var(--primary-link);
+  background-color: var(--primary-background);
   padding: 5px;
   padding-left: 10px;
-  background-color: var(--primary-background-glass);
 }

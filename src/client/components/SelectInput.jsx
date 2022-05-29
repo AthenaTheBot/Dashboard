@@ -2,9 +2,27 @@ import { Fragment, useEffect, useState } from "react";
 import styles from "../styles/SelectInput.module.scss";
 
 const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(
+    options.find((x) => x?.active)?.label || ""
+  );
   const [optionsToShow, setOptionsToShow] = useState(options);
   const [optionsEnabled, setOptionsEnabled] = useState(false);
+
+  useEffect(() => {
+    const newOptions = options.find((x) => x?.active)?.label || "";
+    setInputValue(newOptions);
+    setOptionsToShow(options);
+  }, [options]);
+
+  useEffect(() => {
+    const newOptionsToShow = options.filter((x) =>
+      x?.label?.toLowerCase()?.startsWith(inputValue?.toLowerCase())
+    );
+
+    setOptionsToShow(newOptionsToShow);
+
+    //eslint-disable-next-line
+  }, [inputValue]);
 
   const inputChanged = (event) => {
     setOptionsEnabled(true);
@@ -13,7 +31,7 @@ const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
 
     const option = options?.find(
       (x) =>
-        x?.content?.trim()?.toLowerCase() ===
+        x?.label?.trim()?.toLowerCase() ===
         event?.target?.value?.trim()?.toLowerCase()
     );
 
@@ -21,22 +39,12 @@ const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
   };
 
   const optionSelected = (option) => {
-    setInputValue(option.content);
+    setInputValue(option.label);
 
     onSelect(option);
 
     setOptionsEnabled(false);
   };
-
-  useEffect(() => {
-    const newOptionsToShow = options.filter((x) =>
-      x?.content?.toLowerCase()?.startsWith(inputValue?.toLowerCase())
-    );
-
-    setOptionsToShow(newOptionsToShow);
-
-    //eslint-disable-next-line
-  }, [inputValue]);
 
   return (
     <div className={styles.container}>
@@ -61,7 +69,7 @@ const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
       >
         {optionsToShow.length > 0
           ? optionsToShow.map((option, index) => {
-              if (!option?.id || !option?.content) return <Fragment />;
+              if (!option?.id || !option?.label) return <Fragment />;
 
               return (
                 <div
@@ -71,7 +79,7 @@ const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
                   }}
                   className={styles.option}
                 >
-                  {option?.content?.trim()}
+                  {option?.label?.trim()}
                 </div>
               );
             })

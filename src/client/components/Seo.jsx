@@ -1,4 +1,4 @@
-import { Helmet as Head } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const Seo = ({
   keywords = [
@@ -18,20 +18,22 @@ const Seo = ({
   path = "/",
 }) => {
   return (
-    <Head>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="theme-color" content="#23215a" />
-      <meta name="keywords" content={keywords.join(",")} />
-      <meta name="description" content={description} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={`https://athena.bot${path}`} />
-      <meta property="og:image" content="/favicon.ico" />
-      <meta property="og:image:width" content="64" />
-      <meta property="og:image:height" content="64" />
-      <title>{title}</title>
-    </Head>
+    <HelmetProvider>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#23215a" />
+        <meta name="keywords" content={keywords.join(",")} />
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={`https://athena.bot${path}`} />
+        <meta property="og:image" content="/favicon.ico" />
+        <meta property="og:image:width" content="64" />
+        <meta property="og:image:height" content="64" />
+        <title>{title}</title>
+      </Helmet>
+    </HelmetProvider>
   );
 };
 

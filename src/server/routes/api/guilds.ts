@@ -17,75 +17,79 @@ const router = express.Router();
 router.use(authController);
 
 router.get("/:id", async (req, res) => {
-  const session = req.signedCookies?.session;
+  try {
+    const session = req.signedCookies?.session;
 
-  const guilds = await getCurrentUserGuilds(session, false);
+    const guilds = await getCurrentUserGuilds(session, true, false);
 
-  const guild = guilds?.find((x) => x.id === req.params.id);
+    const guild = guilds?.find((x) => x.id === req.params.id);
 
-  if (!guild) return res.unauthorized();
+    if (!guild) return res.unauthorized();
 
-  if (!connection) return res.serverError();
+    if (!connection) return res.serverError();
 
-  let guildData = await GuildModel.findById(guild.id).catch((err) => null);
+    let guildData = await GuildModel.findById(guild.id).catch((err) => null);
 
-  if (!guildData) {
-    guildData = await GuildModel.create({
-      _id: guild.id,
-      modules: {
-        settings: {
-          prefix: "at!",
-          language: "en_US",
+    if (!guildData) {
+      guildData = await GuildModel.create({
+        _id: guild.id,
+        modules: {
+          settings: {
+            prefix: "at!",
+            language: "en_US",
+          },
+          moderation: {
+            adminRole: null,
+            modRole: null,
+            autoRole: null,
+            warnings: [],
+          },
+          fun: {},
+          utils: {},
         },
-        moderation: {
-          adminRole: null,
-          modRole: null,
-          autoRole: null,
-          warnings: [],
-        },
-        fun: {},
-        utils: {},
+        lastUpdated: dayjs().format("L LT"),
+      });
+    }
+
+    // Delete unncessary meta info
+    delete guildData._doc?._id;
+    delete guildData._doc?.lastUpdated;
+    delete guild?.permissions_new;
+    delete guild?.features;
+
+    const extraGuildData =
+      (await bot.guilds.cache.get(guild.id)) ||
+      (await bot.guilds.fetch(guild.id));
+
+    Object.assign(guild, {
+      members: extraGuildData?.memberCount,
+      channels: {
+        text: extraGuildData?.channels.cache.filter(
+          (x) => x.type === "GUILD_TEXT"
+        ).size,
+        voice: extraGuildData?.channels.cache.filter(
+          (x) => x.type === "GUILD_VOICE"
+        ).size,
       },
-      lastUpdated: dayjs().format("L LT"),
+      roles: extraGuildData?.roles.cache.size,
+      createdAt: dayjs(extraGuildData?.createdAt).format("L"),
     });
+
+    let availableRoles = await getAvailableRoles(
+      req.signedCookies["session"],
+      req.params.id
+    ).catch((err) => null);
+
+    if (!availableRoles) availableRoles = [];
+
+    return res.successfull({
+      ...guild,
+      ...guildData._doc,
+      availableRoles: availableRoles,
+    });
+  } catch (err) {
+    res.serverError();
   }
-
-  // Delete unncessary meta info
-  delete guildData._doc?._id;
-  delete guildData._doc?.lastUpdated;
-  delete guild?.permissions_new;
-  delete guild?.features;
-
-  const extraGuildData =
-    (await bot.guilds.cache.get(guild.id)) ||
-    (await bot.guilds.fetch(guild.id));
-
-  Object.assign(guild, {
-    members: extraGuildData?.memberCount,
-    channels: {
-      text: extraGuildData?.channels.cache.filter(
-        (x) => x.type === "GUILD_TEXT"
-      ).size,
-      voice: extraGuildData?.channels.cache.filter(
-        (x) => x.type === "GUILD_VOICE"
-      ).size,
-    },
-    roles: extraGuildData?.roles.cache.size,
-    createdAt: dayjs(extraGuildData?.createdAt).format("L"),
-  });
-
-  let availableRoles = await getAvailableRoles(
-    req.signedCookies["session"],
-    req.params.id
-  ).catch((err) => null);
-
-  if (!availableRoles) availableRoles = [];
-
-  return res.successfull({
-    ...guild,
-    ...guildData._doc,
-    availableRoles: availableRoles,
-  });
 });
 
 router.patch("/:id/:module", async (req, res) => {

@@ -11,11 +11,7 @@ const ServersState = (props) => {
   const getServers = async (force = false) => {
     const sessionCookie = Cookie.get("session");
 
-    if (!sessionCookie || (!force && state?.user)) return;
-
-    dispatch({
-      type: "SET_LOADING",
-    });
+    if (!sessionCookie || (!force && state?.servers)) return;
 
     const serverData = await fetch("/api/users/@me/guilds")
       .then((res) => {

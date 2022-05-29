@@ -33,7 +33,12 @@ const Servers = () => {
           {servers ? (
             servers.map((server) => {
               return (
-                <Server id={server.id} name={server.name} icon={server.icon} />
+                <Server
+                  id={server.id}
+                  name={server.name}
+                  icon={server.icon}
+                  available={server.available}
+                />
               );
             })
           ) : (

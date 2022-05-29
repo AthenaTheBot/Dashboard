@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import UserContext from "../context/User/UserContext";
 import Link from "../components/Link";
@@ -6,12 +6,7 @@ import Link from "../components/Link";
 import styles from "../styles/User.module.scss";
 
 function User() {
-  const { user, getUser } = useContext(UserContext);
-
-  useEffect(() => {
-    if (!user) getUser(false);
-    //eslint-disable-next-line
-  }, []);
+  const { user } = useContext(UserContext);
 
   if (user) {
     return (
