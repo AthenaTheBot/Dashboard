@@ -203,6 +203,7 @@ const Dashboard = () => {
                     ...server,
                     ...serverDetails,
                     availableLanguages,
+                    setServerDetails,
                   }}
                 />
               );

@@ -1,18 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import styles from "../styles/SelectInput.module.scss";
 
-const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
-  const [inputValue, setInputValue] = useState(
-    options.find((x) => x?.active)?.label || ""
-  );
+const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
+  const [inputValue, setInputValue] = useState(active.label);
   const [optionsToShow, setOptionsToShow] = useState(options);
   const [optionsEnabled, setOptionsEnabled] = useState(false);
 
   useEffect(() => {
-    const newOptions = options.find((x) => x?.active)?.label || "";
-    setInputValue(newOptions);
+    setInputValue(active.label);
     setOptionsToShow(options);
-  }, [options]);
+  }, [active, options]);
 
   useEffect(() => {
     const newOptionsToShow = options.filter((x) =>
@@ -59,6 +56,7 @@ const SelectInput = ({ options = [], children, onSelect = () => {} }) => {
         onBlur={(e) => {
           if (e.relatedTarget) return;
           setOptionsEnabled(false);
+          setInputValue(active.label);
         }}
       />
       <div

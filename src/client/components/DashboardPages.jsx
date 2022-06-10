@@ -1,8 +1,11 @@
 import styles from "../styles/DashboardPages.module.scss";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import TextInput from "../components/TextInput";
 import SelectInput from "../components/SelectInput";
+import ChangesDetected from "./ChangesDetected";
+
+import SaveChnages from "../utils/SaveChanges";
 
 export const Overview = () => {
   return (
@@ -13,14 +16,37 @@ export const Overview = () => {
 };
 
 export const Settings = ({ serverData }) => {
-  for (let i = 0; i < serverData?.availableLanguages?.length; i++) {
-    if (
-      serverData?.availableLanguages[i]?.id ===
-      serverData?.modules?.settings?.language
-    ) {
-      serverData.availableLanguages[i].active = true;
-    } else serverData.availableLanguages[i].active = false;
-  }
+  const [settings, setSettings] = useState(serverData?.modules?.settings);
+  const [warnActive, setWarnActive] = useState(false);
+  const [warnLoading, setWarnLoading] = useState(false);
+
+  useEffect(() => {
+    setSettings(serverData?.modules?.settings);
+  }, [setSettings, serverData]);
+
+  const saveChanges = async () => {
+    setWarnLoading(true);
+
+    const success = await SaveChnages(serverData.id, "settings", settings);
+
+    if (success) {
+      setWarnActive(false);
+      setWarnLoading(false);
+      serverData.setServerDetails({
+        ...serverData,
+        modules: {
+          ...serverData?.modules,
+          settings: settings,
+        },
+      });
+    } else {
+      console.error("An error occured while saving data.");
+    }
+  };
+  const resetChanges = () => {
+    setSettings(serverData?.modules?.settings);
+    setWarnActive(false);
+  };
 
   return (
     <Fragment>
@@ -35,7 +61,16 @@ export const Settings = ({ serverData }) => {
           </p>
         </div>
         <div className={styles.moduleInner}>
-          <TextInput initialValue={serverData?.modules?.settings?.prefix} />
+          <TextInput
+            onChange={(x) => {
+              setSettings({
+                ...settings,
+                prefix: x,
+              });
+              setWarnActive(true);
+            }}
+            initialValue={settings?.prefix}
+          />
         </div>
       </div>
 
@@ -45,9 +80,28 @@ export const Settings = ({ serverData }) => {
           <p>Change the language of Athena in your server.</p>
         </div>
         <div className={styles.moduleInner}>
-          <SelectInput options={serverData?.availableLanguages || []} />
+          <SelectInput
+            onSelect={(x) => {
+              setSettings({
+                ...settings,
+                language: x,
+              });
+              setWarnActive(true);
+            }}
+            active={serverData?.availableLanguages?.find(
+              (x) => x.id === settings?.language
+            )}
+            options={serverData?.availableLanguages || []}
+          />
         </div>
       </div>
+
+      <ChangesDetected
+        resetChanges={resetChanges}
+        saveChanges={saveChanges}
+        active={warnActive}
+        loading={warnLoading}
+      />
     </Fragment>
   );
 };
@@ -100,9 +154,18 @@ export const Logging = () => {
   return (
     <Fragment>
       <h1>Logging</h1>
-      <p className={styles.futureAvailable}>
-        This module will be available in the future.
-      </p>
+
+      <div className={styles.module}>
+        <div className={styles.moduleHead}>
+          <h2>Actions</h2>
+          <p>Select the actions that you want Athena to log.</p>
+        </div>
+        <div className={styles.moduleInner}>
+          <p className={styles.futureAvailable}>
+            This module will be available in the future.
+          </p>
+        </div>
+      </div>
     </Fragment>
   );
 };
@@ -111,9 +174,18 @@ export const Music = () => {
   return (
     <Fragment>
       <h1>Music</h1>
-      <p className={styles.futureAvailable}>
-        This module will be available in the future.
-      </p>
+
+      <div className={styles.module}>
+        <div className={styles.moduleHead}>
+          <h2>Banned Songs</h2>
+          <p>Ban any youtube link, and make Athena not play that song.</p>
+        </div>
+        <div className={styles.moduleInner}>
+          <p className={styles.futureAvailable}>
+            This module will be available in the future.
+          </p>
+        </div>
+      </div>
     </Fragment>
   );
 };
