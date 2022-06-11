@@ -7,6 +7,12 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import Discord from "discord.js";
 import { Config, Guild, LogType, User } from "./constants";
+import responseHandler from "./middlewares/responseHandler";
+import rateLimiter from "./middlewares/rateLimiter";
+import redirectDns from "./middlewares/redirectDns";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import compression from "compression";
 
 dayjs.extend(localizedFormat);
 colors.enable();
@@ -92,6 +98,55 @@ class Dashboard {
     }
   }
 
+  reditectToHTTPS(req: express.Request, res: express.Response) {
+    res.writeHead(301, {
+      Location: "https://" + req.headers["host"] + req.url,
+    });
+
+    res.end();
+  }
+
+  async setupServer(config: Config): Promise<void> {
+    // Express app configuration
+    this.instances.server.disable("x-powered-by");
+    this.instances.server.use(rateLimiter);
+    this.instances.server.use(redirectDns);
+    this.instances.server.use(compression());
+    this.instances.server.use(bodyParser.json());
+    this.instances.server.use(cookieParser(config.keys.cookieSign));
+    this.instances.server.use(responseHandler);
+
+    // Attaching routes to the express app
+    this.instances.server.use(
+      "/api",
+      (await import("./routes/api/index")
+        .then((d) => d.default)
+        .catch((err) => () => {})) as any
+    );
+    this.instances.server.use(
+      "/oauth",
+      (await import("./routes/oauth")
+        .then((d) => d.default)
+        .catch((err) => () => {})) as any
+    );
+    this.instances.server.use(
+      "/",
+      (await import("./routes/links")
+        .then((d) => d.default)
+        .catch((err) => () => {})) as any
+    );
+    this.instances.server.use(
+      "/",
+      express.static(path.join(__dirname, "..", "..", "client", "build"))
+    );
+
+    this.instances.server.get("/*", (req, res) => {
+      res.sendFile(
+        path.join(__dirname, "..", "..", "client", "build", "index.html")
+      );
+    });
+  }
+
   async connectDB(dbUrl: string): Promise<mongoose.Connection | null> {
     try {
       await mongoose.connect(dbUrl);
@@ -108,14 +163,6 @@ class Dashboard {
       );
       return null;
     }
-  }
-
-  reditectToHTTPS(req: express.Request, res: express.Response) {
-    res.writeHead(301, {
-      Location: "https://" + req.headers["host"] + req.url,
-    });
-
-    res.end();
   }
 
   async start(): Promise<void> {

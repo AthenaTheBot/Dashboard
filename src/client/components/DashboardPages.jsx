@@ -84,7 +84,7 @@ export const Settings = ({ serverData }) => {
             onSelect={(x) => {
               setSettings({
                 ...settings,
-                language: x,
+                language: x.id,
               });
               setWarnActive(true);
             }}
