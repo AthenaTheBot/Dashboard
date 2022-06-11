@@ -22,6 +22,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 15px 0px;
+  z-index: 100;
 }
 
 .content {
@@ -237,7 +238,7 @@
   }
 
   .menuOpened {
-    background-color: var(--third-background-glass);
+    background-color: #242152d3;
     animation: menuOpeningAnim 300ms forwards !important;
   }
 }
