@@ -1,0 +1,26 @@
+{
+  "Debug": true,
+  "Port": 8080,
+  "RequestLimit": 600,
+  "Database": "mongodb://localhost:27017",
+  "Bot": {
+    "ClientId": "754425509533712536",
+    "ClientSecret": "52a9xyCCtBqaAxThJNF9YwGd01a1pdJf",
+    "RedirectUri": "http://localhost:8080/oauth/callback",
+    "Token": "NzU0NDI1NTA5NTMzNzEyNTM2.X10jgg.EA8qiuaNb-OipoRsvqn2kY4DmNE"
+  },
+  "Redirects": [
+    {
+      "Name": "invite",
+      "Destination": "https://discord.com/api/oauth2/authorize?client_id=754425509533712536&permissions=8&scope=bot%20applications.commands"
+    },
+    {
+      "Name": "support",
+      "Destination": "https://discord.gg/etsgB9J"
+    },
+    {
+      "Name": "login",
+      "Destination": "https://discord.com/api/oauth2/authorize?client_id=754425509533712536&redirect_uri=http://localhost:8080/oauth/callback&response_type=code&scope=identify%20email%20guilds"
+    }
+  ]
+}

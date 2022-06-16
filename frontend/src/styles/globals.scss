@@ -1,0 +1,81 @@
+@import url("https://use.typekit.net/hbr5dwj.css");
+
+:root {
+  --primary-link: #433f9b;
+  --secondary-link: #373385;
+
+  --primary-theme: #23215a;
+  --secondary-theme: #1a1942;
+  --third-theme: #17163b;
+  --fourth-theme: #0e0e0f;
+
+  --primary-theme-border: #2c2a6e;
+
+  --primary-background: #0a070f;
+  --secondary-background: #0e0a14;
+
+  --primary-background-border: #181124;
+
+  --primary-theme-glass: #23215acb;
+
+  --primary-background-glass: #0808089a;
+  --secondary-background-glass: #16161693;
+  --third-background-glass: #0f0f0f79;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: titillium-web, Poppins, Arilai, sans-serif;
+  background-color: var(--primary-background);
+  color: white;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9c9c9c;
+  border-radius: 6px;
+}
+
+button {
+  padding: 15px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: all 250ms ease;
+  border-radius: 6px;
+  background-color: var(--primary-link);
+  color: white;
+  border: 1px soid var(--primary-link);
+  font-weight: bold;
+
+  &:hover {
+    background-color: var(--secondary-link);
+  }
+}
+
+.scrollDisabled {
+  height: 100%;
+  overflow: hidden;
+}

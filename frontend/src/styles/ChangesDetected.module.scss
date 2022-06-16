@@ -1,0 +1,53 @@
+@keyframes openingAnim {
+  0% {
+    transform: translateY(30px);
+  }
+
+  65% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.container {
+  width: 97%;
+  max-width: 1200px;
+  position: absolute;
+  bottom: 0px;
+  height: 60px;
+  border: 1px solid #ffffff3f;
+  background-color: #05050556;
+  padding: 10px;
+  margin: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: 6px;
+  animation: openingAnim 700ms forwards;
+
+  p {
+    width: calc(100% - 150px);
+  }
+
+  div {
+    max-width: 150px;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div {
+    margin: 0px 5px;
+  }
+}
+
+.disabled {
+  display: none !important;
+}

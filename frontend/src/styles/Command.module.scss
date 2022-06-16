@@ -1,0 +1,93 @@
+@keyframes commandAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.command {
+  width: 100%;
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-background-border);
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  min-width: 300px;
+  max-width: 800px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  animation: commandAnimation 200ms forwards;
+}
+
+@for $i from 1 through 500 {
+  .command:nth-child(#{$i}n) {
+    animation-delay: #{$i * 25}ms;
+  }
+}
+
+.commandHead {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 20px;
+  user-select: none;
+
+  .commandName {
+    font-weight: bold;
+    margin-right: 5px;
+
+    &::before {
+      content: "/";
+    }
+  }
+
+  .commandUsage {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-style: italic;
+    font-weight: bold;
+    color: var(--primary-link);
+    margin: 0px 6px;
+    margin-top: 4px;
+    text-transform: capitalize;
+
+    &::before {
+      content: "<";
+    }
+
+    &::after {
+      content: ">";
+    }
+  }
+}
+
+.commandProp {
+  margin: 5px 0px;
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.commandBody {
+  display: none;
+}
+
+@media only screen and (max-width: 1100px) {
+  .command {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 730px) {
+  .command {
+    width: 100%;
+    min-width: unset;
+  }
+}
