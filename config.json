@@ -1,7 +1,7 @@
 {
   "Debug": true,
   "Port": 8080,
-  "RequestLimit": 600,
+  "RequestLimit": 100,
   "Database": "mongodb://localhost:27017",
   "Bot": {
     "ClientId": "754425509533712536",

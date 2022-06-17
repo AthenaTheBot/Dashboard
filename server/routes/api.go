@@ -12,9 +12,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/sync/syncmap"
 )
 
-func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users map[string]models.User, userGuilds map[string][]models.GuildPreview) {
+func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map) {
 	api.UsersRoute(r.Group("users"), bot, users, userGuilds)
 	api.GuildsRoute(r.Group("guilds"),bot, db, users, userGuilds)
 

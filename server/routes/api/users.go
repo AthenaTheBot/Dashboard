@@ -8,9 +8,10 @@ import (
 	"athena.bot/server/middlewares"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/sync/syncmap"
 )
 
-func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users map[string]models.User, userGuilds map[string][]models.GuildPreview) {
+func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users syncmap.Map, userGuilds syncmap.Map) {
 	r.GET("/@me", middlewares.Authorization(), func(ctx *gin.Context) {
 		token, _ := ctx.Cookie("session")
 

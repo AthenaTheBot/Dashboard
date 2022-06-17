@@ -16,6 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/sync/syncmap"
 )
 
 func ExchangeToken(code string, botCfg models.BotConfig) (models.AccessTokenResponse, error) {
@@ -40,9 +41,11 @@ func ExchangeToken(code string, botCfg models.BotConfig) (models.AccessTokenResp
 	return accessTokenResp, nil
 }
 
-func GetUser(users map[string]models.User, session string) (models.User, error) {
-	if _, ok := users[session]; ok {
-		return users[session], nil
+func GetUser(users syncmap.Map, session string) (models.User, error) {
+	cachedUser, cachedUserExists  := users.Load(session)
+
+	if cachedUserExists {
+		return cachedUser.(models.User), nil
 	} else {
 		client := http.Client{}
 		req, _ := http.NewRequest(http.MethodGet, "https://discord.com/api/users/@me", nil)
@@ -64,11 +67,11 @@ func GetUser(users map[string]models.User, session string) (models.User, error) 
 			user.Avatar = fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s", user.Id, user.Avatar)
 			user.Color = fmt.Sprintf("#%x", user.AccentColor)
 
-			users[session] = user
+			users.Store(session, user)
 
 			go func() {
 				time.Sleep(time.Second * 60)
-				delete(users, session)
+				users.Delete(session)
 			}()
 
 			return user, nil
@@ -91,9 +94,11 @@ func GetUser(users map[string]models.User, session string) (models.User, error) 
 	}
 }
 
-func GetUserGuilds(userGuilds map[string][]models.GuildPreview, bot *discordgo.Session, session string) ([]models.GuildPreview, error) {
-	if _, ok := userGuilds[session]; ok {
-		return userGuilds[session], nil
+func GetUserGuilds(userGuilds syncmap.Map, bot *discordgo.Session, session string) ([]models.GuildPreview, error) {
+	cachedUserGuilds, cachedUserGuildsExists := userGuilds.Load(session)	
+
+	if cachedUserGuildsExists {
+		return cachedUserGuilds.([]models.GuildPreview), nil
 	} else {
 		client := http.Client{}
 		req, _ := http.NewRequest(http.MethodGet, "https://discord.com/api/users/@me/guilds", nil)
@@ -125,11 +130,11 @@ func GetUserGuilds(userGuilds map[string][]models.GuildPreview, bot *discordgo.S
 				guilds = append(guilds, convertedGuild)
 			}
 
-			userGuilds[session] = guilds
+			userGuilds.Store(session, guilds)
 
 			go func() {
 				time.Sleep(time.Second * 60)
-				delete(userGuilds, session)
+				userGuilds.Delete(session)
 			}()
 
 			return guilds, nil
@@ -152,7 +157,7 @@ func GetUserGuilds(userGuilds map[string][]models.GuildPreview, bot *discordgo.S
 	}
 }
 
-func GetGuild(bot *discordgo.Session, db *mongo.Client, userGuilds map[string][]models.GuildPreview, id string, token string) (models.Guild, error) {
+func GetGuild(bot *discordgo.Session, db *mongo.Client, userGuilds syncmap.Map, id string, token string) (models.Guild, error) {
 	guildPreviews, guildPreviewsErr := GetUserGuilds(userGuilds, bot, token)
 
 	if guildPreviewsErr != nil {

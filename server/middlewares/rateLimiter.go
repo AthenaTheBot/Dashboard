@@ -5,22 +5,27 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/sync/syncmap"
 )
 
-func RateLimiter(hits map[string] int, hitLimit int) func(*gin.Context)  {
+func RateLimiter(hits syncmap.Map, hitLimit int) func(*gin.Context)  {
 	return func(ctx *gin.Context)  {
 		ip := ctx.ClientIP()
+		ipHitCount, ipHitCountExists := hits.Load(ip)
 
-		hits[ip] = hits[ip] + 1
-
-		if hits[ip] == 1 {
+		if !ipHitCountExists {
+			hits.Store(ip, 1)
 			go func() {
 				time.Sleep(time.Second * 60)
-				delete(hits, ip)
+				hits.Delete(ip)
 			}()
+			return
+		} else {
+			ipHitCount = ipHitCount.(int) + 1
+			hits.Store(ip, ipHitCount)
 		}
 
-		if hits[ip] > hitLimit {
+		if (ipHitCount.(int)) > hitLimit {
 			ctx.AbortWithStatus(http.StatusTooManyRequests)
 		}
 	}

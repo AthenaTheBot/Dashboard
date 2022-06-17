@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"athena.bot/helpers"
-	"athena.bot/models"
 	"athena.bot/server/middlewares"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/sync/syncmap"
 )
 
-func GuildsRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users map[string]models.User, userGuilds map[string][]models.GuildPreview) {
+func GuildsRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map) {
 	r.GET("/:id", middlewares.Authorization(), func (ctx *gin.Context)  {
 		session, _ := ctx.Cookie("session")
 		id := ctx.Param("id")

@@ -13,6 +13,7 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/sync/syncmap"
 )
 
 func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session) {
@@ -23,16 +24,16 @@ func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session)
 	}
 
 	// Cache
-	requests := map[string]int{}
-	users := map[string]models.User{}
-	userGuilds := map[string][]models.GuildPreview{}
+	requests := syncmap.Map{}
+	users := syncmap.Map{}
+	userGuilds := syncmap.Map{}
 
 	server := gin.New()
 	path, _ := os.Getwd()
 
-	//server.Use(gin.Logger())
-	server.Use(gin.Recovery())
+	server.Use(gin.Logger())
 	server.Use(middlewares.RateLimiter(requests, config.RequestLimit))
+	server.Use(gin.Recovery())
 	server.Use(static.Serve("/", static.LocalFile(filepath.Join(path, "/frontend/build"), true)))
 
 	routes.RedirectsRoute(server.Group("/redirects"), config.Redirects)
