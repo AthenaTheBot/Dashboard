@@ -11,7 +11,7 @@ import (
 )
 
 func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users map[string]models.User, userGuilds map[string][]models.GuildPreview) {
-	r.GET("/@me", middlewares.Authentication(), func(ctx *gin.Context) {
+	r.GET("/@me", middlewares.Authorization(), func(ctx *gin.Context) {
 		token, _ := ctx.Cookie("session")
 
 		user, err := helpers.GetUser(users, token)
@@ -26,7 +26,7 @@ func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users map[string]mod
 		ctx.JSON(http.StatusOK, user)
 	})
 
-	r.GET("/@me/guilds", middlewares.Authentication(), func(ctx *gin.Context) {
+	r.GET("/@me/guilds", middlewares.Authorization(), func(ctx *gin.Context) {
 		token, _ := ctx.Cookie("session")
 		manageable := ctx.Query("manageable")
 

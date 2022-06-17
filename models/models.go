@@ -42,6 +42,22 @@ type AccessTokenResponse struct {
   	Scope			string `json:"scope"`
 }
 
+type Command struct {
+	Name 					string 		`json:"name"`
+	Aliases	 				[]string 	`json:"aliases"`
+	Description 			string 		`json:"description"`
+	Category 				string		`json:"category"`
+	Usage 					string 		`json:"usage"`
+	Cooldown 				int			`json:"cooldown"`
+	RequiredPermissions 	[]string 	`json:"required_perms"`
+	RequiredBotPermissions	[]string	`json:"required_bot_perms"`
+}
+
+type CommandCategory struct {
+	Category string 	`json:"category"`
+	Commands []Command 	`json:"commands"`
+}
+
 type User struct {
 	Id 			 	string  `json:"id"`
 	Username	 	string  `json:"username"`

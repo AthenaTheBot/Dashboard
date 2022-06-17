@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 	"path/filepath"
 
+	"athena.bot/helpers"
 	"athena.bot/models"
 	"athena.bot/server/routes/api"
 	"github.com/bwmarrin/discordgo"
@@ -29,8 +31,30 @@ func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, user
 			return	
 		}
 
+		commands := []models.Command{}
+		parseErr := json.Unmarshal(file, &commands)
 
-		ctx.Data(200, "application/json", file)
+		if parseErr != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Server Error",
+			})		
+
+			return	
+		}
+
+		commandCategories := helpers.ParseCommands(commands)
+
+		data, parseErr := json.Marshal(commandCategories)
+
+		if parseErr != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Server Error",
+			})		
+
+			return	
+		}
+
+		ctx.Data(200, "application/json", data)
 	})
 
 	r.GET("/available-languages", func (ctx *gin.Context)  {

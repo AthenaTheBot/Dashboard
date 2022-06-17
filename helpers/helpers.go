@@ -194,8 +194,56 @@ func CheckGuildAvailability(bot *discordgo.Session, id string) bool {
 	for _, guild := range bot.State.Guilds {
 		if guild.ID == id {
 			available = true
+			break
 		}
 	}
 
 	return available
+}
+
+func HasCategory(commadCategories []models.CommandCategory, category string) bool {
+	hasCategory := false
+	
+	for _, commandCategory := range commadCategories {
+		if commandCategory.Category == category {
+			hasCategory = true
+			break
+		}
+	}
+
+	return hasCategory
+}
+
+func GetCategoryIndex(commadCategories []models.CommandCategory, category string) (int) {
+	categoryIndex := -1
+
+	for i, cg := range commadCategories {
+		if cg.Category == category {
+			categoryIndex = i
+		}
+	}
+
+	return categoryIndex
+}
+
+func ParseCommands(commands []models.Command) ([]models.CommandCategory) {
+	commandCategories := []models.CommandCategory{}
+
+	for _, command := range commands {
+		if HasCategory(commandCategories, command.Category) {
+			categoryIndex := GetCategoryIndex(commandCategories, command.Category)
+			commandCategories[categoryIndex].Commands = append(commandCategories[categoryIndex].Commands, command)
+		} else {
+			commandCategory := models.CommandCategory{
+				Category: command.Category,
+				Commands: []models.Command{
+					command,
+				},
+			}
+
+			commandCategories = append(commandCategories, commandCategory)
+		}
+	}
+
+	return commandCategories
 }

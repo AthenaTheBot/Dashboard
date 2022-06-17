@@ -12,7 +12,7 @@ import (
 )
 
 func GuildsRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users map[string]models.User, userGuilds map[string][]models.GuildPreview) {
-	r.GET("/:id", middlewares.Authentication(), func (ctx *gin.Context)  {
+	r.GET("/:id", middlewares.Authorization(), func (ctx *gin.Context)  {
 		session, _ := ctx.Cookie("session")
 		id := ctx.Param("id")
 

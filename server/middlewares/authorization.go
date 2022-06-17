@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Authentication() func(*gin.Context) {
+func Authorization() func(*gin.Context) {
 	return func(ctx *gin.Context)  {
 		session, _ := ctx.Cookie("session")
 
