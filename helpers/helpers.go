@@ -42,10 +42,8 @@ func ExchangeToken(code string, botCfg models.BotConfig) (models.AccessTokenResp
 
 func GetUser(users map[string]models.User, session string) (models.User, error) {
 	if _, ok := users[session]; ok {
-		fmt.Println("Got request, returned from cache! (getuser)")
 		return users[session], nil
 	} else {
-		fmt.Println("Got request, making request to Discord! (getuser)")
 		client := http.Client{}
 		req, _ := http.NewRequest(http.MethodGet, "https://discord.com/api/users/@me", nil)
 
