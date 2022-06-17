@@ -11,7 +11,11 @@ func Authentication() func(*gin.Context) {
 		session, _ := ctx.Cookie("session")
 
 		if session == "" {
-			ctx.AbortWithStatus(http.StatusUnauthorized)
+			ctx.JSON(http.StatusUnauthorized, gin.H{
+				"message": "Unauthorized",
+			})
+
+			ctx.Abort()
 		}
 	}
 }

@@ -13,6 +13,8 @@ func OauthRoute(r *gin.RouterGroup, botCfg models.BotConfig) {
 
 	r.GET("/logout", func(ctx *gin.Context) {
 		ctx.SetCookie("session", "", 0, "/", "", true, false)
+
+		ctx.Redirect(302, "/")
 	})
 
 	r.GET("/callback", func(ctx *gin.Context) {

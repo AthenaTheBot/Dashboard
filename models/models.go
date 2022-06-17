@@ -30,7 +30,7 @@ type Date struct {
 }
 
 type Redirect struct {
-	Name string
+	Name 		string
 	Destination string
 }
 
@@ -61,7 +61,7 @@ type User struct {
 	PublicFlags 	int		`json:"public_falgs"`
 }
 
-type GuildRaw struct {
+type GuildRawPreview struct {
 	Id	 				string 	 `json:"id"`
 	Name 				string	 `json:"name"`
 	Icon 				string	 `json:"icon"`
@@ -70,7 +70,7 @@ type GuildRaw struct {
 	Features 			[]string `json:"features"`
 }
 
-type Guild struct {
+type GuildPreview struct {
 	Id	 				string 	 `json:"id"`
 	Name 				string	 `json:"name"`
 	Icon 				string	 `json:"icon"`
@@ -80,7 +80,47 @@ type Guild struct {
 	Features 			[]string `json:"features"`
 }
 
-func (guild Guild) IsManageable() bool {
+type Channels struct {
+	Text 	int `json:"text"`
+	Voice 	int `json:"voice"`
+}
+
+type UserWarning struct {
+	Id 			string 	 `json:"id"`
+	Warnings 	[]string `json:"warnings"`
+}
+
+type Language struct {
+	Id 		string `json:"id"`
+	Label 	string `json:"label"`
+}
+
+type SettingsModule struct {
+	Prefix 		string `json:"prefix" bson:"prefix"`
+	Language	string `json:"language" bson:"language"`
+}
+
+type ModerationModule struct {
+	AdminRole 	string			`json:"adminRole" bson:"adminRole"`
+	ModRole 	string			`json:"modRole" bson:"modRole"`
+	AutoRole 	string			`json:"autoRole" bson:"autoRole"`
+	Warnings 	[]UserWarning	`json:"warnings" bson:"warnings"`
+}
+
+type Modules struct {
+	SettingsModule 		`json:"settings" bson:"settings"`
+	ModerationModule 	`json:"moderation" bson:"moderation"`
+	Fun   interface{} 	`json:"fun" bson:"fun"`
+	Utils interface{} 	`json:"utils" bson:"utils"`
+}
+
+type Guild struct {
+	GuildPreview
+	Channels 	`json:"channels"`
+	Modules 	`json:"modules" bson:"modules"`
+}
+
+func (guild GuildPreview) IsManageable() bool {
 	sliceContains := func(s interface{}, k any) (bool) {
 		slice := reflect.ValueOf(s)
 		contains := false

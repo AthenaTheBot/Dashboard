@@ -15,7 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func Init(config models.Config, _ *mongo.Client, botSession *discordgo.Session) {
+func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session) {
 	if config.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {
@@ -25,7 +25,7 @@ func Init(config models.Config, _ *mongo.Client, botSession *discordgo.Session) 
 	// Cache
 	requests := map[string]int{}
 	users := map[string]models.User{}
-	userGuilds := map[string][]models.Guild{}
+	userGuilds := map[string][]models.GuildPreview{}
 
 	server := gin.New()
 	path, _ := os.Getwd()
@@ -37,7 +37,7 @@ func Init(config models.Config, _ *mongo.Client, botSession *discordgo.Session) 
 
 	routes.RedirectsRoute(server.Group("/redirects"), config.Redirects)
 	routes.OauthRoute(server.Group("/oauth"), config.Bot)
-	routes.UsersRoute(server.Group("/api/users"), botSession, users, userGuilds)
+	routes.ApiRoute(server.Group("/api"), botSession, db, users, userGuilds)
 
 	server.NoRoute(func(context *gin.Context) {
 		context.File(filepath.Join(path, "/frontend/build/index.html"))
