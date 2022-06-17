@@ -136,6 +136,12 @@ type Guild struct {
 	Modules 	`json:"modules" bson:"modules"`
 }
 
+type TooManyRequest struct {
+	Message 	string 	`json:"message"`
+	RetryAfter 	int 	`json:"retry_after"`
+	Global 		bool 	`json:"global"`
+}
+
 func (guild GuildPreview) IsManageable() bool {
 	sliceContains := func(s interface{}, k any) (bool) {
 		slice := reflect.ValueOf(s)

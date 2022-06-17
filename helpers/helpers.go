@@ -53,40 +53,50 @@ func GetUser(users map[string]models.User, session string) (models.User, error) 
 
 		resp, err := client.Do(req)
 
-		if err != nil {
+		if resp.StatusCode == 200 {
+			var user models.User
+
+			parseErr := json.NewDecoder(resp.Body).Decode(&user)
+
+			if parseErr != nil {
+				utils.Log(models.ERROR, "An error occured while parsing request body.")
+				return models.User{}, parseErr
+			}
+
+			user.Avatar = fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s", user.Id, user.Avatar)
+			user.Color = fmt.Sprintf("#%x", user.AccentColor)
+
+			users[session] = user
+
+			go func() {
+				time.Sleep(time.Second * 60)
+				delete(users, session)
+			}()
+
+			return user, nil
+		} else if resp.StatusCode == 429 {
+			tooManyRequest := models.TooManyRequest{}
+			parseErr := json.NewDecoder(resp.Body).Decode(&tooManyRequest)
+
+			if parseErr != nil {
+				utils.Log(models.ERROR, "An error occured while parsing request body.")
+				return models.User{}, parseErr
+			}
+
+			time.Sleep(time.Millisecond * (time.Duration(tooManyRequest.RetryAfter) + 100))
+			return GetUser(users, session)
+			
+		} else {
 			utils.Log(models.ERROR, "An error occured while making request to Discord.")
 			return models.User{}, err
 		}
-
-		var user models.User
-
-		parseErr := json.NewDecoder(resp.Body).Decode(&user)
-
-		if parseErr != nil {
-			utils.Log(models.ERROR, "An error occured while parsing request body.")
-			return models.User{}, parseErr
-		}
-
-		user.Avatar = fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s", user.Id, user.Avatar)
-		user.Color = fmt.Sprintf("#%x", user.AccentColor)
-
-		users[session] = user
-
-		go func() {
-			time.Sleep(time.Second * 60)
-			delete(users, session)
-		}()
-
-		return user, nil
 	}
 }
 
 func GetUserGuilds(userGuilds map[string][]models.GuildPreview, bot *discordgo.Session, session string) ([]models.GuildPreview, error) {
 	if _, ok := userGuilds[session]; ok {
-		fmt.Println("Got request, returned from cache! (getuserguilds)")
 		return userGuilds[session], nil
 	} else {
-		fmt.Println("Got request, making request to Discord! (getuserguilds)")
 		client := http.Client{}
 		req, _ := http.NewRequest(http.MethodGet, "https://discord.com/api/users/@me/guilds", nil)
 
@@ -94,41 +104,53 @@ func GetUserGuilds(userGuilds map[string][]models.GuildPreview, bot *discordgo.S
 
 		resp, err := client.Do(req)
 
-		if err != nil {
+		if resp.StatusCode == 200 {
+			var guildsRaw []models.GuildRawPreview
+			var guilds []models.GuildPreview
+
+			parseErr := json.NewDecoder(resp.Body).Decode(&guildsRaw)
+
+			if parseErr != nil {
+				utils.Log(models.ERROR, "An error occured while parsing request body.")
+				return []models.GuildPreview{}, parseErr
+			}
+
+			for _, guild := range guildsRaw {
+				convertedGuild := models.GuildPreview{
+					Id: guild.Id,
+					Name: guild.Name,
+					Icon: fmt.Sprintf("https://cdn.discordapp.com/icons/%s/%s", guild.Id, guild.Icon),
+					Permissions: permissions.ParseBitField(guild.PermissionsBit),
+					Available: CheckGuildAvailability(bot, guild.Id),
+				}
+
+				guilds = append(guilds, convertedGuild)
+			}
+
+			userGuilds[session] = guilds
+
+			go func() {
+				time.Sleep(time.Second * 60)
+				delete(userGuilds, session)
+			}()
+
+			return guilds, nil
+		} else if resp.StatusCode == 429 {
+			tooManyRequest := models.TooManyRequest{}
+			parseErr := json.NewDecoder(resp.Body).Decode(&tooManyRequest)
+
+			if parseErr != nil {
+				utils.Log(models.ERROR, "An error occured while parsing request body.")
+				return []models.GuildPreview{}, parseErr
+			}
+
+			time.Sleep(time.Millisecond * (time.Duration(tooManyRequest.RetryAfter) + 100))
+			return GetUserGuilds(userGuilds, bot, session)
+
+		} else {
 			utils.Log(models.ERROR, "An error occured while making request to Discord.")
 			return []models.GuildPreview{}, err
 		}
-
-		var guildsRaw []models.GuildRawPreview
-		var guilds []models.GuildPreview
-
-		parseErr := json.NewDecoder(resp.Body).Decode(&guildsRaw)
-
-		if parseErr != nil {
-			utils.Log(models.ERROR, "An error occured while parsing request body.")
-			return []models.GuildPreview{}, parseErr
-		}
-
-		for _, guild := range guildsRaw {
-			convertedGuild := models.GuildPreview{
-				Id: guild.Id,
-				Name: guild.Name,
-				Icon: fmt.Sprintf("https://cdn.discordapp.com/icons/%s/%s", guild.Id, guild.Icon),
-				Permissions: permissions.ParseBitField(guild.PermissionsBit),
-				Available: CheckGuildAvailability(bot, guild.Id),
-			}
-
-			guilds = append(guilds, convertedGuild)
-		}
-
-		userGuilds[session] = guilds
-
-		go func() {
-			time.Sleep(time.Second * 60)
-			delete(userGuilds, session)
-		}()
-
-		return guilds, nil
 	}
 }
 
