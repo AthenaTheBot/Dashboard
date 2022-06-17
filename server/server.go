@@ -31,7 +31,7 @@ func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session)
 	server := gin.New()
 	path, _ := os.Getwd()
 
-	server.Use(gin.Logger())
+	server.SetTrustedProxies([]string{})
 	server.Use(middlewares.RateLimiter(requests, config.RequestLimit))
 	server.Use(gin.Recovery())
 	server.Use(static.Serve("/", static.LocalFile(filepath.Join(path, "/frontend/build"), true)))

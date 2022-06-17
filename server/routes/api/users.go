@@ -43,12 +43,12 @@ func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users syncmap.Map, u
 		if manageable == "true" || manageable == "1" {
 			manageables := []models.GuildPreview{}
 			for _, guild := range guilds {
-				if guild.IsManageable() {
+				if  guild.IsManageable() {
 					manageables = append(manageables, guild)
 				}
 			}
 
-			ctx.JSON(http.StatusOK, manageables)
+			ctx.Data(http.StatusOK, "applicaiton/json", []byte(manageable))
 		} else {
 			ctx.JSON(http.StatusOK, guilds)
 		}

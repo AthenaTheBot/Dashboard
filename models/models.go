@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"reflect"
 )
 
 type BotConfig struct {
@@ -143,30 +142,16 @@ type TooManyRequest struct {
 }
 
 func (guild GuildPreview) IsManageable() bool {
-	sliceContains := func(s interface{}, k any) (bool) {
-		slice := reflect.ValueOf(s)
-		contains := false
+	manageable := false
 
-		if slice.Kind() != reflect.Slice {
-			return contains
+	for _, permission := range guild.Permissions {
+		if permission == "ADMINISTRATOR" || permission == "MANAGE_GUILD" || permission == "MANAGE_ROLES" {
+			manageable = true
+			break
 		}
-
-		for i := 0; i < slice.Len(); i ++ {
-			el := slice.Index(i).Interface()
-
-			if el == k {
-				contains = true
-				break
-			}
-		}
-
-		return contains
 	}
 
-	
-	s := sliceContains(guild.Permissions, "ADMINISTRATOR") || sliceContains(guild.Permissions, "MANAGE_GUILD") || sliceContains(guild.Permissions, "MANAGE_ROLES")
-
-	return s
+	return manageable
 }
 
 func (d Date) ToString() string {
