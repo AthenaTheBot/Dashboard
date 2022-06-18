@@ -27,6 +27,9 @@ func RateLimiter(hits syncmap.Map, hitLimit int) func(*gin.Context)  {
 
 		if (ipHitCount.(int)) > hitLimit {
 			ctx.AbortWithStatus(http.StatusTooManyRequests)
+			return
 		}
+
+		ctx.Next()
 	}
 }

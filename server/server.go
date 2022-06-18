@@ -1,14 +1,12 @@
 package server
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
 	"athena.bot/models"
 	"athena.bot/server/middlewares"
 	"athena.bot/server/routes"
-	"athena.bot/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -16,7 +14,7 @@ import (
 	"golang.org/x/sync/syncmap"
 )
 
-func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session) {
+func SetupRouter(config models.Config, db *mongo.Client, botSession *discordgo.Session) *gin.Engine {
 	if config.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {
@@ -27,10 +25,12 @@ func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session)
 	requests := syncmap.Map{}
 	users := syncmap.Map{}
 	userGuilds := syncmap.Map{}
+	userManageableGuilds := syncmap.Map{}
 
 	server := gin.New()
 	path, _ := os.Getwd()
 
+	server.Use(gin.Logger())
 	server.SetTrustedProxies([]string{})
 	server.Use(middlewares.RateLimiter(requests, config.RequestLimit))
 	server.Use(gin.Recovery())
@@ -38,16 +38,11 @@ func Init(config models.Config, db *mongo.Client, botSession *discordgo.Session)
 
 	routes.RedirectsRoute(server.Group("/redirects"), config.Redirects)
 	routes.OauthRoute(server.Group("/oauth"), config.Bot)
-	routes.ApiRoute(server.Group("/api"), botSession, db, users, userGuilds)
+	routes.ApiRoute(server.Group("/api"), botSession, db, users, userGuilds, userManageableGuilds)
 
 	server.NoRoute(func(context *gin.Context) {
 		context.File(filepath.Join(path, "/frontend/build/index.html"))
 	})
 
-	appErr := server.Run(fmt.Sprintf("localhost:%d", config.Port))
-
-	if appErr != nil {
-		utils.Log(models.ERROR, "An error occured while starting server")
-		os.Exit(1)
-	} 
+	return server
 }

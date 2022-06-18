@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"athena.bot/helpers"
@@ -11,7 +12,7 @@ import (
 	"golang.org/x/sync/syncmap"
 )
 
-func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users syncmap.Map, userGuilds syncmap.Map) {
+func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users syncmap.Map, userGuilds syncmap.Map, userManageableGuilds syncmap.Map) {
 	r.GET("/@me", middlewares.Authorization(), func(ctx *gin.Context) {
 		token, _ := ctx.Cookie("session")
 
@@ -42,15 +43,32 @@ func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users syncmap.Map, u
 
 		if manageable == "true" || manageable == "1" {
 			manageables := []models.GuildPreview{}
+
 			for _, guild := range guilds {
 				if  guild.IsManageable() {
 					manageables = append(manageables, guild)
 				}
 			}
 
-			ctx.Data(http.StatusOK, "applicaiton/json", []byte(manageable))
+			bs, err := json.Marshal(manageables)
+
+			if err != nil {
+				ctx.Abort()
+				return
+			}
+
+			ctx.Writer.Write(bs)
+			ctx.Abort()
 		} else {
-			ctx.JSON(http.StatusOK, guilds)
+			bs, err := json.Marshal(guilds)
+
+			if err != nil {
+				ctx.Abort()
+				return
+			}
+
+			ctx.Writer.Write(bs)
+			ctx.Abort()
 		}
 	})
 }

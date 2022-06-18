@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"athena.bot/bot"
@@ -38,5 +39,11 @@ func main() {
 		utils.Log(models.SUCCESS, "Initialized bot client.")
 	}
 
-	server.Init(config, dbClient, botSession)
+	server := server.SetupRouter(config, dbClient, botSession)
+
+	serverRunErr := server.Run(fmt.Sprintf(":%d", config.Port))
+
+	if serverRunErr != nil {
+		utils.Log(models.ERROR, "Cannot start http server.")
+	}
 }	

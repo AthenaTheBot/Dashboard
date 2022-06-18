@@ -15,8 +15,8 @@ import (
 	"golang.org/x/sync/syncmap"
 )
 
-func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map) {
-	api.UsersRoute(r.Group("users"), bot, users, userGuilds)
+func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map, userManageableGuilds syncmap.Map) {
+	api.UsersRoute(r.Group("users"), bot, users, userGuilds, userManageableGuilds)
 	api.GuildsRoute(r.Group("guilds"),bot, db, users, userGuilds)
 
 	r.GET("/commands", func (ctx *gin.Context)  {

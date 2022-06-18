@@ -15,7 +15,9 @@ func Authorization() func(*gin.Context) {
 				"message": "Unauthorized",
 			})
 
-			ctx.Abort()
+			ctx.AbortWithStatus(http.StatusUnauthorized)
 		}
+
+		ctx.Next()
 	}
 }
