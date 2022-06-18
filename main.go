@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"athena.bot/bot"
 	"athena.bot/db"
@@ -41,9 +42,16 @@ func main() {
 
 	server := server.SetupRouter(config, dbClient, botSession)
 
-	serverRunErr := server.Run(fmt.Sprintf(":%d", config.Port))
+	var serverStartErr error
+	if config.Debug {
+		serverStartErr = server.Run(fmt.Sprintf(":%d", config.Port))
+	} else {
+		currentPath, _ := os.Getwd()
+		keysDir := filepath.Join(currentPath, "keys")
+		serverStartErr = server.RunTLS(fmt.Sprintf(":%d", config.Port), filepath.Join(keysDir, "cert.pem"), filepath.Join(keysDir, "privkey.pem"))
+	}
 
-	if serverRunErr != nil {
-		utils.Log(models.ERROR, "Cannot start http server.")
+	if serverStartErr != nil {
+		utils.Log(models.ERROR, "An error occured while starting server.")
 	}
 }	

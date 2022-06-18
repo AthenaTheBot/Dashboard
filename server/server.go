@@ -15,7 +15,7 @@ import (
 )
 
 func SetupRouter(config models.Config, db *mongo.Client, botSession *discordgo.Session) *gin.Engine {
-	if config.Debug {
+	if config.Debug{
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
@@ -31,6 +31,7 @@ func SetupRouter(config models.Config, db *mongo.Client, botSession *discordgo.S
 	path, _ := os.Getwd()
 
 	server.SetTrustedProxies([]string{})
+	server.Use(middlewares.LoadTls(config.Port))
 	server.Use(middlewares.RateLimiter(requests, config.RequestLimit))
 	server.Use(gin.Recovery())
 	server.Use(static.Serve("/", static.LocalFile(filepath.Join(path, "/frontend/build"), true)))
