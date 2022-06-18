@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -10,6 +11,8 @@ import (
 	"athena.bot/server/middlewares"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/sync/syncmap"
 )
@@ -45,7 +48,7 @@ func GuildsRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Sessio
 		ctx.AbortWithStatusJSON(http.StatusOK, guild)
 	})
 
-	r.POST("/:id/:module", middlewares.Authorization(middlewares.COOKIE), func(ctx *gin.Context) {
+	r.PATCH("/:id/:module", middlewares.Authorization(middlewares.COOKIE), func(ctx *gin.Context) {
 		session, _ := ctx.Cookie("session")
 		id := ctx.Param("id")
 		module := ctx.Param("module")
@@ -109,11 +112,19 @@ func GuildsRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Sessio
 			parseErr := json.NewDecoder(ctx.Request.Body).Decode(&moduleSchema)
 
 			if parseErr != nil {
-				fmt.Println(parseErr)
 				ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"message": "Server Error",
 				})
 
+				return
+			}
+
+			_, dbErr := db.Database("AthenaV3").Collection("guilds").UpdateOne(context.TODO(), bson.D{primitive.E{Key: "_id", Value: id}}, bson.D{primitive.E{Key: "$set", Value: bson.D{primitive.E{ Key: fmt.Sprintf("modules.%s", module), Value: moduleSchema }} }})
+
+			if dbErr != nil {
+				ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+					"message": "Server Error",
+				})
 				return
 			}
 

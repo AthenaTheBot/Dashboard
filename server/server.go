@@ -30,7 +30,6 @@ func SetupRouter(config models.Config, db *mongo.Client, botSession *discordgo.S
 	server := gin.New()
 	path, _ := os.Getwd()
 
-	server.Use(gin.Logger())
 	server.SetTrustedProxies([]string{})
 	server.Use(middlewares.RateLimiter(requests, config.RequestLimit))
 	server.Use(gin.Recovery())
