@@ -22,5 +22,6 @@
       "Name": "login",
       "Destination": "https://discord.com/api/oauth2/authorize?client_id=754425509533712536&redirect_uri=http://localhost:8080/oauth/callback&response_type=code&scope=identify%20email%20guilds"
     }
-  ]
+  ],
+  "ValidModules": ["settings", "moderation"]
 }

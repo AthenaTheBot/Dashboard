@@ -38,7 +38,7 @@ func SetupRouter(config models.Config, db *mongo.Client, botSession *discordgo.S
 
 	routes.RedirectsRoute(server.Group("/redirects"), config.Redirects)
 	routes.OauthRoute(server.Group("/oauth"), config.Bot)
-	routes.ApiRoute(server.Group("/api"), botSession, db, users, userGuilds, userManageableGuilds)
+	routes.ApiRoute(server.Group("/api"), config, botSession, db, users, userGuilds, userManageableGuilds)
 
 	server.NoRoute(func(context *gin.Context) {
 		context.File(filepath.Join(path, "/frontend/build/index.html"))

@@ -6,18 +6,31 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Authorization() func(*gin.Context) {
-	return func(ctx *gin.Context)  {
-		session, _ := ctx.Cookie("session")
+type AuthorizationType string
+const (
+	COOKIE 	AuthorizationType = "COOKIE"
+)
 
-		if session == "" {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
-			})
+func Authorization(authType AuthorizationType) func(*gin.Context) {
+	switch(authType) {
+		case COOKIE:
+			return func(ctx *gin.Context)  {
+				session, _ := ctx.Cookie("session")
 
-			ctx.AbortWithStatus(http.StatusUnauthorized)
-		}
+				if session == "" {
+					ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+						"message": "Unauthorized",
+					})
 
-		ctx.Next()
+					return
+				}
+			
+				ctx.Next()
+			}
+
+		default:
+			return func (ctx *gin.Context)  {
+				ctx.Next()
+			}
 	}
 }

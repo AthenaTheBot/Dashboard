@@ -15,9 +15,9 @@ import (
 	"golang.org/x/sync/syncmap"
 )
 
-func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map, userManageableGuilds syncmap.Map) {
+func ApiRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map, userManageableGuilds syncmap.Map) {
 	api.UsersRoute(r.Group("users"), bot, users, userGuilds, userManageableGuilds)
-	api.GuildsRoute(r.Group("guilds"),bot, db, users, userGuilds)
+	api.GuildsRoute(r.Group("guilds"), config, bot, db, users,  userGuilds)
 
 	r.GET("/commands", func (ctx *gin.Context)  {
 		p, _ := os.Getwd()
@@ -25,7 +25,7 @@ func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, user
 		file, err := os.ReadFile(path)
 
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Server Error",
 			})		
 
@@ -36,7 +36,7 @@ func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, user
 		parseErr := json.Unmarshal(file, &commands)
 
 		if parseErr != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Server Error",
 			})		
 
@@ -48,7 +48,7 @@ func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, user
 		data, parseErr := json.Marshal(commandCategories)
 
 		if parseErr != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Server Error",
 			})		
 
@@ -59,7 +59,7 @@ func ApiRoute(r *gin.RouterGroup, bot *discordgo.Session, db *mongo.Client, user
 	})
 
 	r.GET("/available-languages", func (ctx *gin.Context)  {
-		ctx.JSON(http.StatusOK, []models.Language{
+		ctx.AbortWithStatusJSON(http.StatusOK, []models.Language{
 			{ Id: "en_US", Label: "English" },
 			{ Id: "tr_TR", Label: "Türkçe" },
 		})

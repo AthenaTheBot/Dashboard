@@ -18,6 +18,7 @@ type Config struct {
 	Database  		string
 	Bot 			BotConfig
 	Redirects 		[]Redirect
+	ValidModules 	[]string
 }
 
 type Date struct {

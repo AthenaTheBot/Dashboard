@@ -13,29 +13,29 @@ import (
 )
 
 func UsersRoute(r *gin.RouterGroup, bot *discordgo.Session, users syncmap.Map, userGuilds syncmap.Map, userManageableGuilds syncmap.Map) {
-	r.GET("/@me", middlewares.Authorization(), func(ctx *gin.Context) {
+	r.GET("/@me", middlewares.Authorization(middlewares.COOKIE), func(ctx *gin.Context) {
 		token, _ := ctx.Cookie("session")
 
 		user, err := helpers.GetUser(users, token)
 
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Server Error",
 			})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, user)
+		ctx.AbortWithStatusJSON(http.StatusOK, user)
 	})
 
-	r.GET("/@me/guilds", middlewares.Authorization(), func(ctx *gin.Context) {
+	r.GET("/@me/guilds", middlewares.Authorization(middlewares.COOKIE), func(ctx *gin.Context) {
 		token, _ := ctx.Cookie("session")
 		manageable := ctx.Query("manageable")
 
 		guilds, err := helpers.GetUserGuilds(userGuilds, bot, token)
 
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Server Error",
 			})
 			return
