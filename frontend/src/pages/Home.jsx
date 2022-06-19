@@ -80,7 +80,7 @@ function Home() {
       </main>
       <footer className={styles.footer}>
         <h1>Ready To Try Athena?</h1>
-        <Button className={styles.btn} to="/invite">
+        <Button className={styles.btn} to="/redirects/invite">
           Invite Athena!
         </Button>
       </footer>

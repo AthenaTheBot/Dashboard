@@ -234,7 +234,10 @@ const Privacy = () => {
           <p>
             For any questions or concerns regarding your privacy, you may
             contact us in{" "}
-            <Link style={{ color: "var(--primary-link)" }} to="/support">
+            <Link
+              style={{ color: "var(--primary-link)" }}
+              to="/redirects/support"
+            >
               our support server
             </Link>
             .

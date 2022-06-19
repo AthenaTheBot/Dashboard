@@ -53,7 +53,7 @@ const Navbar = () => {
             ) : (
               <Fragment />
             )}
-            <Link noIcon to="/support">
+            <Link noIcon to="/redirects/support">
               Support
             </Link>
             <User />

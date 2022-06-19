@@ -26,7 +26,7 @@ const Server = ({ id, name, icon, available }) => {
           passive
           noIcon
           noNewPage
-          to={available ? `/dashboard/${id}` : `/invite?server=${id}`}
+          to={available ? `/dashboard/${id}` : `/redirects/invite?server=${id}`}
           className={styles.btn}
         >
           {available ? "Manage Server" : "Invite Athena"}

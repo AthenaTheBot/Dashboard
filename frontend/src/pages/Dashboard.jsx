@@ -116,7 +116,7 @@ const Dashboard = () => {
                   to={
                     server?.available
                       ? `/dashboard/${server?.id}`
-                      : `/invite?server=${server.id}`
+                      : `/redirects/invite?server=${server.id}`
                   }
                   noNewPage={server?.available}
                   passive={server?.available}
