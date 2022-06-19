@@ -1,3 +1,4 @@
 /frontend/node_modules/**
 /frontend/build/**
 config.build.json
+keys/*.pem
