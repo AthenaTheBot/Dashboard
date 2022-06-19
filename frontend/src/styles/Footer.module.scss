@@ -52,10 +52,17 @@
 }
 
 @media only screen and (max-width: 500px) {
-  .footer {
+  .container {
     justify-content: flex-start;
+    font-size: 14px;
 
-    div {
+    .brand {
+      p {
+        font-size: 16px;
+      }
+    }
+
+    .wrapper {
       width: 100%;
     }
   }

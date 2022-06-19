@@ -31,7 +31,9 @@ func SetupRouter(config models.Config, db *mongo.Client, botSession *discordgo.S
 	path, _ := os.Getwd()
 
 	server.SetTrustedProxies([]string{})
-	server.Use(middlewares.LoadTls(config.Port))
+	if !config.Debug {
+		server.Use(middlewares.LoadTls(config.Port))
+	}
 	server.Use(middlewares.RateLimiter(requests, config.RequestLimit))
 	server.Use(gin.Recovery())
 	server.Use(static.Serve("/", static.LocalFile(filepath.Join(path, "/frontend/build"), true)))

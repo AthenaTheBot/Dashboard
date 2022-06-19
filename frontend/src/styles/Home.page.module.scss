@@ -1,14 +1,15 @@
 .header {
   height: 55vh;
   min-height: 200px;
-  margin: 5% 0;
+  margin: 5% auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding: 25px;
   text-align: center;
-  font-size: 18px;
+  font-size: 20px;
+  max-width: 1100px;
 
   p {
     max-width: 1000px;
@@ -71,10 +72,49 @@
   .feature {
     .featureWrapper {
       flex-direction: column;
+      justify-content: center;
     }
 
     .featureContent {
       margin: 30px 0px;
+    }
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .header {
+    font-size: 17px;
+  }
+}
+
+@media only screen and (max-width: 490px) {
+  .header {
+    font-size: 15px;
+  }
+
+  .main {
+    margin: 45px 0px;
+  }
+
+  .feature {
+    font-size: 14px;
+
+    .featureWrapper {
+      img {
+        height: 300px !important;
+        width: 300px !important;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .feature {
+    .featureWrapper {
+      img {
+        height: 200px !important;
+        width: 200px !important;
+      }
     }
   }
 }

@@ -39,7 +39,7 @@ const Navbar = () => {
           ) : (
             <FiX onClick={toggleNavbar} className={styles.navToggleBtn} />
           )}
-          <ul className={styles.navLinks}>
+          <ul onClick={toggleNavbar} className={styles.navLinks}>
             <Link passive to="/">
               Home
             </Link>
