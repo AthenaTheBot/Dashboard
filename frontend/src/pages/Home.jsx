@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Seo from "../components/Seo";
 
+import { LazyLoadImage as LazyImage } from "react-lazy-load-image-component";
+
 import styles from "../styles/Home.page.module.scss";
 
 import FeatureMusic from "../images/FeatureMusic.svg";
@@ -27,7 +29,7 @@ function Home() {
       <main className={styles.main}>
         <div className={styles.feature}>
           <div className={styles.featureWrapper}>
-            <img src={FeatureMusic} alt="Music" height={400} width={400} />
+            <LazyImage effect="opacity" src={FeatureMusic} alt="Music" />
             <div className={styles.featureContent}>
               <h1>Music</h1>
               <p>
@@ -40,7 +42,7 @@ function Home() {
 
         <div className={styles.feature}>
           <div className={styles.featureWrapper}>
-            <img src={FeatureModeration} alt="Music" height={400} width={400} />
+            <LazyImage effect="opacity" src={FeatureModeration} alt="Music" />
             <div className={styles.featureContent}>
               <h1>Moderation</h1>
               <p>
@@ -53,7 +55,7 @@ function Home() {
 
         <div className={styles.feature}>
           <div className={styles.featureWrapper}>
-            <img src={FeatureFun} alt="Music" height={400} width={400} />
+            <LazyImage effect="opacity" src={FeatureFun} alt="Music" />
             <div className={styles.featureContent}>
               <h1>Fun</h1>
               <p>
@@ -67,7 +69,7 @@ function Home() {
 
         <div className={styles.feature}>
           <div className={styles.featureWrapper}>
-            <img src={FeatureMisc} alt="Music" height={400} width={400} />
+            <LazyImage effect="opacity" src={FeatureMisc} alt="Music" />
             <div className={styles.featureContent}>
               <h1>Misc</h1>
               <p>

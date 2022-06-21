@@ -12,7 +12,7 @@ require (
 require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
-	github.com/unrolled/secure v1.10.0 // indirect
+	github.com/unrolled/secure v1.10.0 // direct
 )
 
 require (

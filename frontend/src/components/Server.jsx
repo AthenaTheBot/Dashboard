@@ -1,5 +1,6 @@
 import styles from "../styles/Server.module.scss";
 import Link from "./Link";
+import { LazyLoadImage as LazyImage } from "react-lazy-load-image-component";
 
 const Server = ({ id, name, icon, available }) => {
   const background = {
@@ -11,7 +12,7 @@ const Server = ({ id, name, icon, available }) => {
       <div style={background} className={styles.background}></div>
       <div className={styles.top}>
         {icon ? (
-          <img src={icon} alt="Server Icon" />
+          <LazyImage effect="opacity" src={icon} alt="Server Icon" />
         ) : (
           <div className={styles.iconPlaceholder}>
             {name?.trim()?.slice(0, 1)}

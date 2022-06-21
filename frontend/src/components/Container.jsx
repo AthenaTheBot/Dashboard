@@ -27,7 +27,9 @@ const Container = ({
         }}
         className={styles.bgGradient}
       ></div>
-      <div className={`${styles.wrapper} ${className}`}>{children}</div>
+      <div className={`${styles.wrapper}${className ? " " + className : ""}`}>
+        {children}
+      </div>
     </div>
   );
 };

@@ -14,21 +14,17 @@ const Navbar = () => {
   const toggleNavbar = (e) => {
     if (collapsed) {
       setCollapsed(false);
-
-      console.log(window.innerWidth);
-
-      window.onscroll = function () {
-        if (window.innerWidth <= 900) window.scrollTo(0, 0);
-      };
     } else {
       setCollapsed(true);
-
-      window.onscroll = null;
     }
   };
 
   return (
-    <div className={`${styles.navbar} ${collapsed ? "" : styles.navbarActive}`}>
+    <div
+      className={`${styles.navbar}${
+        collapsed ? "" : " " + styles.navbarActive
+      }`}
+    >
       <div className={styles.navbarWrapper}>
         <div className={styles.navLeft}>
           <img src="/logo.png" width={64} height={64} alt="Athena" />

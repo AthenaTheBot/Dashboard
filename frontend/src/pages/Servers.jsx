@@ -31,9 +31,10 @@ const Servers = () => {
       <div className={styles.main}>
         <div className={styles.wrapper}>
           {servers ? (
-            servers.map((server) => {
+            servers.map((server, serverIndex) => {
               return (
                 <Server
+                  key={serverIndex}
                   id={server.id}
                   name={server.name}
                   icon={server.icon}

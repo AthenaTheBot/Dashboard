@@ -36,11 +36,16 @@
     flex-wrap: wrap;
     padding: 30px;
     max-width: 1300px;
+
+    img {
+      height: 400px !important;
+      width: 400px !important;
+    }
   }
 
   &:nth-child(even) {
     .featureWrapper {
-      flex-direction: row-reverse !important;
+      flex-direction: row-reverse;
     }
   }
 
@@ -70,8 +75,10 @@
 
 @media only screen and (max-width: 1000px) {
   .feature {
+    justify-content: center;
+
     .featureWrapper {
-      flex-direction: column;
+      flex-direction: column !important;
       justify-content: center;
     }
 
@@ -111,7 +118,7 @@
 @media only screen and (max-width: 350px) {
   .feature {
     .featureWrapper {
-      img {
+      span img {
         height: 200px !important;
         width: 200px !important;
       }

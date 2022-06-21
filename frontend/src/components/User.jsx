@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { LazyLoadImage as LazyImage } from "react-lazy-load-image-component";
 
 import UserContext from "../context/User/UserContext";
 import Link from "../components/Link";
@@ -17,7 +18,16 @@ function User() {
         className={styles.userContainer}
       >
         {user?.avatar ? (
-          <img src={user?.avatar} alt={user?.username} />
+          <LazyImage
+            effect="opacity"
+            placeholder={
+              <div className={styles.avatarPlaceHolder}>
+                {user?.username?.trim()?.slice(0, 1) || "A"}
+              </div>
+            }
+            src={user?.avatar}
+            alt={user?.username}
+          />
         ) : (
           <div className={styles.avatarPlaceHolder}>
             {user?.username?.trim()?.slice(0, 1)}

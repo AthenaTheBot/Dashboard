@@ -18,6 +18,7 @@ import UtilsContext from "./context/Utils/UtilsContext";
 
 import Cookie from "js-cookie";
 import "./styles/globals.scss";
+import "react-lazy-load-image-component/src/effects/opacity.css";
 
 const root = createRoot(document.getElementById("root"));
 
