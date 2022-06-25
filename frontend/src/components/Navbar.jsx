@@ -5,6 +5,8 @@ import UserContext from "../context/User/UserContext";
 import Link from "./Link";
 import User from "./User";
 
+import $ from "jquery";
+
 import styles from "../styles/Navbar.module.scss";
 
 const Navbar = () => {
@@ -14,8 +16,12 @@ const Navbar = () => {
   const toggleNavbar = (e) => {
     if (collapsed) {
       setCollapsed(false);
+      $("html").addClass("scrollDisabled");
     } else {
       setCollapsed(true);
+      if ($("html").attr("class").trim().split(" ").length === 1)
+        $("html").removeAttr("class");
+      else $("html").removeClass("scrollDisabled");
     }
   };
 
