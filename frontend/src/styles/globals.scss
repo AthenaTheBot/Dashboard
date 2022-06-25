@@ -75,7 +75,9 @@ button {
   }
 }
 
-.scrollDisabled {
-  height: 100%;
-  overflow: hidden;
+@media only screen and (max-width: 900px) {
+  .scrollDisabled {
+    height: 100%;
+    overflow: hidden;
+  }
 }
