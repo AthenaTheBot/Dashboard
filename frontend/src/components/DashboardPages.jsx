@@ -44,6 +44,7 @@ export const Settings = ({ serverData }) => {
       console.error("An error occured while saving data.");
     }
   };
+
   const resetChanges = () => {
     setSettings(serverData?.modules?.settings);
     setWarnActive(false);
@@ -151,7 +152,40 @@ export const Moderation = () => {
   );
 };
 
-export const Welcomer = () => {
+export const Welcomer = ({ serverData }) => {
+  const [settings, setSettings] = useState(serverData?.modules?.settings);
+  const [warnActive, setWarnActive] = useState(false);
+  const [warnLoading, setWarnLoading] = useState(false);
+
+  useEffect(() => {
+    setSettings(serverData?.modules?.settings);
+  }, [setSettings, serverData]);
+
+  const saveChanges = async () => {
+    setWarnLoading(true);
+
+    const success = await SaveChnages(serverData.id, "settings", settings);
+
+    if (success) {
+      setWarnActive(false);
+      setWarnLoading(false);
+      serverData.setServerDetails({
+        ...serverData,
+        modules: {
+          ...serverData?.modules,
+          settings: settings,
+        },
+      });
+    } else {
+      console.error("An error occured while saving data.");
+    }
+  };
+
+  const resetChanges = () => {
+    setSettings(serverData?.modules?.settings);
+    setWarnActive(false);
+  };
+
   return (
     <Fragment>
       <h1>Welcomer</h1>
@@ -165,6 +199,8 @@ export const Welcomer = () => {
         </div>
         <div className={styles.moduleInner}></div>
       </div>
+
+      <ChangesDetected resetChanges={resetChanges} saveChanges={saveChanges} />
     </Fragment>
   );
 };
