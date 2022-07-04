@@ -14,6 +14,7 @@ import { GiThorHammer } from "react-icons/gi";
 import { IoMdMusicalNote } from "react-icons/io";
 import { VscMenu } from "react-icons/vsc";
 import { BsJournalText } from "react-icons/bs";
+import { MdOutlineWavingHand } from "react-icons/md";
 import {
   Overview,
   Settings,
@@ -21,6 +22,7 @@ import {
   Music,
   NotFound,
   Logging,
+  Welcomer,
 } from "../components/DashboardPages";
 import UtilsContext from "../context/Utils/UtilsContext";
 import Link from "../components/Link";
@@ -169,6 +171,16 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
+              navigate(`/dashboard/${id}/welcomer`);
+              toggleMenu();
+            }}
+            className={styles.category}
+          >
+            <MdOutlineWavingHand />
+            <p>Welcomer</p>
+          </div>
+          <div
+            onClick={() => {
               navigate(`/dashboard/${id}/logging`);
               toggleMenu();
             }}
@@ -212,6 +224,9 @@ const Dashboard = () => {
               return (
                 <Moderation serverData={{ ...server, ...serverDetails }} />
               );
+
+            case "welcomer":
+              return <Welcomer serverData={{ ...server, ...serverDetails }} />;
 
             case "logging":
               return <Logging serverData={{ ...server, ...serverDetails }} />;

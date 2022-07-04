@@ -6,6 +6,7 @@ import SelectInput from "../components/SelectInput";
 import ChangesDetected from "./ChangesDetected";
 
 import SaveChnages from "../utils/SaveChanges";
+import Toggle from "./Toggle";
 
 export const Overview = () => {
   return (
@@ -145,6 +146,24 @@ export const Moderation = () => {
             This module will be available in the future.
           </p>
         </div>
+      </div>
+    </Fragment>
+  );
+};
+
+export const Welcomer = () => {
+  return (
+    <Fragment>
+      <h1>Welcomer</h1>
+
+      <div className={styles.module}>
+        <div className={styles.moduleHead}>
+          <h2>
+            Send Message To A Channel <Toggle />
+          </h2>
+          <p>Send message to a channel when a user joins to the guild.</p>
+        </div>
+        <div className={styles.moduleInner}></div>
       </div>
     </Fragment>
   );

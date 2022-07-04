@@ -32,7 +32,8 @@ func OauthRoute(r *gin.RouterGroup, botCfg models.BotConfig) {
 			return
 		}
 
-		ctx.SetCookie("session", resp.AccessToken, resp.ExpiresIn * 1000 - 1000 * 60 * 60 * 2, "/", "", true, false)
+		// TODO: Fix cookie issue
+		ctx.SetCookie("session", resp.AccessToken, (resp.ExpiresIn * 1000) - (1000 * 60 * 60 * 2), "/", "", true, false)
 
 		ctx.Redirect(302, "/")
 	})
