@@ -1,6 +1,5 @@
 import styles from "../styles/Toggle.module.scss";
 
-import $ from "jquery";
 import { useEffect, useState } from "react";
 
 const Toggle = ({ active, onChange }) => {
