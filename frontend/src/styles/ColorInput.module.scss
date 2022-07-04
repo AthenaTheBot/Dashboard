@@ -1,0 +1,15 @@
+.container {
+  width: 100%;
+  height: fit-content;
+  position: relative;
+}
+
+.colorPicker {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.disabled {
+  display: none !important;
+}

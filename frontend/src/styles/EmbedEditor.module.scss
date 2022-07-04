@@ -1,0 +1,23 @@
+.container {
+  width: 100%;
+}
+
+.innerSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 5px 0px;
+
+  &:nth-child(1) {
+    margin-top: 15px;
+  }
+
+  > div {
+    width: 100%;
+    margin: 0px 5px;
+    font-weight: bold;
+    color: #d3d1d1;
+    text-transform: uppercase;
+  }
+}

@@ -7,6 +7,7 @@ import ChangesDetected from "./ChangesDetected";
 
 import SaveChnages from "../utils/SaveChanges";
 import Toggle from "./Toggle";
+import EmbedEditor from "./EmbedEditor";
 
 export const Overview = () => {
   return (
@@ -190,14 +191,17 @@ export const Welcomer = ({ serverData }) => {
     <Fragment>
       <h1>Welcomer</h1>
 
-      <div className={styles.module}>
+      <div className={`${styles.module} ${styles.toggleableModule}`}>
         <div className={styles.moduleHead}>
           <h2>
-            Send Message To A Channel <Toggle />
+            Message To Channel
+            <Toggle />
           </h2>
           <p>Send message to a channel when a user joins to the guild.</p>
         </div>
-        <div className={styles.moduleInner}></div>
+        <div className={styles.moduleInner}>
+          <EmbedEditor />
+        </div>
       </div>
 
       <ChangesDetected resetChanges={resetChanges} saveChanges={saveChanges} />
