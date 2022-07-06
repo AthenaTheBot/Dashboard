@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/TextInput.module.scss";
 
-const TextInput = ({
-  className,
-  initialValue = "",
-  strict,
-  onChange = () => {},
-}) => {
-  const [inputValue, setInputValue] = useState(initialValue);
+const TextInput = ({ className, value = "", strict, onChange = () => {} }) => {
+  const [inputValue, setInputValue] = useState(value);
   const inputChanged = (e) => {
     if (strict) return;
     setInputValue(e?.target?.value);
@@ -15,8 +10,8 @@ const TextInput = ({
   };
 
   useEffect(() => {
-    setInputValue(initialValue);
-  }, [initialValue, setInputValue]);
+    setInputValue(value);
+  }, [value, setInputValue]);
 
   return (
     <input

@@ -16,7 +16,7 @@ const ColorInput = () => {
           setShowPicker(true);
         }}
       >
-        <TextInput strict onChange={setColor} initialValue={color} />
+        <TextInput strict onChange={setColor} value={color} />
       </div>
       <HexColorPicker
         className={`${styles.colorPicker} ${

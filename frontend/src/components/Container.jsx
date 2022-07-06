@@ -5,18 +5,21 @@ const Container = ({
   id,
   className,
   bgGradientColor = "var(--primary-theme)",
+  bgGradientEndColor = "var(--primary-background)",
   children,
 }) => {
   const [gradientColor, setGradientColor] = useState();
+  const [gradientEndColor, setGradientEndColor] = useState();
   const [gradientOpacity, setGradientOpacity] = useState(1);
 
   useEffect(() => {
     setGradientOpacity(1);
 
     setGradientColor(bgGradientColor);
+    setGradientEndColor(bgGradientEndColor);
 
     setGradientOpacity(0);
-  }, [bgGradientColor]);
+  }, [bgGradientColor, bgGradientEndColor]);
 
   return (
     <div id={id}>
@@ -24,6 +27,7 @@ const Container = ({
         style={{
           "--bgGradientColor": gradientColor,
           "--bgGradientOpacity": gradientOpacity,
+          "--bgGradientEndColor": gradientEndColor,
         }}
         className={styles.bgGradient}
       ></div>

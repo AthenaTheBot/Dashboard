@@ -83,7 +83,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Container className={styles.container} bgColor>
+    <Container className={styles.container} bgGradientEndColor="#1b1824">
       <Seo title="Dashboard - Athena" />
       <Loader
         enabled={
@@ -96,7 +96,7 @@ const Dashboard = () => {
       />
       <div className={styles.menu}>
         <div className={styles.brand}>
-          <img src={logo} alt="Athena" />
+          <img id="dashGuildLogo" src={logo} alt="Athena" />
         </div>
         <div className={styles.guildSelector}>
           <div className={styles.currentGuild} onClick={toggleGuildsMenu}>

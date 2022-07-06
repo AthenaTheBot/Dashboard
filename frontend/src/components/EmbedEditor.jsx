@@ -3,83 +3,174 @@ import styles from "../styles/EmbedEditor.module.scss";
 import TextInput from "./TextInput";
 import ColorInput from "./ColorInput";
 
-const EmbedEditor = ({
-  author,
-  title,
-  description,
-  thumbnail,
-  image,
-  url,
-  color,
-  footer,
-}) => {
+const EmbedEditor = ({ embed = {}, onChange = () => {} }) => {
   return (
     <div className={styles.container}>
       <div className={styles.section}>
         <div className={styles.innerSection}>
           <div>
             <p>Author Name</p>
-            <TextInput initialValue={author?.name} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  name: d,
+                });
+              }}
+              value={embed?.name}
+            />
           </div>
         </div>
 
         <div className={styles.innerSection}>
           <div>
             <p>Author Icon</p>
-            <TextInput initialValue={author?.icon} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  author: {
+                    ...embed?.author,
+                    icon: d,
+                  },
+                });
+              }}
+              value={embed?.author?.icon}
+            />
           </div>
           <div>
             <p>Author Url</p>
-            <TextInput initialValue={author?.url} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  author: {
+                    ...embed?.author,
+                    url: d,
+                  },
+                });
+              }}
+              value={embed.author?.url}
+            />
           </div>
         </div>
 
         <div className={styles.innerSection}>
           <div>
             <p>Title</p>
-            <TextInput initialValue={title} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  title: d,
+                });
+              }}
+              value={embed?.title}
+            />
           </div>
         </div>
 
         <div className={styles.innerSection}>
           <div>
             <p>Description</p>
-            <TextInput initialValue={description} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  description: d,
+                });
+              }}
+              value={embed?.description}
+            />
           </div>
         </div>
 
         <div className={styles.innerSection}>
           <div>
             <p>Thumbnail URL</p>
-            <TextInput initialValue={thumbnail} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  thumbnail: d,
+                });
+              }}
+              value={embed?.thumbnail}
+            />
           </div>
           <div>
             <p>Image URL</p>
-            <TextInput initialValue={image} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  image: d,
+                });
+              }}
+              value={embed?.ColorInputimage}
+            />
           </div>
 
           <div>
             <p>URL</p>
-            <TextInput initialValue={url} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  url: d,
+                });
+              }}
+              value={embed?.url}
+            />
           </div>
         </div>
 
         <div className={styles.innerSection}>
           <div>
             <p>Color</p>
-            <ColorInput initialValue={color} />
+            <ColorInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  color: d,
+                });
+              }}
+              value={embed?.color}
+            />
           </div>
         </div>
 
         <div className={styles.innerSection}>
           <div>
             <p>Footer Icon</p>
-            <TextInput initialValue={footer?.icon} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  footer: {
+                    ...embed?.footer,
+                    icon: d,
+                  },
+                });
+              }}
+              value={embed?.footer?.icon}
+            />
           </div>
 
           <div>
             <p>Footer Text</p>
-            <TextInput initialValue={footer?.text} />
+            <TextInput
+              onChange={(d) => {
+                onChange({
+                  ...embed,
+                  footer: {
+                    ...embed?.footer,
+                    text: d,
+                  },
+                });
+              }}
+              value={embed?.footer?.text}
+            />
           </div>
         </div>
       </div>

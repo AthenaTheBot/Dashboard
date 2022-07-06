@@ -64,7 +64,10 @@ func GetUser(users syncmap.Map, session string) (models.User, error) {
 				return models.User{}, parseErr
 			}
 
-			user.Avatar = fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s", user.Id, user.Avatar)
+			if user.Avatar != "" {
+				user.Avatar = fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s", user.Id, user.Avatar)
+			}
+
 			user.Color = fmt.Sprintf("#%x", user.AccentColor)
 
 			users.Store(session, user)

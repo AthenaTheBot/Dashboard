@@ -101,6 +101,10 @@ func GuildsRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Sessio
 				moduleSchema = models.ModerationModule{}
 				break
 
+			case "welcomer":
+				moduleSchema = models.WelcomerModule{}
+				break
+
 			default:
 				ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 					"message": "Bad Request",

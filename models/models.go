@@ -123,9 +123,46 @@ type ModerationModule struct {
 	Warnings 	[]UserWarning	`json:"warnings" bson:"warnings"`
 }
 
+type WelcomerEmbedAuthor struct {
+	Name 	string `json:"name" bson:"name"` 
+	Icon 	string `json:"icon" bson:"icon"`
+	Url 	string `json:"url" bson:"url"`
+}
+
+type WelcomerEmbedFooter struct {
+	Icon string `json:"icon" bson:"icon"`
+	Text string `json:"text" bson:"text"`
+}
+
+type WelcomerEmbed struct {
+	Author 			WelcomerEmbedAuthor 	`json:"author" bson:"author"`
+	Title 			string 					`json:"title" bson:"title"`
+	Description 	string 					`json:"description" bson:"description"`
+	Thumbnail 		string 					`json:"thumbnail" bson:"thumbnail"`
+	Image 			string					`json:"image" bson:"image"`
+	Url 			string 					`json:"url" bson:"url"`
+	Color 			string					`json:"color" bson:"color"`
+	Footer 			WelcomerEmbedFooter		`json:"footer" bson:"footer"`
+}
+
+type WelcomerMessage struct {
+	Content 	string			`json:"content" bson:"content"`
+	Embed 		WelcomerEmbed 	`json:"embed" bson:"embed"`
+}
+
+type Welcomer struct {
+	Enabled 	bool			`json:"enabled" bson:"enabled"`
+	Message 	WelcomerMessage	`json:"message" bson:"message"`
+}
+
+type WelcomerModule struct {
+	MessageToChannel Welcomer `json:"messageToChannel" bson:"messageToChannel"`
+}
+
 type Modules struct {
 	SettingsModule 		`json:"settings" bson:"settings"`
 	ModerationModule 	`json:"moderation" bson:"moderation"`
+	WelcomerModule		`json:"welcomer" bson:"welcomer"`
 	Fun   interface{} 	`json:"fun" bson:"fun"`
 	Utils interface{} 	`json:"utils" bson:"utils"`
 }

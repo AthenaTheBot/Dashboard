@@ -26,14 +26,12 @@ export const Settings = ({ serverData }) => {
     setSettings(serverData?.modules?.settings);
   }, [setSettings, serverData]);
 
-  const saveChanges = async () => {
+  const saveChanges = async (toggleUi) => {
     setWarnLoading(true);
 
     const success = await SaveChnages(serverData.id, "settings", settings);
 
     if (success) {
-      setWarnActive(false);
-      setWarnLoading(false);
       serverData.setServerDetails({
         ...serverData,
         modules: {
@@ -41,13 +39,21 @@ export const Settings = ({ serverData }) => {
           settings: settings,
         },
       });
+
+      setWarnLoading(false);
+
+      await toggleUi();
+
+      setWarnActive(false);
     } else {
       console.error("An error occured while saving data.");
     }
   };
 
-  const resetChanges = () => {
+  const resetChanges = async (toggleUi) => {
     setSettings(serverData?.modules?.settings);
+
+    await toggleUi();
     setWarnActive(false);
   };
 
@@ -72,7 +78,7 @@ export const Settings = ({ serverData }) => {
               });
               setWarnActive(true);
             }}
-            initialValue={settings?.prefix}
+            value={settings?.prefix}
           />
         </div>
       </div>
@@ -154,36 +160,58 @@ export const Moderation = () => {
 };
 
 export const Welcomer = ({ serverData }) => {
-  const [settings, setSettings] = useState(serverData?.modules?.settings);
+  console.log(serverData);
+  const [welcomerSettings, setWelcomerSettings] = useState(
+    serverData?.modules?.welcomer
+  );
   const [warnActive, setWarnActive] = useState(false);
   const [warnLoading, setWarnLoading] = useState(false);
 
   useEffect(() => {
-    setSettings(serverData?.modules?.settings);
-  }, [setSettings, serverData]);
+    setWelcomerSettings(serverData?.modules?.welcomer);
+  }, [setWelcomerSettings, serverData]);
 
-  const saveChanges = async () => {
+  const saveChanges = async (toggleUi) => {
     setWarnLoading(true);
 
-    const success = await SaveChnages(serverData.id, "settings", settings);
+    const success = await SaveChnages(
+      serverData.id,
+      "welcomer",
+      welcomerSettings
+    );
 
     if (success) {
-      setWarnActive(false);
-      setWarnLoading(false);
-      serverData.setServerDetails({
+      serverData?.setServerDetails({
         ...serverData,
         modules: {
           ...serverData?.modules,
-          settings: settings,
+          welcomer: welcomerSettings,
         },
       });
+
+      setWarnLoading(false);
+
+      await toggleUi();
+
+      setWarnActive(false);
     } else {
       console.error("An error occured while saving data.");
+
+      await toggleUi();
+
+      setWarnActive(false);
     }
   };
 
-  const resetChanges = () => {
-    setSettings(serverData?.modules?.settings);
+  const resetChanges = async (toggleUi) => {
+    setWarnLoading(true);
+
+    setWelcomerSettings(serverData?.modules?.welcomer);
+
+    setWarnLoading(false);
+
+    await toggleUi();
+
     setWarnActive(false);
   };
 
@@ -195,16 +223,45 @@ export const Welcomer = ({ serverData }) => {
         <div className={styles.moduleHead}>
           <h2>
             Message To Channel
-            <Toggle />
+            <Toggle
+              active={welcomerSettings?.messageToChannel?.enabled}
+              onChange={(x) => {
+                setWelcomerSettings({
+                  ...welcomerSettings,
+                  messageToChannel: {
+                    ...welcomerSettings.messageToChannel,
+                    enabled: x,
+                  },
+                });
+                setWarnActive(true);
+              }}
+            />
           </h2>
           <p>Send message to a channel when a user joins to the guild.</p>
         </div>
         <div className={styles.moduleInner}>
-          <EmbedEditor />
+          <EmbedEditor
+            embed={welcomerSettings?.messageToChannel?.embed}
+            onChange={(x) => {
+              setWelcomerSettings({
+                ...welcomerSettings,
+                messageToChannel: {
+                  ...welcomerSettings.messageToChannel,
+                  embed: x,
+                },
+              });
+              setWarnActive(true);
+            }}
+          />
         </div>
       </div>
 
-      <ChangesDetected resetChanges={resetChanges} saveChanges={saveChanges} />
+      <ChangesDetected
+        resetChanges={resetChanges}
+        saveChanges={saveChanges}
+        active={warnActive}
+        loading={warnLoading}
+      />
     </Fragment>
   );
 };

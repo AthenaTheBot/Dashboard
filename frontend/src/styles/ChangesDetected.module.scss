@@ -1,5 +1,6 @@
 @keyframes openingAnim {
   0% {
+    opacity: 0;
     transform: translateY(30px);
   }
 
@@ -8,15 +9,29 @@
   }
 
   100% {
+    opacity: 1;
     transform: translateY(0px);
   }
 }
 
+@keyframes closingAnim {
+  0% {
+    transform: translateY(0px);
+  }
+
+  35% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+}
+
 .container {
-  width: 97%;
-  max-width: 1200px;
-  position: absolute;
-  bottom: 0px;
+  width: 100%;
+  max-width: 1000px;
   height: 60px;
   border: 1px solid #ffffff3f;
   background-color: #05050556;
@@ -50,4 +65,8 @@
 
 .disabled {
   display: none !important;
+}
+
+.collapsing {
+  animation: closingAnim 700ms forwards !important;
 }

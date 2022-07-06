@@ -3,7 +3,8 @@ import styles from "../styles/Button.module.scss";
 
 const Button = ({
   id,
-  className,
+  style = null,
+  className = null,
   children,
   to,
   passive,
@@ -22,7 +23,8 @@ const Button = ({
   return (
     <div
       id={id}
-      className={`${styles.button} ${className}`}
+      style={style}
+      className={`${styles.button}${className ? " " + className : ""}`}
       onClick={buttonClicked}
     >
       {children}
