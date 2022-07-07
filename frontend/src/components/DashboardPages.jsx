@@ -160,7 +160,6 @@ export const Moderation = () => {
 };
 
 export const Welcomer = ({ serverData }) => {
-  console.log(serverData);
   const [welcomerSettings, setWelcomerSettings] = useState(
     serverData?.modules?.welcomer
   );
@@ -240,14 +239,60 @@ export const Welcomer = ({ serverData }) => {
           <p>Send message to a channel when a user joins to the guild.</p>
         </div>
         <div className={styles.moduleInner}>
+          <div
+            style={{
+              fontWeight: "bold",
+              textTransform: "uppercase",
+            }}
+          >
+            <p>Channel</p>
+            <SelectInput
+              onSelect={(item) => {
+                if (!item?.id) return;
+                setWelcomerSettings({
+                  ...welcomerSettings,
+                  messageToChannel: {
+                    ...welcomerSettings.messageToChannel,
+                    channel: item.id,
+                  },
+                });
+                setWarnActive(true);
+              }}
+              active={
+                welcomerSettings?.messageToChannel?.channel
+                  ? {
+                      id: welcomerSettings.messageToChannel.channel,
+                      label:
+                        serverData.channels.text.find(
+                          (x) =>
+                            x.id === welcomerSettings?.messageToChannel?.channel
+                        )?.name || welcomerSettings?.messageToChannel?.channel,
+                    }
+                  : {}
+              }
+              options={serverData?.channels?.text?.map((channel) => {
+                if (
+                  channel?.id !== welcomerSettings?.messageToChannel?.channel
+                ) {
+                  return {
+                    id: channel.id,
+                    label: channel.name,
+                  };
+                }
+              })}
+            />
+          </div>
           <EmbedEditor
-            embed={welcomerSettings?.messageToChannel?.embed}
-            onChange={(x) => {
+            embed={welcomerSettings?.messageToChannel?.message?.embed}
+            onChange={(newEmbed) => {
               setWelcomerSettings({
                 ...welcomerSettings,
                 messageToChannel: {
                   ...welcomerSettings.messageToChannel,
-                  embed: x,
+                  message: {
+                    ...welcomerSettings.messageToChannel.message,
+                    embed: newEmbed,
+                  },
                 },
               });
               setWarnActive(true);

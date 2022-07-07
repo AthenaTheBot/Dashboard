@@ -37,7 +37,7 @@ func main() {
 		utils.Log(models.ERROR, "Bot cannot be initialized, quitting.")
 		os.Exit(1)
 	} else {
-		utils.Log(models.SUCCESS, "Initialized bot client.")
+		utils.Log(models.SUCCESS, fmt.Sprintf("Initialized bot client. (%s#%s)", botSession.State.User.Username, botSession.State.User.Discriminator))
 	}
 
 	server := server.SetupRouter(config, dbClient, botSession)

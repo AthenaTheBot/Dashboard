@@ -2,6 +2,8 @@ package models
 
 import (
 	"fmt"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 type BotConfig struct {
@@ -97,8 +99,8 @@ type GuildPreview struct {
 }
 
 type Channels struct {
-	Text 	int `json:"text"`
-	Voice 	int `json:"voice"`
+	Text 	[]discordgo.Channel `json:"text"`
+	Voice 	[]discordgo.Channel `json:"voice"`
 }
 
 type UserWarning struct {
@@ -153,6 +155,7 @@ type WelcomerMessage struct {
 type Welcomer struct {
 	Enabled 	bool			`json:"enabled" bson:"enabled"`
 	Message 	WelcomerMessage	`json:"message" bson:"message"`
+	Channel 	string			`json:"channel" bson:"channel"`
 }
 
 type WelcomerModule struct {

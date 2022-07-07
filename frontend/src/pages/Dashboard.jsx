@@ -222,17 +222,31 @@ const Dashboard = () => {
 
             case "moderation":
               return (
-                <Moderation serverData={{ ...server, ...serverDetails }} />
+                <Moderation
+                  serverData={{ ...server, ...serverDetails, setServerDetails }}
+                />
               );
 
             case "welcomer":
-              return <Welcomer serverData={{ ...server, ...serverDetails }} />;
+              return (
+                <Welcomer
+                  serverData={{ ...server, ...serverDetails, setServerDetails }}
+                />
+              );
 
             case "logging":
-              return <Logging serverData={{ ...server, ...serverDetails }} />;
+              return (
+                <Logging
+                  serverData={{ ...server, ...serverDetails, setServerDetails }}
+                />
+              );
 
             case "music":
-              return <Music serverData={{ ...server, ...serverDetails }} />;
+              return (
+                <Music
+                  serverData={{ ...server, ...serverDetails, setServerDetails }}
+                />
+              );
 
             default:
               return <NotFound />;

@@ -2,18 +2,19 @@ import { Fragment, useEffect, useState } from "react";
 import styles from "../styles/SelectInput.module.scss";
 
 const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
-  const [inputValue, setInputValue] = useState(active.label);
-  const [optionsToShow, setOptionsToShow] = useState(options);
+  const [inputValue, setInputValue] = useState(active?.label || "");
+  const [optionsToShow, setOptionsToShow] = useState(options) || {};
   const [optionsEnabled, setOptionsEnabled] = useState(false);
 
   useEffect(() => {
+    if (!active?.label || !options) return;
     setInputValue(active.label);
     setOptionsToShow(options);
-  }, [active, options]);
+  }, [active, options, setInputValue, setOptionsToShow]);
 
   useEffect(() => {
     const newOptionsToShow = options.filter((x) =>
-      x?.label?.toLowerCase()?.startsWith(inputValue?.toLowerCase())
+      x?.label?.toLowerCase()?.includes(inputValue?.toLowerCase())
     );
 
     setOptionsToShow(newOptionsToShow);
@@ -22,9 +23,9 @@ const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
   }, [inputValue]);
 
   const inputChanged = (event) => {
-    setOptionsEnabled(true);
-
     setInputValue(event?.target?.value);
+
+    setOptionsEnabled(true);
 
     const option = options?.find(
       (x) =>
@@ -56,7 +57,7 @@ const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
         onBlur={(e) => {
           if (e.relatedTarget) return;
           setOptionsEnabled(false);
-          setInputValue(active.label);
+          setInputValue(active.label || "");
         }}
       />
       <div
@@ -67,7 +68,8 @@ const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
       >
         {optionsToShow.length > 0
           ? optionsToShow.map((option, index) => {
-              if (!option?.id || !option?.label) return <Fragment />;
+              if (!option?.id || !option?.label)
+                return <Fragment key={index} />;
 
               return (
                 <div

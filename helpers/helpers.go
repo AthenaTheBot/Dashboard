@@ -192,24 +192,23 @@ func GetGuild(bot *discordgo.Session, db *mongo.Client, userGuilds syncmap.Map, 
 	}
 
 	guild.GuildPreview = guildPreview
-
-	extraGuildData, _ := bot.Guild(id)
+	extraGuildData, _ := bot.State.Guild(id)
 
 	if extraGuildData != nil {
-		textChannelCount := 0
-		voiceChannelCount := 0
+		textChannels := []discordgo.Channel{}
+		voiceChannels := []discordgo.Channel{}
 
 		for _, c := range extraGuildData.Channels {
 			if c.Type == discordgo.ChannelTypeGuildText {
-				textChannelCount++
+				textChannels = append(textChannels, *c)
 			} else if c.Type == discordgo.ChannelTypeGuildVoice {
-				voiceChannelCount++
+				voiceChannels = append(voiceChannels, *c)
 			}
 		} 
 
 		guild.Channels = models.Channels{
-			Text: textChannelCount,
-			Voice: voiceChannelCount,
+			Text: textChannels,
+			Voice: voiceChannels,
 		}
 	}
 

@@ -4,6 +4,7 @@ import TextInput from "./TextInput";
 import ColorInput from "./ColorInput";
 
 const EmbedEditor = ({ embed = {}, onChange = () => {} }) => {
+  // TODO: Show preview
   return (
     <div className={styles.container}>
       <div className={styles.section}>
@@ -14,10 +15,13 @@ const EmbedEditor = ({ embed = {}, onChange = () => {} }) => {
               onChange={(d) => {
                 onChange({
                   ...embed,
-                  name: d,
+                  author: {
+                    ...embed?.author,
+                    name: d,
+                  },
                 });
               }}
-              value={embed?.name}
+              value={embed?.author?.name}
             />
           </div>
         </div>
