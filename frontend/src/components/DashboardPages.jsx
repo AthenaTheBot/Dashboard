@@ -115,7 +115,46 @@ export const Settings = ({ serverData }) => {
   );
 };
 
-export const Moderation = () => {
+export const Moderation = ({ serverData }) => {
+  const [settings, setSettings] = useState(serverData?.modules?.settings);
+  const [warnActive, setWarnActive] = useState(false);
+  const [warnLoading, setWarnLoading] = useState(false);
+
+  useEffect(() => {
+    setSettings(serverData?.modules?.settings);
+  }, [setSettings, serverData]);
+
+  const saveChanges = async (toggleUi) => {
+    setWarnLoading(true);
+
+    const success = await SaveChnages(serverData.id, "settings", settings);
+
+    if (success) {
+      serverData.setServerDetails({
+        ...serverData,
+        modules: {
+          ...serverData?.modules,
+          settings: settings,
+        },
+      });
+
+      setWarnLoading(false);
+
+      await toggleUi();
+
+      setWarnActive(false);
+    } else {
+      console.error("An error occured while saving data.");
+    }
+  };
+
+  const resetChanges = async (toggleUi) => {
+    setSettings(serverData?.modules?.settings);
+
+    await toggleUi();
+    setWarnActive(false);
+  };
+
   return (
     <Fragment>
       <h1>Moderation</h1>
@@ -125,11 +164,7 @@ export const Moderation = () => {
           <h2>Auto Role</h2>
           <p>Make Athena give members to your new members of your guild.</p>
         </div>
-        <div className={styles.moduleInner}>
-          <p className={styles.futureAvailable}>
-            This module will be available in the future.
-          </p>
-        </div>
+        <div className={styles.moduleInner}></div>
       </div>
 
       <div className={styles.module}>
@@ -155,6 +190,13 @@ export const Moderation = () => {
           </p>
         </div>
       </div>
+
+      <ChangesDetected
+        resetChanges={resetChanges}
+        saveChanges={saveChanges}
+        active={warnActive}
+        loading={warnLoading}
+      />
     </Fragment>
   );
 };
@@ -278,7 +320,7 @@ export const Welcomer = ({ serverData }) => {
                     id: channel.id,
                     label: channel.name,
                   };
-                }
+                } else return <Fragment></Fragment>;
               })}
             />
           </div>

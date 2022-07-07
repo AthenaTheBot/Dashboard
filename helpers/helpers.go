@@ -197,6 +197,8 @@ func GetGuild(bot *discordgo.Session, db *mongo.Client, userGuilds syncmap.Map, 
 	if extraGuildData != nil {
 		textChannels := []discordgo.Channel{}
 		voiceChannels := []discordgo.Channel{}
+		roles := []discordgo.Role{}
+		highestRolePos := 0
 
 		for _, c := range extraGuildData.Channels {
 			if c.Type == discordgo.ChannelTypeGuildText {
@@ -206,6 +208,34 @@ func GetGuild(bot *discordgo.Session, db *mongo.Client, userGuilds syncmap.Map, 
 			}
 		} 
 
+		for _, m := range extraGuildData.Members {
+			if m.User.ID == bot.State.User.ID {
+				for _, r := range m.Roles {
+					targetRole := discordgo.Role{}
+					for _, rr := range extraGuildData.Roles {
+						if rr.ID == r {
+							targetRole = *rr
+						}
+					}
+
+					if targetRole.ID != "" {
+						if targetRole.Position > highestRolePos {
+							highestRolePos = targetRole.Position
+						}
+					}
+
+				}
+				break
+			}
+		}
+
+		for _, r := range extraGuildData.Roles {
+			if r.Position < highestRolePos && !r.Managed {
+				roles = append(roles, *r)
+			}
+		}
+
+		guild.Roles = roles
 		guild.Channels = models.Channels{
 			Text: textChannels,
 			Voice: voiceChannels,

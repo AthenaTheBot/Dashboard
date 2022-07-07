@@ -11,11 +11,14 @@ import (
 	"athena.bot/server/middlewares"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/sync/syncmap"
 )
+
+var Validator = validator.New()
 
 func GuildsRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Session, db *mongo.Client, users syncmap.Map, userGuilds syncmap.Map) {
 	r.GET("/:id", middlewares.Authorization(middlewares.COOKIE), func (ctx *gin.Context)  {
@@ -92,17 +95,77 @@ func GuildsRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Sessio
 			return
 		}
 
-		var moduleSchema any
+		var moduleData any
 		switch(module) {
 			case "settings":
-				moduleSchema = models.SettingsModule{}
+				module := models.SettingsModule{}
+				parseErr := json.NewDecoder(ctx.Request.Body).Decode(&module)
+
+				if parseErr != nil {
+					ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+						"message": "Server Error",
+					})
+				
+					return
+				}
+			
+				validateErr := Validator.Struct(module)
+    			if validateErr != nil {
+					ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+						"message": "Bad Request",
+					})
+				
+					return
+    			}
+
+				moduleData = module
 				break
 			case "moderation":
-				moduleSchema = models.ModerationModule{}
+				module := models.ModerationModule{}
+				parseErr := json.NewDecoder(ctx.Request.Body).Decode(&module)
+
+				if parseErr != nil {
+					ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+						"message": "Server Error",
+					})
+				
+					return
+				}
+			
+				validateErr := Validator.Struct(module)
+    			if validateErr != nil {
+					ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+						"message": "Bad Request",
+					})
+				
+					return
+    			}
+
+				moduleData = module
 				break
 
 			case "welcomer":
-				moduleSchema = models.WelcomerModule{}
+				module := models.WelcomerModule{}
+				parseErr := json.NewDecoder(ctx.Request.Body).Decode(&module)
+
+				if parseErr != nil {
+					ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+						"message": "Server Error",
+					})
+				
+					return
+				}
+			
+				validateErr := Validator.Struct(module)
+    			if validateErr != nil {
+					ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+						"message": "Bad Request",
+					})
+				
+					return
+    			}
+
+				moduleData = module
 				break
 
 			default:
@@ -113,17 +176,7 @@ func GuildsRoute(r *gin.RouterGroup, config models.Config, bot *discordgo.Sessio
 		}
 
 		if !ctx.IsAborted() {
-			parseErr := json.NewDecoder(ctx.Request.Body).Decode(&moduleSchema)
-
-			if parseErr != nil {
-				ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"message": "Server Error",
-				})
-
-				return
-			}
-
-			_, dbErr := db.Database("AthenaV3").Collection("guilds").UpdateOne(context.TODO(), bson.D{primitive.E{Key: "_id", Value: id}}, bson.D{primitive.E{Key: "$set", Value: bson.D{primitive.E{ Key: fmt.Sprintf("modules.%s", module), Value: moduleSchema }} }})
+			_, dbErr := db.Database("AthenaV3").Collection("guilds").UpdateOne(context.TODO(), bson.D{primitive.E{Key: "_id", Value: id}}, bson.D{primitive.E{Key: "$set", Value: bson.D{primitive.E{ Key: fmt.Sprintf("modules.%s", module), Value: moduleData }} }})
 
 			if dbErr != nil {
 				ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{

@@ -115,7 +115,7 @@ type Language struct {
 
 type SettingsModule struct {
 	Prefix 		string `json:"prefix" bson:"prefix"`
-	Language	string `json:"language" bson:"language"`
+	Language	string `json:"language" bson:"language" validate:"required,oneof='en_US' 'tr_TR'"`
 }
 
 type ModerationModule struct {
@@ -172,8 +172,9 @@ type Modules struct {
 
 type Guild struct {
 	GuildPreview
-	Channels 	`json:"channels"`
-	Modules 	`json:"modules" bson:"modules"`
+	Channels 						`json:"channels" bson:"channels"`
+	Roles 		[]discordgo.Role	`json:"roles" bson:"roles"`
+	Modules 						`json:"modules" bson:"modules"`
 }
 
 type TooManyRequest struct {
