@@ -9,6 +9,8 @@ import SaveChnages from "../utils/SaveChanges";
 import Toggle from "./Toggle";
 import EmbedEditor from "./EmbedEditor";
 
+import $ from "jquery";
+
 export const Overview = () => {
   return (
     <Fragment>
@@ -116,25 +118,31 @@ export const Settings = ({ serverData }) => {
 };
 
 export const Moderation = ({ serverData }) => {
-  const [settings, setSettings] = useState(serverData?.modules?.settings);
+  const [moderationSettings, setModerationSettings] = useState(
+    serverData?.modules?.moderation
+  );
   const [warnActive, setWarnActive] = useState(false);
   const [warnLoading, setWarnLoading] = useState(false);
 
   useEffect(() => {
-    setSettings(serverData?.modules?.settings);
-  }, [setSettings, serverData]);
+    setModerationSettings(serverData?.modules?.moderation);
+  }, [setModerationSettings, serverData]);
 
   const saveChanges = async (toggleUi) => {
     setWarnLoading(true);
 
-    const success = await SaveChnages(serverData.id, "settings", settings);
+    const success = await SaveChnages(
+      serverData.id,
+      "moderation",
+      moderationSettings
+    );
 
     if (success) {
       serverData.setServerDetails({
         ...serverData,
         modules: {
           ...serverData?.modules,
-          settings: settings,
+          moderation: moderationSettings,
         },
       });
 
@@ -149,7 +157,7 @@ export const Moderation = ({ serverData }) => {
   };
 
   const resetChanges = async (toggleUi) => {
-    setSettings(serverData?.modules?.settings);
+    setModerationSettings(serverData?.modules?.moderation);
 
     await toggleUi();
     setWarnActive(false);
@@ -164,7 +172,47 @@ export const Moderation = ({ serverData }) => {
           <h2>Auto Role</h2>
           <p>Make Athena give members to your new members of your guild.</p>
         </div>
-        <div className={styles.moduleInner}></div>
+        <div className={styles.moduleInner}>
+          <SelectInput
+            onSelect={(item) => {
+              setModerationSettings({
+                ...moderationSettings,
+                autoRole: item.id,
+              });
+              setWarnActive(true);
+            }}
+            onFocus={(e) => {
+              $(e.currentTarget)
+                .parent()
+                .parent()
+                .parent()
+                .css("z-index", "9999");
+            }}
+            onBlur={(e) => {
+              $(e.currentTarget).parent().parent().parent().removeAttr("style");
+            }}
+            active={
+              moderationSettings?.autoRole
+                ? {
+                    id: moderationSettings?.autoRole,
+                    label:
+                      serverData?.roles?.find(
+                        (x) =>
+                          x.id === serverData?.modules?.moderation?.autoRole
+                      )?.name || serverData?.modules?.moderation?.autoRole,
+                  }
+                : {}
+            }
+            options={serverData?.roles?.map((role) => {
+              if (role.id !== moderationSettings?.autoRole) {
+                return {
+                  id: role.id,
+                  label: role.name,
+                };
+              } else return <Fragment />;
+            })}
+          />
+        </div>
       </div>
 
       <div className={styles.module}>

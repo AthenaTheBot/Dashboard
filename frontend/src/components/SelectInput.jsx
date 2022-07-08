@@ -1,7 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
 import styles from "../styles/SelectInput.module.scss";
 
-const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
+const SelectInput = ({
+  active = {},
+  options = [],
+  onFocus = () => {},
+  onBlur = () => {},
+  onSelect = () => {},
+}) => {
   const [inputValue, setInputValue] = useState(active?.label || "");
   const [optionsToShow, setOptionsToShow] = useState(options) || {};
   const [optionsEnabled, setOptionsEnabled] = useState(false);
@@ -51,11 +57,13 @@ const SelectInput = ({ active = {}, options = [], onSelect = () => {} }) => {
         className={styles.main}
         value={inputValue}
         onChange={inputChanged}
-        onFocus={() => {
+        onFocus={(e) => {
           setOptionsEnabled(true);
+          onFocus(e);
         }}
         onBlur={(e) => {
           if (e.relatedTarget) return;
+          onBlur(e);
           setOptionsEnabled(false);
           setInputValue(active.label || "");
         }}
