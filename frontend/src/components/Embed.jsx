@@ -1,8 +1,11 @@
 import { Fragment } from "react";
+
+import ReactMarkdown from "react-markdown";
+
 import styles from "../styles/Embed.module.scss";
 
 const Embed = ({ embed }) => {
-  // TODO: Markdown formatting
+  // TODO: Check if image url is valid or not. (npmjs/validator)
   return (
     <div
       style={{ "--embed-color": embed?.color || "#202225" }}
@@ -21,7 +24,9 @@ const Embed = ({ embed }) => {
         )}
       </div>
       <h3 className={styles.title}>{embed?.title}</h3>
-      <div className={styles.description}>{embed?.description}</div>
+      <div className={styles.description}>
+        <ReactMarkdown>{embed?.description}</ReactMarkdown>
+      </div>
       {embed?.thumbnail ? (
         <img className={styles.thumbnail} src={embed?.thumbnail} alt="" />
       ) : (
@@ -38,7 +43,13 @@ const Embed = ({ embed }) => {
         ) : (
           <Fragment />
         )}
-        <div className={styles.footerName}>{embed?.footer?.name}</div>
+        {embed?.footer?.name ? (
+          <div className={styles.footerName}>
+            <ReactMarkdown>{embed?.footer?.name}</ReactMarkdown>
+          </div>
+        ) : (
+          <Fragment />
+        )}
       </div>
     </div>
   );
