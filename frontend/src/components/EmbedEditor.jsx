@@ -2,14 +2,34 @@ import styles from "../styles/EmbedEditor.module.scss";
 
 import TextInput from "./TextInput";
 import ColorInput from "./ColorInput";
+import Embed from "./Embed";
+
 import { Fragment, useState } from "react";
 
-const EmbedEditor = ({ embed = {}, onChange = () => {} }) => {
+const EmbedEditor = ({
+  content = "",
+  example = {
+    server: "Server",
+    user: "User",
+  },
+  embed = {},
+  onChange = () => {},
+}) => {
   const [showPreview, setShowPreview] = useState(false);
 
   const togglePreview = () => {
     if (showPreview) setShowPreview(false);
     else setShowPreview(true);
+  };
+
+  const getCurrentDate = () => {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    if (minutes.toString().length === 1) minutes = `0${minutes}`;
+
+    return `${hours}:${minutes}`;
   };
 
   return (
@@ -122,7 +142,7 @@ const EmbedEditor = ({ embed = {}, onChange = () => {} }) => {
                     image: d,
                   });
                 }}
-                value={embed?.ColorInputimage}
+                value={embed?.image}
               />
             </div>
 
@@ -195,12 +215,23 @@ const EmbedEditor = ({ embed = {}, onChange = () => {} }) => {
             <div className={styles.author}>
               <img src="/logo.png" alt="Athena" />
               <p className={styles.authorName}>
-                Athena <span className={styles.authorTag}>BOT</span>
+                Athena <span className={styles.authorTag}>BOT</span>{" "}
+                <span className={styles.messageDate}>
+                  Today at {getCurrentDate()}
+                </span>
               </p>
             </div>
             <div className={styles.message}>
-              <div className={styles.messageContent}></div>
-              <div className={styles.messageEmbed}></div>
+              <div className={styles.messageContent}>{content}</div>
+              <div className={styles.messageEmbed}>
+                <Embed
+                  embed={JSON.parse(
+                    JSON.stringify(embed)
+                      .replaceAll("$user", example.user)
+                      ?.replaceAll("$server", example.server)
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>

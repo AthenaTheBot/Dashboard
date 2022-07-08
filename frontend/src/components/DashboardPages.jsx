@@ -1,5 +1,5 @@
 import styles from "../styles/DashboardPages.module.scss";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 
 import TextInput from "../components/TextInput";
 import SelectInput from "../components/SelectInput";
@@ -8,6 +8,8 @@ import ChangesDetected from "./ChangesDetected";
 import SaveChnages from "../utils/SaveChanges";
 import Toggle from "./Toggle";
 import EmbedEditor from "./EmbedEditor";
+
+import UserContext from "../context/User/UserContext";
 
 import $ from "jquery";
 
@@ -255,6 +257,7 @@ export const Welcomer = ({ serverData }) => {
   );
   const [warnActive, setWarnActive] = useState(false);
   const [warnLoading, setWarnLoading] = useState(false);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     setWelcomerSettings(serverData?.modules?.welcomer);
@@ -377,6 +380,10 @@ export const Welcomer = ({ serverData }) => {
           </div>
           <EmbedEditor
             embed={welcomerSettings?.messageToChannel?.message?.embed}
+            example={{
+              server: serverData.name,
+              user: user?.username || "User",
+            }}
             onChange={(newEmbed) => {
               setWelcomerSettings({
                 ...welcomerSettings,
