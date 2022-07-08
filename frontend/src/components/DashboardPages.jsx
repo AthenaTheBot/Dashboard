@@ -329,12 +329,7 @@ export const Welcomer = ({ serverData }) => {
           <p>Send message to a channel when a user joins to the guild.</p>
         </div>
         <div className={styles.moduleInner}>
-          <div
-            style={{
-              fontWeight: "bold",
-              textTransform: "uppercase",
-            }}
-          >
+          <div className={styles.welcomerModuleChannel}>
             <p>Channel</p>
             <SelectInput
               onSelect={(item) => {
