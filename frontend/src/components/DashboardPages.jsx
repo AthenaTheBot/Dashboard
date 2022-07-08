@@ -329,6 +329,14 @@ export const Welcomer = ({ serverData }) => {
           <p>Send message to a channel when a user joins to the guild.</p>
         </div>
         <div className={styles.moduleInner}>
+          <div className={styles.welcomerModuleWarns}>
+            <p className={styles.welcomerModuleWarn}>
+              <code>$user</code>: Shows user joined to the server
+            </p>
+            <p className={styles.welcomerModuleWarn}>
+              <code>$server</code>: Shows current server
+            </p>
+          </div>
           <div className={styles.welcomerModuleChannel}>
             <p>Channel</p>
             <SelectInput

@@ -1,5 +1,9 @@
+@import url("http://fonts.cdnfonts.com/css/proxima-nova-2");
+@import url("http://fonts.cdnfonts.com/css/helvetica-neue-9");
+
 .container {
   width: 100%;
+  position: relative;
 }
 
 .innerSection {
@@ -19,5 +23,75 @@
     font-weight: bold;
     color: #d3d1d1;
     text-transform: uppercase;
+  }
+}
+
+.togglePreview {
+  color: var(--primary-link);
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.preview {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 100px;
+  margin: 5px 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.previewInner {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  margin-top: 30px;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #36393f;
+  border-radius: 10px;
+  font-family: "Proxima Nova", "Helvetica Neue", sans-serif !important;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  position: relative;
+  font-weight: bold;
+
+  .authorName {
+    position: relative;
+    left: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .authorTag {
+    position: relative;
+    font-size: 10px;
+    padding: 3px 4px;
+    margin-left: 10px;
+    border-radius: 4px;
+    background-color: #5865f6;
+  }
+
+  img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #1f222c;
+    position: absolute;
+    top: 0.5px;
   }
 }

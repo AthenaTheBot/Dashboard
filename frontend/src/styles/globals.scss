@@ -75,6 +75,13 @@ button {
   }
 }
 
+code {
+  color: #6d4dff;
+  background-color: #080808;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
 @media only screen and (max-width: 900px) {
   .scrollDisabled {
     height: 100%;
