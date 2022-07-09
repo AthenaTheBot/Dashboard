@@ -48,22 +48,32 @@ const Embed = ({ embed }) => {
       className={styles.container}
     >
       <div className={styles.author}>
-        {embed?.author?.iconURL && Validator.isURL(embed?.author?.iconURL) ? (
-          <img
-            className={styles.authorIcon}
-            src={embed?.author?.iconURL}
-            alt=""
-          />
+        {embed?.author?.icon && Validator.isURL(embed?.author?.icon) ? (
+          <img className={styles.authorIcon} src={embed?.author?.icon} alt="" />
         ) : (
           <Fragment />
         )}
         {embed?.author?.name ? (
-          <div className={styles.authorName}>{embed?.author?.name}</div>
+          <div
+            className={`${
+              embed?.author?.url && Validator.isURL(embed?.author?.url)
+                ? styles.url
+                : ""
+            }`}
+          >
+            {embed?.author?.name}
+          </div>
         ) : (
           <Fragment />
         )}
       </div>
-      <h3 className={styles.title}>{embed?.title}</h3>
+      <h3
+        className={`${styles.title}${
+          embed?.url && Validator.isURL(embed?.url) ? " " + styles.url : ""
+        }`}
+      >
+        {embed?.title}
+      </h3>
       <div className={styles.description}>
         <ReactMarkdown>{embed?.description}</ReactMarkdown>
       </div>
@@ -78,19 +88,15 @@ const Embed = ({ embed }) => {
         <Fragment />
       )}
       <div className={styles.footer}>
-        {embed?.footer?.iconURL &&
-        Validator.isURL(embed?.footer?.iconURL) &&
+        {embed?.footer?.icon &&
+        Validator.isURL(embed?.footer?.icon) &&
         embed?.footer?.text ? (
-          <img
-            className={styles.footerIcon}
-            src={embed?.footer?.iconURL}
-            alt=""
-          />
+          <img className={styles.footerIcon} src={embed?.footer?.icon} alt="" />
         ) : (
           <Fragment />
         )}
         {embed?.footer?.name ? (
-          <div className={styles.footerName}>
+          <div>
             <ReactMarkdown>{embed?.footer?.name}</ReactMarkdown>
           </div>
         ) : (

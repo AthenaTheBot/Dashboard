@@ -1,5 +1,5 @@
 .container {
-  width: 100%;
+  width: fit-content;
   height: 100%;
   position: relative;
   display: inline-grid;
@@ -10,6 +10,7 @@
   overflow: hidden;
   max-width: 650px;
   overflow: scroll;
+  min-width: 200px;
 
   &::before {
     content: "";
@@ -91,11 +92,11 @@
 .thumbnail {
   grid-column: 2 / 3;
   grid-row: 1 / 5;
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   border-radius: 5px;
-  margin: 15px;
-  margin-top: 0px;
+  margin-left: 16px;
+  margin-top: 8px;
 }
 
 .image {
@@ -107,4 +108,13 @@
   max-width: 400px;
   width: auto;
   height: auto;
+}
+
+.url {
+  color: #07a1de;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
