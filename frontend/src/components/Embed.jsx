@@ -95,9 +95,9 @@ const Embed = ({ embed }) => {
         ) : (
           <Fragment />
         )}
-        {embed?.footer?.name ? (
+        {embed?.footer?.text ? (
           <div>
-            <ReactMarkdown>{embed?.footer?.name}</ReactMarkdown>
+            <ReactMarkdown>{embed?.footer?.text}</ReactMarkdown>
           </div>
         ) : (
           <Fragment />
