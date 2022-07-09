@@ -39,18 +39,21 @@ const Embed = ({ embed }) => {
         if (display !== "none") childCount++;
       });
 
-    $(`.${styles.thumbnail}`).css("grid-row", `1 / ${childCount - 1}`);
+    $(`.${styles.thumbnail}`).css("grid-row", `1 / ${childCount}`);
   });
 
-  // TODO: Check if image url is valid or not. (npmjs/validator)
   return (
     <div
       style={{ "--embed-color": embed?.color || "#202225" }}
       className={styles.container}
     >
       <div className={styles.author}>
-        {embed?.author?.icon && Validator.isURL(embed?.author?.icon) ? (
-          <img className={styles.authorIcon} src={embed?.author?.icon} alt="" />
+        {embed?.author?.iconURL && Validator.isURL(embed?.author?.iconURL) ? (
+          <img
+            className={styles.authorIcon}
+            src={embed?.author?.iconURL}
+            alt=""
+          />
         ) : (
           <Fragment />
         )}
@@ -75,8 +78,14 @@ const Embed = ({ embed }) => {
         <Fragment />
       )}
       <div className={styles.footer}>
-        {embed?.footer?.icon && Validator.isURL(embed?.footer?.icon) ? (
-          <img className={styles.footerIcon} src={embed?.footer?.icon} alt="" />
+        {embed?.footer?.iconURL &&
+        Validator.isURL(embed?.footer?.iconURL) &&
+        embed?.footer?.text ? (
+          <img
+            className={styles.footerIcon}
+            src={embed?.footer?.iconURL}
+            alt=""
+          />
         ) : (
           <Fragment />
         )}

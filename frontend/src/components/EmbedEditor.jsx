@@ -32,7 +32,7 @@ const EmbedEditor = ({
     return `${hours}:${minutes}`;
   };
 
-  // TODO: Check if the url is valid or not (npmjs/validator)
+  // TODO: Input url controller
   return (
     <div className={styles.container}>
       <p onClick={togglePreview} className={styles.togglePreview}>
