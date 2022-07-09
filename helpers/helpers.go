@@ -91,6 +91,7 @@ func GetUser(users syncmap.Map, session string) (models.User, error) {
 			return GetUser(users, session)
 			
 		} else {
+			fmt.Println(resp)
 			utils.Log(models.ERROR, "An error occured while making request to Discord.")
 			return models.User{}, err
 		}

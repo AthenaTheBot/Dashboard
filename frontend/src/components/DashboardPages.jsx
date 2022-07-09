@@ -94,6 +94,16 @@ export const Settings = ({ serverData }) => {
         </div>
         <div className={styles.moduleInner}>
           <SelectInput
+            onFocus={(e) => {
+              $(e.currentTarget)
+                .parent()
+                .parent()
+                .parent()
+                .css("z-index", "9999");
+            }}
+            onBlur={(e) => {
+              $(e.currentTarget).parent().parent().parent().removeAttr("style");
+            }}
             onSelect={(x) => {
               setSettings({
                 ...settings,
@@ -199,9 +209,8 @@ export const Moderation = ({ serverData }) => {
                     id: moderationSettings?.autoRole,
                     label:
                       serverData?.roles?.find(
-                        (x) =>
-                          x.id === serverData?.modules?.moderation?.autoRole
-                      )?.name || serverData?.modules?.moderation?.autoRole,
+                        (x) => x.id === moderationSettings?.autoRole
+                      )?.name || moderationSettings?.autoRole,
                   }
                 : {}
             }
@@ -343,6 +352,12 @@ export const Welcomer = ({ serverData }) => {
           <div className={styles.welcomerModuleChannel}>
             <p>Channel</p>
             <SelectInput
+              onFocus={(e) => {
+                $(e.currentTarget).parent().css("z-index", "9999");
+              }}
+              onBlur={(e) => {
+                $(e.currentTarget).parent().removeAttr("style");
+              }}
               onSelect={(item) => {
                 if (!item?.id) return;
                 setWelcomerSettings({
