@@ -32,7 +32,7 @@
   color: #dcddde;
   margin: 3px 0px;
 
-  img {
+  .authorIcon {
     height: 24px;
     width: 24px;
     border-radius: 50%;
@@ -76,7 +76,7 @@
   margin: 3px 0px;
   margin-bottom: 0px;
 
-  img {
+  .footerIcon {
     height: 16px;
     width: 16px;
     border-radius: 50%;
@@ -103,6 +103,5 @@
   border-radius: 5px;
   margin: 15px;
   margin-left: 0px;
-  max-height: 300px;
-  max-width: 500px;
+  max-width: 400px;
 }
