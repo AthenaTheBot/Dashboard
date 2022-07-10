@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import styles from "../styles/Container.module.scss";
 
 const Container = ({
-  id,
   className,
   bgGradientColor = "var(--primary-theme)",
   bgGradientEndColor = "var(--primary-background)",
@@ -22,7 +21,7 @@ const Container = ({
   }, [bgGradientColor, bgGradientEndColor]);
 
   return (
-    <div id={id}>
+    <Fragment>
       <div
         style={{
           "--bgGradientColor": gradientColor,
@@ -34,7 +33,7 @@ const Container = ({
       <div className={`${styles.wrapper}${className ? " " + className : ""}`}>
         {children}
       </div>
-    </div>
+    </Fragment>
   );
 };
 
