@@ -34,6 +34,9 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const server = servers?.find((x) => x.id === id && x?.available);
   const [serverDetails, setServerDetails] = useState(null);
+  const [loaderMessage, setLoaderMessage] = useState(
+    "Sit tight, we're getting there"
+  );
 
   useEffect(() => {
     if (!category) navigate(`/dashboard/${id}/overview`);
@@ -41,6 +44,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => {
+      setServerDetails(null);
+
       const data = await fetch(`/api/guilds/${id}`)
         .then((res) => {
           if (res.status === 200) return res.json();
@@ -50,6 +55,14 @@ const Dashboard = () => {
 
       if (data) {
         setServerDetails(data);
+      } else {
+        setLoaderMessage(
+          "An error occured, redirecting you to the servers page"
+        );
+
+        setTimeout(() => {
+          navigate("/servers");
+        }, 1600);
       }
     })();
 
@@ -93,6 +106,7 @@ const Dashboard = () => {
             : true
         }
         coverAllPage
+        message={loaderMessage}
       />
       <div className={styles.menu}>
         <div className={styles.brand}>
