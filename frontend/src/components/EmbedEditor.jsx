@@ -33,6 +33,7 @@ const EmbedEditor = ({
   };
 
   // TODO: Input url controller
+  // TODO: Better description preview (description does not break)
   return (
     <div className={styles.container}>
       <p onClick={togglePreview} className={styles.togglePreview}>
@@ -110,12 +111,14 @@ const EmbedEditor = ({
             <div>
               <p>Description</p>
               <TextInput
+                className={styles.description}
                 onChange={(d) => {
                   onChange({
                     ...embed,
                     description: d,
                   });
                 }}
+                role="textarea"
                 value={embed?.description}
               />
             </div>

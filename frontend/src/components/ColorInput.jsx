@@ -1,45 +1,40 @@
 import styles from "../styles/ColorInput.module.scss";
 
 import { useEffect, useState } from "react";
-import { HexColorPicker } from "react-colorful";
+import validator from "validator";
 
-import TextInput from "./TextInput";
+const ColorInput = ({ value = "#000000", onChange = () => {} }) => {
+  const [color, setColor] = useState(
+    validator.isHexColor(`${value}`) ? value : "#000000"
+  );
+  const [input, setInput] = useState(null);
 
-const ColorInput = ({ value, onChange }) => {
-  const [color, setColor] = useState(value);
-  const [showPicker, setShowPicker] = useState(false);
+  const inputClicked = () => {
+    if (input) {
+      input?.click();
+    }
+  };
+  const inputChanged = (e) => {
+    setColor(e.currentTarget.value);
+
+    if (onChange && typeof onChange === "function")
+      onChange(e.currentTarget.value);
+  };
 
   useEffect(() => {
     setColor(value);
   }, [value, setColor]);
 
-  const onInputChange = (newValue) => {
-    setColor(newValue);
-    if (onChange && typeof onChange === "function") onChange(newValue);
-  };
-
   return (
-    <div className={styles.container}>
-      <div
-        onFocus={() => {
-          setShowPicker(true);
-        }}
-      >
-        <TextInput strict onChange={onInputChange} value={color} />
-      </div>
-      <HexColorPicker
-        className={`${styles.colorPicker} ${
-          !showPicker ? styles.disabled : ""
-        }`}
-        color={color}
-        onChange={onInputChange}
-        onFocus={() => {
-          setShowPicker(true);
-        }}
-        onBlur={() => {
-          setShowPicker(false);
-        }}
-      />
+    <div className={styles.container} onClick={inputClicked}>
+      <input
+        ref={(x) => setInput(x)}
+        type="color"
+        className={styles.colorPreview}
+        value={color}
+        onChange={inputChanged}
+      ></input>
+      <div className={styles.colorValue}>{color}</div>
     </div>
   );
 };
