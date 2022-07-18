@@ -9,7 +9,7 @@
   width: 100vw;
   height: 100vh;
   min-height: 600px;
-  position: absolute;
+  position: fixed;
   z-index: 0;
   left: 0;
   top: 0;
@@ -23,7 +23,7 @@
 .bgGradient::after {
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   content: "";
   left: 0;
   top: 0;

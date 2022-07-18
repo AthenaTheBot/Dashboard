@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/TextInput.module.scss";
 
+// TODO: Url support for text input
 const TextInput = ({
   id,
   className,
   value = "",
   type = "text",
-  role,
+  expandable,
   strict,
   onChange = () => {},
 }) => {
@@ -21,7 +22,7 @@ const TextInput = ({
     setInputValue(value);
   }, [value, setInputValue]);
 
-  if (role === "textarea") {
+  if (expandable) {
     return (
       <textarea
         id={id}
@@ -29,7 +30,6 @@ const TextInput = ({
         onChange={inputChanged}
         value={inputValue}
         type={type}
-        role={role}
       />
     );
   } else {
@@ -40,7 +40,6 @@ const TextInput = ({
         onChange={inputChanged}
         value={inputValue}
         type={type}
-        role={role}
       />
     );
   }

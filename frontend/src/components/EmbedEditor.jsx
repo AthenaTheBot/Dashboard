@@ -33,7 +33,6 @@ const EmbedEditor = ({
   };
 
   // TODO: Input url controller
-  // TODO: Better description preview (description does not break)
   return (
     <div className={styles.container}>
       <p onClick={togglePreview} className={styles.togglePreview}>
@@ -118,7 +117,7 @@ const EmbedEditor = ({
                     description: d,
                   });
                 }}
-                role="textarea"
+                expandable
                 value={embed?.description}
               />
             </div>

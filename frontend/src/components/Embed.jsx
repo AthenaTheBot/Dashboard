@@ -7,6 +7,7 @@ import styles from "../styles/Embed.module.scss";
 
 import $ from "jquery";
 
+// TODO: Better text rendering. Discord like text rendering.
 const Embed = ({ embed }) => {
   const checkImage = (className) => {
     if ($(`.${className}`).length === 0) return;
@@ -75,7 +76,24 @@ const Embed = ({ embed }) => {
         {embed?.title}
       </h3>
       <div className={styles.description}>
-        <ReactMarkdown>{embed?.description}</ReactMarkdown>
+        {embed?.description?.split("\n").map((str) => {
+          if (str)
+            return (
+              <ReactMarkdown
+                components={{
+                  h1: "p",
+                  h2: "p",
+                  h3: "p",
+                  h4: "p",
+                  h5: "p",
+                  h6: "p",
+                }}
+              >
+                {str}
+              </ReactMarkdown>
+            );
+          else return <br />;
+        })}
       </div>
       {embed?.thumbnail && Validator.isURL(embed?.thumbnail) ? (
         <img className={styles.thumbnail} src={embed?.thumbnail} alt="" />
