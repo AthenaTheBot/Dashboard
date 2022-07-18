@@ -155,6 +155,7 @@ const Dashboard = () => {
         <div className={styles.categories}>
           <div
             onClick={() => {
+              if (category === "overview") return;
               navigate(`/dashboard/${id}/overview`);
               toggleMenu();
             }}
@@ -165,6 +166,7 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
+              if (category === "settings") return;
               navigate(`/dashboard/${id}/settings`);
               toggleMenu();
             }}
@@ -175,6 +177,7 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
+              if (category === "moderation") return;
               navigate(`/dashboard/${id}/moderation`);
               toggleMenu();
             }}
@@ -185,6 +188,7 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
+              if (category === "welcomer") return;
               navigate(`/dashboard/${id}/welcomer`);
               toggleMenu();
             }}
@@ -195,6 +199,7 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
+              if (category === "logging") return;
               navigate(`/dashboard/${id}/logging`);
               toggleMenu();
             }}
@@ -205,6 +210,7 @@ const Dashboard = () => {
           </div>
           <div
             onClick={() => {
+              if (category === "music") return;
               navigate(`/dashboard/${id}/music`);
               toggleMenu();
             }}

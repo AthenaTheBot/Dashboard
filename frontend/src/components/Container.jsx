@@ -28,7 +28,7 @@ const Container = ({
           "--bgGradientOpacity": gradientOpacity,
           "--bgGradientEndColor": gradientEndColor,
         }}
-        className={styles.bgGradient}
+        className={`${styles.bgGradient}${className ? " " + className : ""}`}
       ></div>
       <div className={`${styles.wrapper}${className ? " " + className : ""}`}>
         {children}
