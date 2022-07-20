@@ -12,6 +12,7 @@ const SelectInput = ({
   const [optionsToShow, setOptionsToShow] = useState(options) || {};
   const [optionsEnabled, setOptionsEnabled] = useState(false);
 
+  // TODO: Nothing selected warning and another input to make options not selected state.
   useEffect(() => {
     if (!active?.label || !options) return;
     setInputValue(active.label);
@@ -19,6 +20,8 @@ const SelectInput = ({
   }, [active, options, setInputValue, setOptionsToShow]);
 
   useEffect(() => {
+    if (!inputValue) return setOptionsToShow(options);
+
     const newOptionsToShow = options.filter((x) =>
       x?.label?.toLowerCase()?.includes(inputValue?.toLowerCase())
     );
@@ -50,11 +53,16 @@ const SelectInput = ({
     setOptionsEnabled(false);
   };
 
+  useEffect(() => {
+    setInputValue(active?.label || "");
+  }, [active]);
+
   return (
     <div className={styles.container}>
       <input
         type="text"
         className={styles.main}
+        placeholder={!inputValue ? "Nothing selected" : ""}
         value={inputValue}
         onChange={inputChanged}
         onFocus={(e) => {
